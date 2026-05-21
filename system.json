@@ -1,0 +1,53 @@
+{
+  "id": "MY_SYSTEM_ID",
+  "title": "My System Name!",
+  "description": "A fvtt-quicksilver implementation of the MY_SYSTEM_ID rpg",
+  "version": "#{VERSION}#",
+  "compatibility": {
+    "minimum": 13,
+    "verified": 14,
+    "maximum": 14
+  },
+  "authors": [
+    {
+      "name": "WHITESPINE",
+      "discord": "whitespine"
+    }
+  ],
+  "relationships": {
+    "systems": [],
+    "requires": [
+
+    ], 
+    "recommends": [
+
+    ]
+  },
+  "esmodules": [
+    "system.mjs"
+  ],
+  "scripts": [
+  ],
+  "styles": [
+    "system.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "languages/en.json"
+    }
+  ],
+  "url": "#{URL}#",
+  "manifest": "#{MANIFEST}#",
+  "download": "#{DOWNLOAD}#",
+  "license": "LICENSE",
+  "readme": "README.md",
+  "socket": true,
+  "media": [
+    {
+      "type": "icon",
+      "url": "https://avatars2.githubusercontent.com/u/71292812?s=400&u=ccdb4eeb7abf551ca8f314e5a9bfd0479a4d3d41&v=4"
+    }
+  ]
+}

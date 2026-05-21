@@ -1,0 +1,78 @@
+@layer system {
+
+    // Global styling and classes. Anything that is used between multiple sheets should go here
+    .MY_SYSTEM_ID, // This class will ideally be on all elements!
+    #dnd-action-dragged-el // Make sure that styling persists even for our dragged element
+    {
+
+        .invert {
+            filter: invert(1)
+        }
+
+        .clip-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .italic {
+            font-style: italic;
+        }
+
+        // Default borders look ugly
+        img {
+            border: none;
+        }
+
+        // For disabling buttons
+        .disabled {
+            opacity: 50%;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        // Custom tooltip - overrides how data-tooltip appears
+        &#tooltip {
+            background-color: white !important;
+            border: 1px solid black;
+            border-radius: 0px !important;
+            box-shadow: none !important;
+            color: black !important;
+
+            // For action planner tooltips
+            &.actions {
+                text-align: start;
+            }
+        }
+
+        img.thumbnail {
+            max-width: 64px;
+            max-height: 64px;
+            border: 1px solid black;
+        }
+
+        &.actor.application {
+            // border: none;
+            // box-shadow: none;
+            // background: none;
+            overflow: visible; // For the border
+            // min-height: 280px;
+            // min-width: 260px;
+
+            &>header {
+                z-index: 10; // Just make it high as shit
+                // margin-left: 80px;
+                // margin-right: 10px;
+                // background: none;
+                // border: none;
+            }
+
+            &>section.window-content {
+                overflow: hidden auto;
+
+                // Best place to customize color/texture here!
+                // background-color: #F0F0F0;
+            }
+        }
+    }
+}

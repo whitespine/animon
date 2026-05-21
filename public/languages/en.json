@@ -1,0 +1,17 @@
+{
+    "TYPES": {
+        "Actor": {
+            "player": "Player",
+            "npc": "Npc"
+        },
+        "Item": {
+            "gear": "Gear"
+        }
+    },
+    "MY_SYSTEM_ID": {
+        "welcome": {
+            "banner": "Welcome to <system>!",
+            "stop": "Don't show this again"
+        }
+    }
+}

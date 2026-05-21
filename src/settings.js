@@ -1,0 +1,15 @@
+import { MY_SYSTEM_CONSTS } from "./consts";
+
+/**
+ * Registers all system settings
+ */
+export function setupSettings() {
+    // Have we shown the user a welcome message?
+    game.settings.register(game.system.id, MY_SYSTEM_CONSTS.settings.init.welcome, {
+        name: "Show Welcome Message",
+        scope: "world",
+        config: false,
+        type: Boolean,
+        default: true,
+    });    
+}

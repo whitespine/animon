@@ -1,0 +1,29 @@
+{
+  "name": "fvtt-quicksilver",
+  "version": "1.0.0",
+  "description": "MY_SYSTEM_CONSTS implementation for FoundryVTT",
+  "main": "scripts/system.js",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite --strictPort"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MY_GITHUB/MY_SYSTEM_ID.git"
+  },
+  "author": "MY_GITHUB",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MY_GITHUB/MY_SYSTEM_ID/issues"
+  },
+  "homepage": "https://github.com/MY_GITHUB/MY_SYSTEM_ID#readme",
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^7.1.2",
+    "sass-embedded": "^1.99.0",
+    "svelte-dnd-action": "^0.9.69",
+    "svelte-preprocess-cssmodules": "^3.0.1",
+    "vite": "^8.0.13"
+  },
+  "dependencies": {
+  }
+}
