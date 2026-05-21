@@ -1,8 +1,8 @@
 {
     "Actor": {
-        "types": ["player", "npc"],
+        "types": ["kid", "npc"],
         "htmlFields": [],
-        "player": {},
+        "kid": {},
         "npc": {}
     },
     "Item": {

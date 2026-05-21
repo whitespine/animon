@@ -52,7 +52,7 @@ export class SystemChatMessage extends ChatMessage {
     }
 }
 
-// Disable inbuilt DSN roll display for MY_SYSTEM_ID messages. We do these manually
+// Disable inbuilt DSN roll display for animon messages. We do these manually
 // TODO: Should this be default behavior for quicksilver?
 Hooks.on('diceSoNiceRollStart', (messageId, context) => {
     //Hide this roll

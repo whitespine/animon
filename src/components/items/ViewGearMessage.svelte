@@ -6,7 +6,7 @@
     /** @import { ShowGearMessageData } from "../../utils/roll.svelte" */
 
     /** @type {ShowGearMessageData} */
-    let roll_data = $derived(message.MY_SYSTEM_ID);
+    let roll_data = $derived(message.animon);
 
     let item = $derived(foundry.utils.fromUuid(roll_data.item));
 </script>

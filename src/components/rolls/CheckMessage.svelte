@@ -40,7 +40,7 @@
     }
 </script>
 
-<div class={{ MY_SYSTEM_ID: true, dice: true, pushed: roll_data.pushed }}>
+<div class={{ animon: true, dice: true, pushed: roll_data.pushed }}>
     {#each die_results as die}
         {#if inSuspense(roll_data.suspense)}
             <RollingDie />

@@ -1,4 +1,4 @@
-import { MY_SYSTEM_CONSTS } from "../consts";
+import { ANIMON } from "../consts";
 import { sleep } from "./time";
 import { SvelteSet } from "svelte/reactivity";
 import { sendSocket } from "./socket.svelte";
@@ -34,7 +34,7 @@ export function suspense(roll) {
         user_id: game.user._id,
         roll_json: roll.toJSON()
     };
-    sendSocket(MY_SYSTEM_CONSTS.socket.suspense, payload);
+    sendSocket(ANIMON.socket.suspense, payload);
 
     return id;
 }

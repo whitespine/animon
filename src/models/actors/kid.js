@@ -2,7 +2,7 @@ import { ActorModel } from "./actor.svelte";
 
 const fields = foundry.data.fields;
 
-export class PlayerModel extends ActorModel {
+export class KidModel extends ActorModel {
     static defineSchema() {
         return {
             ...super.defineSchema(),

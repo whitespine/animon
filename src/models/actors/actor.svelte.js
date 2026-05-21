@@ -6,16 +6,7 @@ export class ActorModel extends SystemDataModel {
     // Some schema elements are consistent across all actor types. Define them here
     static defineSchema() {
         return {
-            // Basic stats, expand as necessary
-            hp: new fields.SchemaField({
-                // min: NumberField({ integer: true, min: 0, initial: 0 }), 
-                max: new fields.NumberField({ integer: true, min: 0, initial: 0 }),
-                value: new fields.NumberField({ integer: true, min: 0, initial: 0 }),
-            }),
-            power: new fields.NumberField({ integer: true, min: 0, initial: 0 }),
-
-            // Notes. Handy to have, might not keep forever
-            biography: new fields.HTMLField({ initial: "Put notes here" })
+            // For the time being, nothing is shared
         };
     }
 

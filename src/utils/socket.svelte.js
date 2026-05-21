@@ -1,4 +1,4 @@
-import { MY_SYSTEM_CONSTS } from "../consts";
+import { ANIMON } from "../consts";
 
 /**
  * Our example socket event sends a roll and alerts its result
@@ -18,18 +18,18 @@ export function initSockets() {
     game.socket.on(`system.${game.system.id}`, (data) => {
         let { type, payload } = data;
         switch (type) {
-            case MY_SYSTEM_CONSTS.socket.example:
+            case ANIMON.socket.example:
                 onReceiveExample(payload)
                 break;
             default:
-                ui.notifications.warn(`Unhandled MY_SYSTEM_ID event type ${type}`);
+                ui.notifications.warn(`Unhandled animon event type ${type}`);
         }
     });
 }
 
 /**
  * 
- * @param {string} type The message type. Use something from MY_SYSTEM_CONSTS.socket
+ * @param {string} type The message type. Use something from ANIMON.socket
  * @param {any} payload Arbitrary json data
  * @returns {Promise<any>}
  */

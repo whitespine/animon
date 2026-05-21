@@ -1,7 +1,7 @@
 {
   "name": "fvtt-quicksilver",
   "version": "1.0.0",
-  "description": "MY_SYSTEM_CONSTS implementation for FoundryVTT",
+  "description": "ANIMON implementation for FoundryVTT",
   "main": "scripts/system.js",
   "scripts": {
     "build": "vite build",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MY_GITHUB/MY_SYSTEM_ID.git"
+    "url": "git+https://github.com/whitespine/animon.git"
   },
-  "author": "MY_GITHUB",
+  "author": "whitespine",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/MY_GITHUB/MY_SYSTEM_ID/issues"
+    "url": "https://github.com/whitespine/animon/issues"
   },
-  "homepage": "https://github.com/MY_GITHUB/MY_SYSTEM_ID#readme",
+  "homepage": "https://github.com/whitespine/animon#readme",
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^7.1.2",
     "sass-embedded": "^1.99.0",

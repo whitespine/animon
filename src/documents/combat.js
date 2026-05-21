@@ -1,4 +1,4 @@
-import { MY_SYSTEM_CONSTS } from "../consts";
+import { ANIMON } from "../consts";
 
 
 export class SystemCombat extends Combat {

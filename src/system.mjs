@@ -1,6 +1,6 @@
 import './system.scss';
 import { setupSettings } from './settings';
-import { MY_SYSTEM_CONSTS } from './consts';
+import { ANIMON } from './consts';
 import { setupModels } from './models/config';
 import { setupDocuments } from './documents/config';
 import { mount } from 'svelte';
@@ -16,7 +16,7 @@ import { initSockets } from './utils/socket.svelte';
 import { GenericComponentApp } from './apps/generic_app';
 
 Hooks.once('init', async function () {
-  console.log("Initializing MY_SYSTEM_CONSTS RPG")
+  console.log("Initializing ANIMON RPG")
   injectAllCoreDocumentsReactivity();
   injectEmbeddedCollectionsReactivity();
   setupDocuments();
@@ -26,8 +26,8 @@ Hooks.once('init', async function () {
   // CONFIG.ui.combat = CustomCombatTracker;
   // CONFIG.debug.hooks = true;
 
-  // Also setup a MY_SYSTEM_ID namespace for macros to use
-  game.MY_SYSTEM_ID = {
+  // Also setup a animon namespace for macros to use
+  game.animon = {
     combat: {},
     documents: {
       actor: SystemActor,
@@ -41,7 +41,7 @@ Hooks.once('init', async function () {
 });
 
 function maybeShowWelcome() {
-  if(game.settings.get(MY_SYSTEM_CONSTS.settings.init.welcome)) {
+  if(game.settings.get(ANIMON.settings.init.welcome)) {
     new GenericComponentApp(WelcomeComponent, {}, {
       width: 400,
       height: 400

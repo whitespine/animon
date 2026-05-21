@@ -1,4 +1,4 @@
-import { MY_SYSTEM_CONSTS } from "../../consts";
+import { ANIMON } from "../../consts";
 import { onlineOwners } from "../../utils/ownership";
 
 /**

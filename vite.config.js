@@ -4,7 +4,7 @@ import { resolve } from 'path';
 
 
 export default defineConfig({
-  base: "/systems/MY_SYSTEM_ID/",
+  base: "/systems/animon/",
   root: "src/",
   publicDir: "../public",
   resolve: {
@@ -16,7 +16,7 @@ export default defineConfig({
     port: 20001,
     open: "/",
     proxy: {
-      "^(?!/systems/MY_SYSTEM_ID)": "http://localhost:30000",
+      "^(?!/systems/animon)": "http://localhost:30000",
       "/socket.io": {
         target: "ws://localhost:30000",
         ws: true,

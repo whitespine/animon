@@ -3,7 +3,7 @@ import GearSheetComponent from "../components/sheets/items/GearSheet.svelte";
 
 export class CustomItemSheet extends foundry.applications.sheets.ItemSheetV2 {
     static DEFAULT_OPTIONS = {
-        classes: ["MY_SYSTEM_ID", "item"],
+        classes: ["animon", "item"],
         closeOnSubmit: false,
         submit: false,
         submitOnClose: false,

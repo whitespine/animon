@@ -10,7 +10,7 @@ export class CustomCombatTracker extends SvelteApplicationMixin(foundry.applicat
         svelte: {
             component: CustomCombatTrackerComponent
         },
-        classes: ["MY_SYSTEM_ID"]
+        classes: ["animon"]
     }
 
     static tabName = "combat";

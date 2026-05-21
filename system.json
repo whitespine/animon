@@ -1,7 +1,7 @@
 {
-  "id": "MY_SYSTEM_ID",
+  "id": "animon",
   "title": "My System Name!",
-  "description": "A fvtt-quicksilver implementation of the MY_SYSTEM_ID rpg",
+  "description": "A fvtt-quicksilver implementation of the Animon rpg",
   "version": "#{VERSION}#",
   "compatibility": {
     "minimum": 13,

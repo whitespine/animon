@@ -1,7 +1,7 @@
 
-export const MY_SYSTEM_CONSTS = {
+export const ANIMON = {
     // The system id
-    id: "MY_SYSTEM_ID",
+    id: "animon",
 
     // The keys for various settings. Nest as deeply as necessary
     settings: {

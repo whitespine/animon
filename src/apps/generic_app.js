@@ -2,7 +2,7 @@ import { SvelteApplicationMixin } from "../overrides/svelte_mixin.svelte";
 
 export class GenericComponentApp extends SvelteApplicationMixin(foundry.applications.api.ApplicationV2) {
     static DEFAULT_OPTIONS = {
-        classes: ["MY_SYSTEM_ID"],
+        classes: ["animon"],
     }
 
     constructor(component, props, options = {}) {

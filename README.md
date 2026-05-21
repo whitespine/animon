@@ -14,12 +14,12 @@ Who might you thank?
 
 ## Installing
 
-The package will (ideally) be available directly via the foundry vtt module installer, under the id `MY_SYSTEM_ID`.
+The package will (ideally) be available directly via the foundry vtt module installer, under the id `animon`.
 
 Alternatively, it can be installed via the manifest url:
 
 ```
-https://github.com/MY_GITHUB/MY_SYSTEM_ID/releases/latest/download/system.json
+https://github.com/whitespine/animon/releases/latest/download/system.json
 ```
 
 ## Contributing
@@ -36,14 +36,14 @@ to be the one provided by the foundry portal
 The project can be built and run locally via the following steps.
 1. To link the developer build directory to the 
    `npm run build`
-   `ln -s $(pwd)/dist /path/to/vtt/data/Data/systems/MY_SYSTEM_ID`
+   `ln -s $(pwd)/dist /path/to/vtt/data/Data/systems/animon`
 2. Perform an initial `npm ci` and `npm run build` to populate the dist directory.
    This will also need to be run to populate any asset files stored in the public directory,
    if you should ever change those.
 3. As a start to setup, replace all instances of the following strings with appropriate values:
-- MY_SYSTEM_ID -> dnd5e, or whatever
-- MY_SYSTEM_CONSTS -> DND5E, or whatever
-- MY_GITHUB -> whitespine, or whatever
+- animon -> dnd5e, or whatever
+- ANIMON -> DND5E, or whatever
+- whitespine -> whitespine, or whatever
 4. Then, to run the vite development server, edit `vite.config.js` to match whatever port you 
    are running foundry on on your local machine. 
    While running, all code changes should be hot (or at least lukewarm) reloaded in the vite proxy server.
@@ -85,7 +85,7 @@ export class CustomSidebarTab extends SvelteApplicationMixin(foundry.application
         svelte: {
             component: CustomSidebarComponent
         },
-        classes: ["MY_SYSTEM_ID"]
+        classes: ["animon"]
     }
 
     static tabName = "whatever";
@@ -105,7 +105,7 @@ export class CustomSidebarTab extends foundry.applications.sidebar.AbstractSideb
         svelte: {
             component: CustomSidebarComponent
         },
-        classes: ["MY_SYSTEM_ID"]
+        classes: ["animon"]
     }
 
     static tabName = "whatever";

@@ -4,7 +4,7 @@ import PlayerSheetComponent from "../components/sheets/player/PlayerSheet.svelte
 
 export class SystemActorSheet extends foundry.applications.sheets.ActorSheetV2 {
     static DEFAULT_OPTIONS = {
-        classes: ["MY_SYSTEM_ID", "actor"],
+        classes: ["animon", "actor"],
         closeOnSubmit: false,
         submit: false,
         submitOnClose: false,

@@ -1,16 +1,17 @@
 {
     "TYPES": {
         "Actor": {
-            "player": "Player",
-            "npc": "Npc"
+            "kid": "Kid",
+            "animon": "Animon",
+            "npc": "NPC"
         },
         "Item": {
             "gear": "Gear"
         }
     },
-    "MY_SYSTEM_ID": {
+    "animon": {
         "welcome": {
-            "banner": "Welcome to <system>!",
+            "banner": "Welcome to Animon!",
             "stop": "Don't show this again"
         }
     }
