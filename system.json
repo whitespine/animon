@@ -1,6 +1,6 @@
 {
   "id": "animon",
-  "title": "My System Name!",
+  "title": "Animon Story",
   "description": "A fvtt-quicksilver implementation of the Animon rpg",
   "version": "#{VERSION}#",
   "compatibility": {

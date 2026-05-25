@@ -52,7 +52,6 @@
     img {
         object-fit: contain;
         background-color: grey;
-        border: 2px solid black;
 
         &.edit {
             cursor: pointer;

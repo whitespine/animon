@@ -64,3 +64,34 @@ export function titleCaseString(text) {
     .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
     .join(' ');
 }
+
+/** Turns a sorted typed object field into a conventional array.
+ * Each element has "_id" added as a key representing their original key
+ * 
+ * @param {Record<{sort: number}, any} tof The typed object field to sort. Assumes every element has a numeric "sort" key
+ */
+export function sortedObjectToArray(tof) {
+  let as_array = Object.entries(tof).map(([k, v]) => ({
+    _id: k,
+    ...v
+  }));
+  return as_array.sort((a, b) => (a.sort ?? 0) - (b.sort ?? 0));
+}
+
+/** 
+ * Turns a conventional array into a sorted typed object field 
+ * Each element uses its embedded "_id" field to map to a key in a typed object field.
+ * We assume that the order the array is sorted is in fact how you want it.
+ * ids are preserved
+ * 
+ * @param {Array<{_id: string, sort: number}>} saf The sorted array to turn into a typed object field
+*/
+export function sortedArrayToObject(saf) {
+  let as_object = {};
+  let index = 0;
+  for(let val of saf) {
+    val.sort = 100*index;
+    as_object[val._id] = val;
+  }
+  return as_object;
+}

@@ -13,6 +13,53 @@
         "welcome": {
             "banner": "Welcome to Animon!",
             "stop": "Don't show this again"
+        },
+        "sheet": {
+            "tab": {
+                "kid": "KID",
+                "gear": "GEAR",
+                "notes": "NOTES"
+            },
+            "kid": {
+                "name": "KID NAME",
+                "player_name": "PLAYER NAME",
+                "virtue": "VIRTUE",
+                "flaw": "FLAW",
+                "desire": "DESIRE",
+                "special_item": "SPECIAL ITEM",
+                "type": "KID TYPE",
+                "type_feature": "TYPE FEATURE",
+                "stamina": "STAMINA",
+                "talents": "TALENTS",
+                "harm": {
+                    "title": "HARM",
+                    "add": "Add Harm",
+                    "shaken": "SHAKEN"
+                },
+                "rank": "RANK",
+                "relationship": {
+                    "title": "RELATIONSHIPS",
+                    "add": "Add Relationship"
+                },
+                "traits": {
+                    "label": "TRAITS",
+                    "logic": {
+                        "name": "LOGIC",
+                        "description": "This Trait is best applied to devising solutions based on careful planning, strategy, and knowledge. Kids with high Logic scores are typically smart and well-prepared.",
+                        "usage": "Logic would be used for Tests related to using unfamiliar technology, identifying important information, solving puzzles or riddles, putting together clues, and other things based on reasoning and understanding."
+                    },
+                    "reflex": {
+                        "name": "REFLEX",
+                        "description": "This Trait is best applied to using physical aptitude, staying sharp, and responding quickly to the unexpected. Kids with high Reflex scores are typically keen and physically fit.",
+                        "usage": "Reflex would be used for Tests related to most physical challenges like running, jumping, sneaking, and climbing, as well as sensing danger, spotting something hidden, and other things based on instincts and coordination."
+                    },
+                    "spirit": {
+                        "name": "SPIRIT",
+                        "description": "This Trait is best applied to bolstering determination and using strength of character to persuade or influence others. Kids with high Spirit scores are typically confident and resolute.",
+                        "usage": "Spirit would be used for Tests related to facing fears, forging ahead through dire circumstances, making friends, being persuasive, leading others, and other things based on moxie and willpower."
+                    }
+                }
+            }
         }
     }
 }

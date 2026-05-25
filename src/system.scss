@@ -4,6 +4,87 @@
     .animon, // This class will ideally be on all elements!
     #dnd-action-dragged-el // Make sure that styling persists even for our dragged element
     {
+        --border-radius: 24px;
+        --inner-border-radius: 20px;
+        --dash-underline: 2px dashed black;
+
+        // Outer boxes on a sheet
+        .outer-box {
+            background-color: grey;
+            border: 3px solid #505050;
+            border-radius: var(--border-radius);
+        }
+
+        // Sheet styling
+        &.application.sheet {
+            background-color: grey;
+            border: 3px solid #505050;
+            border-radius: var(--border-radius);
+            contain: paint;
+
+            .window-content {
+                padding: 0px;
+            }
+        }
+
+        h1,h2,h3,h4 {
+            margin-bottom: 0px;
+        }
+
+
+        // Inner boxes on a sheet
+        .inner-box {
+            background-color: white;
+            border: 3px solid black;
+            border-radius: var(--border-radius);
+            contain: paint;
+            color: black;
+            margin: 6px;
+
+            h1, h2, h3, h4 {
+                color: black;
+            }
+        }
+
+        // For evenly distributed children
+        .even {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            > * {
+                flex-basis: 0;
+                flex-grow: 1;
+                min-width: 0;
+            }
+        }
+
+        // For inputs with their labels inline
+        .prefix-input {
+            display: flex;
+            align-items: center;
+            border-bottom: var(--dash-underline);
+            margin-bottom: 2px;
+
+            label {
+                font-weight: bolder;
+            }
+
+            input {
+                background-color: inherit;
+                border: none !important;
+                color: black;
+            }
+        }
+
+        // The dotted underline style common on sheets
+        .dash-underline {
+            border-bottom: var(--dash-underline);
+        }
+
+        // The font for most of our static sheet text
+        .blocky {
+            // Is there a css way to uppercase?
+        }
 
         .invert {
             filter: invert(1)

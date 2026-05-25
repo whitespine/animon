@@ -10,6 +10,7 @@
         ...restProps
     } = $props();
 
+    let name = $derived(restProps.name ?? path);
     let value = $derived(resolveDotpath(doc, path, ""));
 
     let change_timeout = null;
@@ -40,5 +41,6 @@
     onchange={(e) => commit(stop(e).target.value, 0)}
     oninput={(e) => commit(stop(e).target.value, 1000)}
     {...restProps}
+    {name}
     {value}
 />

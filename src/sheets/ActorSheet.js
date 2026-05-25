@@ -1,6 +1,6 @@
 import { SvelteApplicationMixin } from "../overrides/svelte_mixin.svelte";
 import NPCSheetComponent from "../components/sheets/npc/NPCSheet.svelte";
-import PlayerSheetComponent from "../components/sheets/player/PlayerSheet.svelte";
+import KidSheetComponent from "../components/sheets/kid/KidSheet.svelte";
 
 export class SystemActorSheet extends foundry.applications.sheets.ActorSheetV2 {
     static DEFAULT_OPTIONS = {
@@ -97,11 +97,11 @@ export class NPCSheet extends SvelteApplicationMixin(SystemActorSheet) {
     }
 }
 
-export class PlayerSheet extends SvelteApplicationMixin(SystemActorSheet) {
+export class KidSheet extends SvelteApplicationMixin(SystemActorSheet) {
     static DEFAULT_OPTIONS = {
         classes: ["player"],
         svelte: {
-            component: PlayerSheetComponent
+            component: KidSheetComponent
         },
         position: {
             width: 600,

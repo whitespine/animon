@@ -56,15 +56,15 @@ export class SystemActor extends Actor {
     }
 
 
-    _oldHp = this.system.hp.value;
+    _oldHp = this.system.hp?.value;
     /**
      * Show a scrolling stat change for our attributes, if they change
      * TODO: This might be more easily accomplished?
      */
     _showDeltaStats() {
-        let hp_delta = this.system.hp.value - this._oldHp;
+        let hp_delta = (this.system.hp?.value ?? 0) - (this._oldHp ?? 0);
         if (hp_delta) {
-            this._oldHp = this.system.hp.value;
+            this._oldHp = this.system.hp?.value;
             this._displayScrollingDelta("Hit Points", hp_delta);
         }
     }
