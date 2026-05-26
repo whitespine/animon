@@ -4,6 +4,7 @@
     import UpdateInput from "../../../fields/UpdateInput.svelte";
     import { sortedArrayToObject } from "../../../../models/base.svelte";
     import { stop } from "../../../../utils/handlers";
+    import { slide } from "svelte/transition";
 
     let { actor, edit } = $props();
 
@@ -29,26 +30,42 @@
 
 <div class="inner-box talent-box">
     <div class="grid">
-        <h2 class="title">{loc("animon.sheet.kid.talent.title")}:</h2>
+        <h2 class="title">
+            <span>{loc("animon.sheet.kid.talent.title")}:</span>
+            <a onclick={(e) => [stop(e), addTalent()]} >
+                <i
+                    class="fas fa-plus"
+                    data-tooltip={loc("animon.sheet.kid.talent.add")}
+                ></i>
+            </a>
+        </h2>
         <h2 class="header-rank">{loc("animon.sheet.kid.talent.rank")}:</h2>
-        {#each talents as talent, i}
-            <UpdateInput
-                doc={actor}
-                class="name prefix-input"
-                path="system.talent.{talent._id}.name"
-                size="1"
-            ></UpdateInput>
-            <UpdateInput
-                doc={actor}
-                class="rank prefix-input"
-                path="system.talent.{talent._id}.rank"
-                size="1"
-            ></UpdateInput>
+        <div></div>
+        {#each talents as talent, i (talent._id)}
+            <div transition:slide>
+                <UpdateInput
+                    doc={actor}
+                    class="name prefix-input"
+                    path="system.talent.{talent._id}.name"
+                    size="1"
+                ></UpdateInput>
+            </div>
+            <div transition:slide>
+                <UpdateInput
+                    doc={actor}
+                    class="rank prefix-input"
+                    path="system.talent.{talent._id}.rank"
+                    size="1"
+                ></UpdateInput>
+            </div>
+            <a
+                onclick={(e) => [stop(e), removeTalent(talent._id)]}
+                transition:slide
+            >
+                <i class="fas fa-trash"></i>
+            </a>
         {/each}
     </div>
-    <button onclick={(e) => [stop(e), addTalent()]}>
-        {loc("animon.sheet.kid.talent.add")}
-    </button>
 </div>
 
 <style lang="scss" module>
@@ -56,15 +73,28 @@
         .grid {
             display: grid;
             grid-template-rows: 1fr;
-            grid-template-columns: 1fr 60px;
+            grid-template-columns: 1fr 60px 30px;
+            align-items: center;
 
-            .title, .header-rank {
+            div input {
+                width: 100%;
+                height: 100%;
+            }
+
+            .title a {
+                float: right;
+            }
+
+            .title,
+            .header-rank {
                 border-bottom: 2px solid gray;
             }
-            .title, .name {
+            .title,
+            .name {
                 border-right: 2px solid gray;
             }
-            .name, .rank {
+            .name,
+            .rank {
                 border-left: none !important;
                 border-top: none !important;
                 border-bottom: var(--dash-line);

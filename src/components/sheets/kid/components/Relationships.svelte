@@ -4,10 +4,13 @@
     import UpdateInput from "../../../fields/UpdateInput.svelte";
     import { sortedArrayToObject } from "../../../../models/base.svelte";
     import { stop } from "../../../../utils/handlers";
+    import { slide } from "svelte/transition";
 
     let { actor, edit } = $props();
 
-    let relationships = $derived(sortedObjectToArray(actor.system.relationship));
+    let relationships = $derived(
+        sortedObjectToArray(actor.system.relationship),
+    );
 
     // Add a new relationship
     function addRelationship() {
@@ -29,40 +32,44 @@
 
 <div class="inner-box relationship-box">
     <div class="header">
-        <h2>{loc("animon.sheet.kid.relationship.title")}:</h2>
+        <h2>
+            <span>
+                {loc("animon.sheet.kid.relationship.title")}:
+            </span>
+            <a onclick={(e) => [stop(e), addRelationship()]}>
+                <i
+                    class="fas fa-plus"
+                    data-tooltip={loc("animon.sheet.kid.relationship.add")}
+                ></i>
+            </a>
+        </h2>
     </div>
     <div class="relationships">
-        {#each relationships as relationship, i}
-            <div class="relationship prefix-input">
+        {#each relationships as relationship, i (relationship._id)}
+            <div class="relationship prefix-input" transition:slide>
                 <UpdateInput
                     doc={actor}
                     path="system.relationship.{relationship._id}.name"
                     size="1"
                 ></UpdateInput>
+                <a
+                    onclick={(e) => [
+                        stop(e),
+                        removeRelationship(relationship._id),
+                    ]}
+                >
+                    <i class="fas fa-trash"></i>
+                </a>
             </div>
         {/each}
-        <button onclick={(e) => [stop(e), addRelationship()]}>
-            {loc("animon.sheet.kid.relationship.add")}
-        </button>
     </div>
 </div>
 
 <style lang="scss" module>
     .relationship-box {
         .header {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-
-            h2 {
-                flex: 0 1;
-                margin: 0;
-            }
-
-            input,
-            span {
-                flex: 1 0;
-                text-align: center;
+            a {
+                margin-left: auto;
             }
         }
 

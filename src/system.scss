@@ -1,3 +1,12 @@
+
+@font-face {
+  font-family: 'AnimonFont';
+  src: url('./assets/fonts/BUNGEE-REGULAR.woff2') format('woff');
+  // src: url('./assets/fonts/BUNGEE-REGULAR.TTF') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 @layer system {
 
     // Global styling and classes. Anything that is used between multiple sheets should go here
@@ -37,12 +46,14 @@
         h1,
         h2,
         h3,
-        h4 {
+        h4,
+        label {
             margin: 0px;
+            font-family: 'AnimonFont', sans-serif;
         }
 
         h2 {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
         }
 
 
@@ -55,6 +66,7 @@
             contain: paint;
             color: black;
             margin: 6px;
+            transition: height 0.75s;
 
             h1,
             h2,
