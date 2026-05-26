@@ -3,7 +3,7 @@
 
     // This thing is WIP and not actually functional yet
 
-    let { doc, path } = $props();
+    let { doc, path, ...restProps } = $props();
     let content = $derived(resolveDotpath(doc, path));
 
     function save(e) {
@@ -19,4 +19,6 @@
     collaborate
     data-document-uuid={doc.uuid}
     name={path}
+    {...restProps}
 ></prose-mirror>
+

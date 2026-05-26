@@ -93,14 +93,32 @@ export class SystemActor extends Actor {
 
     // Can be removed in v14, replaced with a flag <-- what does this mean?
     /**
-     * Return all effects on an actor that are temporary or have the `flags.[system].show` flag
+     * Return all effects on an actor that don't have any flags that would make them invisible.
+     * invisible flags include:
+     * - effect.flags[game.system.id].passthrough
      */
-    get temporaryEffects() {
+    /*
+    get visibleEffects() {
         const effects = [];
         for (const effect of this.allApplicableEffects()) {
             if (effect.active && effect.isTemporary) effects.push(effect);
             else if (effect.flags[game.system.id]?.show) effects.push(effect);
         }
         return effects;
+    }
+    */
+
+    // Extend allApplicableEffects to yield data model generated effects
+    *allApplicableEffects() {
+        for(let se of super.allApplicableEffects()) {
+            yield se;
+        }
+
+        // And get generated effects
+        for(let item of this.items) {
+            for(let ge of item.system.generatedEffects()) {
+                yield ge;
+            }
+        }
     }
 }

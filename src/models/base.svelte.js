@@ -1,10 +1,6 @@
 // Establish a shorthand
 export const fields = foundry.data.fields;
 
-export class SystemDataModel extends foundry.abstract.TypeDataModel {
-  // In case you want any universal helpers for your data models.
-}
-
 /**  
  * Operates similar to an ArrayField, but additionally
  * Handles an additional "length" option, and mandates that it remain at that length

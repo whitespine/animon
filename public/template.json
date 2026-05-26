@@ -6,7 +6,7 @@
         "npc": {}
     },
     "Item": {
-        "types": ["gear"],
+        "types": ["gear", "upgrade"],
         "htmlFields": []
     }
 }

@@ -15,6 +15,12 @@
  * This way, any time the embedded collection is updated, we either do a first time initialization or a minimal update
  * of this SvelteMap, and likewise make any observation of this collection reactive.
  * This reactivity is not deep - CORE_INJECTS is necessary so the documents themselves are reactive
+ * 
+ * Note!!! when we patch `system`, you might be wondering if this is actualy applying any deep reactivity to our data models.
+ * The answer is no - data models are re-generated any time the underlying _source is changed.
+ * Therefore, $state and $derived don't _generally_ serve any purpose in these models,
+ * however, in some cases you might wish to have a $state on a model that is NOT derived from source, 
+ * and that can be manipulated via other events (such as sockets, etcetera)
  */
 
 import { SvelteMap } from "svelte/reactivity";

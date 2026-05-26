@@ -1,12 +1,13 @@
 @layer system {
 
     // Global styling and classes. Anything that is used between multiple sheets should go here
-    .animon, // This class will ideally be on all elements!
+    .animon,
+    // This class will ideally be on all elements!
     #dnd-action-dragged-el // Make sure that styling persists even for our dragged element
-    {
+
+        {
         --border-radius: 24px;
-        --inner-border-radius: 20px;
-        --dash-underline: 2px dashed black;
+        --dash-line: 2px dashed black;
 
         // Outer boxes on a sheet
         .outer-box {
@@ -27,8 +28,21 @@
             }
         }
 
-        h1,h2,h3,h4 {
-            margin-bottom: 0px;
+        // Popout editor styling
+        &.application.editor .window-content {
+            background-color: white;
+            color: black;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            margin: 0px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
         }
 
 
@@ -37,11 +51,15 @@
             background-color: white;
             border: 3px solid black;
             border-radius: var(--border-radius);
+            padding: calc(var(--border-radius) / 2);
             contain: paint;
             color: black;
             margin: 6px;
 
-            h1, h2, h3, h4 {
+            h1,
+            h2,
+            h3,
+            h4 {
                 color: black;
             }
         }
@@ -50,8 +68,9 @@
         .even {
             display: flex;
             flex-direction: row;
-            align-items: center;
-            > * {
+
+            // align-items: center;
+            >* {
                 flex-basis: 0;
                 flex-grow: 1;
                 min-width: 0;
@@ -62,14 +81,19 @@
         .prefix-input {
             display: flex;
             align-items: center;
-            border-bottom: var(--dash-underline);
+            border-bottom: var(--dash-line);
             margin-bottom: 2px;
 
             label {
+                flex: 0 1;
                 font-weight: bolder;
             }
 
             input {
+                flex: 1 0;
+                min-width: 0px;
+                padding-left: 5px;
+                padding-right: 5px;
                 background-color: inherit;
                 border: none !important;
                 color: black;

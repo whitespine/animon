@@ -32,7 +32,7 @@ export class KidModel extends ActorModel {
             // -- Relationships
             relationship: new fields.TypedObjectField(new fields.SchemaField({
                 sort: new fields.NumberField(),
-                label: new fields.StringField({required: true}),
+                name: new fields.StringField({required: true}),
                 // Maye eventually have a details section. How to sanitize html on nested fields?
             })),
 
@@ -55,7 +55,7 @@ export class KidModel extends ActorModel {
             }),
             harm: new fields.TypedObjectField(new fields.SchemaField({
                 sort: new fields.NumberField(),
-                label: new fields.StringField(),
+                name: new fields.StringField(),
                 severity: new fields.NumberField({initial: 1, min: 1, max: 3, integer: true})
             })), // Todo verify syntax
 
@@ -81,8 +81,8 @@ export class KidModel extends ActorModel {
      * Model pre-create rules allow for setting initial values that go beyond the scope of
      * just what is allowed via the fields logic
      */
-    async _preCreate(data, options, user) {
-        await super._preCreate(data, options, user);
+    // async _preCreate(data, options, user) {
+        // await super._preCreate(data, options, user);
 
         // let mods = {
             // power: 3 // Players should start with some power
@@ -90,13 +90,22 @@ export class KidModel extends ActorModel {
 
         // Put in the basics
         // this.updateSource(mods);
+    // }
+    _onUpdate(changed, options, userId) {
+        if(userId == game.user.id && !this.parent.isToken) {
+            console.log("TODO: update all linked animon");
+            // Determine when this is run - after prepareBaseData? on item changes?
+        }
     }
 
+
     // More complicated derivation logic might fit in better here than a $derived attribute (as seen in actor.svelte.js)
-    prepareDerivedData() {
+    prepareBaseData() {
+        super.prepareBaseData();
+
         // Compute maximums
         this.stamina.max = 9 + this.bond_level;
-        this.bond_points.max = 6; // Doesn't seem increasable
+        this.bond_points.max = 5 + this.bond_level; // Minimum 6, goes up with level
         this.bond_strain.max = this.bond_points.max;
 
         // Harm / shaken
@@ -105,12 +114,19 @@ export class KidModel extends ActorModel {
 
         // Gather a list of active mons from game.actors
         let uuid = this.uuid;
-        let mons = game.actors.contents.filter(a => {
-            return a.type == "animon" && a.system._source.kid == this.uuid;
+        this.mons = game.actors.contents.filter(a => {
+            return a.type == "animon" && a._source.system.kid == this.id;
         });
 
-        // Todo: update our mons with active stat bonus effects if able
+        // Sort our upgrades by level and then rank
+        
+       // TODO: is this re-run any time items are added? Does the above need to go in $state?
     }
+
+
+    // prepareDerivedData() { }
+    // applied after active effects
+    // We might need some more phases. Look at ActiveEffect.implementation.CHANGE_PHASES
 
     // TODO: Reactive / effect logic to keep all animon up to date with
     // SPECIFICALLY passdown values. Use an active effect, probably, like in lancer

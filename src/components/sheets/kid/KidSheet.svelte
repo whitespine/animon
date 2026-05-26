@@ -1,7 +1,7 @@
 <script>
     import { stop } from "../../../utils/handlers";
     import loc from "../../../utils/localize";
-    import ViewGear from "../../items/ViewGear.svelte";
+    import GearTab from "./GearTab.svelte";
     import MainTab from "./MainTab.svelte";
     import NotesTab from "./NotesTab.svelte";
 
@@ -14,7 +14,6 @@
     let actor = $derived(app.actor);
     let tab = $state("main");
     let edit = $state(true);
-    let items = $derived(Array.from(context.actor.items.svelte.values()));
 
     function swapTab(e, tab_id) {
         stop(e);
@@ -42,12 +41,7 @@
         {:else if tab == "notes"}
             <NotesTab {actor} {edit}></NotesTab>
         {:else if tab == "gear"}
-            <div>
-                <h3>Gear</h3>
-                {#each items as i}
-                    <ViewGear item={i} {edit}></ViewGear>
-                {/each}
-            </div>
+            <GearTab {actor} {edit}></GearTab>
         {/if}
     </div>
 </form>

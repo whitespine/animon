@@ -33,10 +33,10 @@
     </div>
     <div class="relationships">
         {#each relationships as relationship, i}
-            <div class="relationship">
+            <div class="relationship prefix-input">
                 <UpdateInput
                     doc={actor}
-                    path="system.relationship.{relationship._id}.label"
+                    path="system.relationship.{relationship._id}.name"
                     size="1"
                 ></UpdateInput>
             </div>
@@ -69,16 +69,6 @@
         .relationships {
             display: flex;
             flex-direction: column;
-
-            .relationship {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-
-                input {
-                    flex: 1 0;
-                }
-            }
         }
     }
 </style>

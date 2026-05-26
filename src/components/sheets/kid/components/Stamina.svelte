@@ -22,7 +22,7 @@
 
         h2{
             flex: 0 1;
-            margin: 0;
+            border-right: var(--dash-line);
         }
 
         input, span {

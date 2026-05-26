@@ -14,6 +14,26 @@
             "banner": "Welcome to Animon!",
             "stop": "Don't show this again"
         },
+        "upgrade": {
+            "level": "Level acquired at",
+            "score": {
+                "hp": "Increase the Animon's Maximum HP by 5",
+                "damage": "Increase the Animon's Damage score by 2",
+                "dodge": "Increase the Animon's Dodge score by 1",
+                "sig_init": "Increase the Animon's Inititiative score and Signature Attack uses by 1"
+            },
+            "minor": {
+                "talent": "Increase the rank of a single talent by 1 (Up to a maximum of 3)",
+                "quality": "Increase the rank of a single quality by 1 (Up to a maximum of 3)"
+            }, 
+            "major": {
+                "talent": "Gain a new Talent at Rank 1 (perhaps something the Kid might have learned in the story so far).",
+                "quality": "Gain a new Quality at Rank 1, at BASIC Stage or higher, as long as the Stage is available (each Animon Stage can have 2 Qualities, which apply at that Stage and all higher Stages).",
+                "effect": "Gain a new Effect on any Signature Attack (each Signature Attack can have up to 3 Effects).",
+                "signature": "Increase the Rank of a BASIC or SUPER Stage Signature Attack by 1 (up to a maximum Rank of 3).",
+                "minor": "Take a minor upgrade instead"
+            }
+        },
         "sheet": {
             "tab": {
                 "kid": "KID",
@@ -27,22 +47,36 @@
                 "flaw": "FLAW",
                 "desire": "DESIRE",
                 "special_item": "SPECIAL ITEM",
-                "type": "KID TYPE",
+                "talent": {
+                    "title": "TALENTS",
+                    "rank": "RANK",
+                    "placeholder": "New Talent",
+                    "add": "Add Talent"
+                },
+                "type": {
+                    "title": "KID TYPE",
+                    "feature": "TYPE FEATURE",
+                    "placeholder": "Put your kid type feature here",
+                    "edit": "Edit kid type feature..."
+                },
                 "type_feature": "TYPE FEATURE",
                 "stamina": "STAMINA",
                 "talents": "TALENTS",
                 "harm": {
                     "title": "HARM",
                     "add": "Add Harm",
-                    "shaken": "SHAKEN"
+                    "shaken": "SHAKEN?"
                 },
                 "rank": "RANK",
                 "relationship": {
                     "title": "RELATIONSHIPS",
                     "add": "Add Relationship"
                 },
+                "stuff": {
+                    "title": "STUFF & ANI-TOOL"
+                },
                 "traits": {
-                    "label": "TRAITS",
+                    "title": "TRAITS",
                     "logic": {
                         "name": "LOGIC",
                         "description": "This Trait is best applied to devising solutions based on careful planning, strategy, and knowledge. Kids with high Logic scores are typically smart and well-prepared.",

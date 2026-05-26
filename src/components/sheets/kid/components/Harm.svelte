@@ -51,11 +51,11 @@
     </div>
     <div class="harms">
         {#each harms as harm, i}
-            <div class="harm">
-                <span>{i + 1}: </span>
+            <div class="harm prefix-input">
+                <label for="system.harm.{harm._id}.name">{i + 1}: </label>
                 <UpdateInput
                     doc={actor}
-                    path="system.harm.{harm._id}.label"
+                    path="system.harm.{harm._id}.name"
                     size="1"
                 ></UpdateInput>
             </div>
@@ -84,6 +84,10 @@
             span {
                 flex: 1 0;
                 text-align: center;
+            }
+
+            .shaken {
+                margin-left: auto;
             }
         }
 

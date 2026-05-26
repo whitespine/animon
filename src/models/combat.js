@@ -1,8 +1,8 @@
-import { ControlledLengthArrayField, SystemDataModel } from "./base.svelte";
+import { ControlledLengthArrayField } from "./base.svelte";
 
 export const fields = foundry.data.fields;
 
-export class CombatModel extends SystemDataModel {
+export class CombatModel extends foundry.abstract.TypeDataModel { 
     // Some schema elements are consistent across all actor types. Define them here
     static defineSchema() {
         return {
@@ -16,7 +16,7 @@ export class CombatModel extends SystemDataModel {
     }
 }
 
-export class CombatantModel extends SystemDataModel {
+export class CombatantModel extends foundry.abstract.TypeDataModel {
     // Some schema elements are consistent across all actor types. Define them here
     static defineSchema() {
         return {

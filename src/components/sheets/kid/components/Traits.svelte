@@ -6,7 +6,7 @@
 </script>
 
 <div class="inner-box traits-box">
-    <h2>{loc("animon.sheet.kid.traits.label")}</h2>
+    <h2>{loc("animon.sheet.kid.traits.title")}</h2>
     <div class="traits">
         {#each ["logic", "reflex", "spirit"] as trait, i}
             <div class="trait">
@@ -38,6 +38,10 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+
+            &:nth-child(-n + 2) {
+                border-right: var(--dash-line);
+            }
         }
     }
 </style>

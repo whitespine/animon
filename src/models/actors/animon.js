@@ -1,3 +1,4 @@
+import { SystemActor } from "../../documents/actor.svelte";
 import { ActorModel } from "./actor.svelte";
 
 const fields = foundry.data.fields;
@@ -16,13 +17,20 @@ export class AnimonModel extends ActorModel {
             ...super.defineSchema(),
 
             // -- Link to its kid
-            kid: new fields.ForeignDocumentField(), // TODO flesh this out
+            kid: new fields.ForeignDocumentField(SystemActor), 
 
             // -- Forms
+            active_form_id: new fields.StringField(), // used to derive `form`, which can be null
             forms: new fields.TypedObjectField({
                 // -- Classification
                 sort: new fields.NumberField(), // Purely for display, doesn't affect evolution
                 elements: new fields.ArrayField(elementField()),
+
+                // Even if you're doing branched evolution, we need these tiers for stat calculation
+                tier: new fields.StringField({choices: ["fledgling", "basic", "super", "ultra", "giga"]}),
+
+                // But if you are doing branched evolution, you probably want special names for it
+                name: new fields.StringField(),
 
                 // -- Form specific stats
                 stats: new fields.SchemaField({
@@ -30,7 +38,6 @@ export class AnimonModel extends ActorModel {
                     power: statField(),
                     agility: statField(),
                     brains: statField(),
-                    // damage, dodge, and initiative are derived
                 }),
 
                 // -- Signature ability
@@ -52,12 +59,57 @@ export class AnimonModel extends ActorModel {
                 }),
             }),
 
-            // -- HP / 
+            // -- HP / Signature Uses
             hp: new fields.SchemaField({
                 value: new fields.NumberField({ initial: 5, min: 0, integer: true }),
                 max: new fields.NumberField({}) // Dummy field to trick foundry. Automatically set as 9 + bond level
             }),
+            signature_uses: new fields.SchemaField({
+                value: new fields.NumberField({ initial: 0, min: 0, integer: true }),
+                max: new fields.NumberField({}) // Dummy field to trick foundry. Automatically set as 9 + bond level
+            }),
         }
+    }
+
+    // Note to later self:  
+    // we could theoretically do some tricky bullshit with $derived on a $state from a kid
+    // to _theoretically_ make our derived attributes sidestep active effect procedures.
+    // However, I don't really love that - svelte is nice and all but there comes a point of
+    // deviance from foundry standard that might complicate later work
+
+    prepareBaseData() {
+        // Find our kid
+        this.kid = game.actors.get(this.kid);
+
+        // Get our active form
+        this.form = this.forms[this.active_form_id] ?? null;
+        this.form_name = this.form?.name ?? `${this.parent.name} - ${titleCaseString(this.form?.tier ?? "Unknown")}`;
+
+        // Prepare our other fields based on it
+        this.stats = {
+            heart: this.form?.stats.heart ?? 0,
+            power: this.form?.stats.power ?? 0,
+            agility: this.form?.stats.agility ?? 0,
+            brains: this.form?.stats.brains ?? 0,
+        }
+        this.stats.damage = {
+            fledgling: this.stats.power,
+            basic: 2 * this.stats.power,
+            super: 2 * this.stats.power,
+            ultra: 3 * this.stats.power,
+            giga: 4 * this.stats.power,
+        }[this.form?.tier] ?? 0;
+        this.stats.dodge = this.stats.agility;
+        this.stats.initiative = this.stats.brains;
+        this.hp.max = {
+            fledgling: 3 * this.stats.heart,
+            basic: 3 * this.stats.heart + 5,
+            super: 4 * this.stats.heart + 10,
+            ultra: 5 * this.stats.heart + 15,
+            giga: 6 * this.stats.heart + 20,
+        }[this.form?.tier] ?? 0;
+        this.signature_uses.max = this.stats.brains;
+        // These attributes will be further modified by effects
     }
 
     /** 
@@ -65,26 +117,9 @@ export class AnimonModel extends ActorModel {
      * just what is allowed via the fields logic
      */
     async _preCreate(data, options, user) {
+        // TODO: Pre-create with a fledgling and basic form?
         await super._preCreate(data, options, user);
-
-        let mods = {
-            power: 3 // Players should start with some power
-        };
-
         // Put in the basics
-        this.updateSource(mods);
+        // this.updateSource(mods);
     }
-
-    // More complicated derivation logic might fit in better here than a $derived attribute (as seen in actor.svelte.js)
-    // TODO: Figure ou
-    prepareDerivedData() {
-        this.maximum_power = 10;
-        this.gear_count = 0
-        for (let item of this.parent.items.contents) {
-            if (["gear"].includes(item.type)) {
-                this.gear_count += 1
-            }
-        }
-    }
-
 }
