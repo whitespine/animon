@@ -1,0 +1,30 @@
+@layer system {
+    .animon,
+    #dnd-action-dragged-el 
+
+    // Outer boxes on a sheet
+    .outer-box {
+        background-color: grey;
+        border: 3px solid #505050;
+        border-radius: var(--border-radius);
+    }
+
+    // Inner boxes on a sheet
+    .inner-box {
+        background-color: white;
+        border: 3px solid black;
+        border-radius: var(--border-radius);
+        padding: calc(var(--border-radius) / 2);
+        contain: paint;
+        color: black;
+        margin: 6px;
+        transition: height 0.75s;
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            color: black;
+        }
+    }
+}

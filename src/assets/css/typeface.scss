@@ -1,0 +1,39 @@
+@font-face {
+    font-family: 'AnimonFont';
+    src: url('./assets/fonts/BUNGEE-REGULAR.woff2') format('woff');
+    // src: url('./assets/fonts/BUNGEE-REGULAR.TTF') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+@layer system {
+
+    .animon,
+    #dnd-action-dragged-el {
+
+        h1,
+        h2,
+        h3,
+        h4,
+        label {
+            margin: 0px;
+            font-family: var(--animon-font);
+        }
+
+        h2 {
+            font-size: 1.2rem;
+        }
+
+        .clip-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .italic {
+            font-style: italic;
+        }
+    }
+}

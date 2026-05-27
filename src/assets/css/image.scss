@@ -1,0 +1,16 @@
+@layer system {
+
+    .animon,
+    #dnd-action-dragged-el {
+        // Make sure that styling persists even for our dragged element
+        img {
+            border: none;
+        }
+
+        img.thumbnail {
+            max-width: 64px;
+            max-height: 64px;
+            border: 1px solid black;
+        }
+    }
+}

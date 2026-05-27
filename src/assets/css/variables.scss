@@ -1,0 +1,9 @@
+@layer system {
+
+    .animon,
+    #dnd-action-dragged-el {
+        --border-radius: 24px;
+        --dash-line: 2px dashed black;
+        --font-animon: 'AnimonFont', sans-serif;
+    }
+}

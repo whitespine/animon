@@ -1,0 +1,49 @@
+@layer system {
+
+    .animon,
+    #dnd-action-dragged-el {
+
+        // Make sure that styling persists even for our dragged element
+        // Sheet styling
+        &.application.sheet {
+            background-color: grey;
+            border: 3px solid #505050;
+            border-radius: var(--border-radius);
+            contain: paint;
+
+            .window-content {
+                padding: 0px;
+            }
+        }
+
+        // Popout editor styling
+        &.application.editor .window-content {
+            background-color: white;
+            color: black;
+        }
+
+        &.actor.application {
+            // border: none;
+            // box-shadow: none;
+            // background: none;
+            overflow: visible; // For the border
+            // min-height: 280px;
+            // min-width: 260px;
+
+            &>header {
+                z-index: 10; // Just make it high as shit
+                // margin-left: 80px;
+                // margin-right: 10px;
+                // background: none;
+                // border: none;
+            }
+
+            &>section.window-content {
+                overflow: hidden auto;
+
+                // Best place to customize color/texture here!
+                // background-color: #F0F0F0;
+            }
+        }
+    }
+}
