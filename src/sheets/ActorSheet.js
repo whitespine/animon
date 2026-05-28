@@ -1,4 +1,5 @@
 import { SvelteApplicationMixin } from "../overrides/svelte_mixin.svelte";
+import AnimonSheetComponent from "../components/sheets/animon/AnimonSheet.svelte";
 import NPCSheetComponent from "../components/sheets/npc/NPCSheet.svelte";
 import KidSheetComponent from "../components/sheets/kid/KidSheet.svelte";
 
@@ -102,6 +103,21 @@ export class KidSheet extends SvelteApplicationMixin(SystemActorSheet) {
         classes: ["player"],
         svelte: {
             component: KidSheetComponent
+        },
+        position: {
+            width: 600,
+            height: 700
+        },
+        actions: {
+        }
+    }
+}
+
+export class AnimonSheet extends SvelteApplicationMixin(SystemActorSheet) {
+    static DEFAULT_OPTIONS = {
+        classes: ["mon"],
+        svelte: {
+            component: AnimonSheetComponent
         },
         position: {
             width: 600,

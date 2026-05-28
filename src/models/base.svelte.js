@@ -65,13 +65,46 @@ export function titleCaseString(text) {
  * Each element has "_id" added as a key representing their original key
  * 
  * @param {Record<{sort: number}, any} tof The typed object field to sort. Assumes every element has a numeric "sort" key
+ * @param {(object) => Array<number>} sort The typed object field to sort. Assumes every element has a numeric "sort" key
  */
-export function sortedObjectToArray(tof) {
+export function sortedObjectToArray(tof, ranker=null) {
   let as_array = Object.entries(tof).map(([k, v]) => ({
     _id: k,
     ...v
   }));
-  return as_array.sort((a, b) => (a.sort ?? 0) - (b.sort ?? 0));
+  ranker ??= (x) => [x.sort, x._id]; // Default ranker stably sorts by sort, then by id. This can be overridden!
+  return rankedSort(as_array);
+}
+
+/** Useful for sorting things with successive tiebreakers
+ * 
+ * @param {Array<T>} array The array to be sorted
+ * @param {(T) => Array<string | number>} ranker Converts a given array item into an array of comparable items
+ * @returns 
+ */
+export function rankedSort(array, ranker) {
+  // Compute ranker for all elements
+  let ir = array.map(x => [x, ranker(x)]);
+
+  // Perform a sort
+  ir.sort(([a, a_rank], [b, b_rank]) => {
+    for(let i=0; i<a_rank.length && i<b_rank.length; i++) {
+      if(typeof a_rank[i] == "string") {
+        let c = a_rank[i].localeCompare(b_rank[i]);
+        if(c) return c;
+      } else if(typeof a_rank[i] == "number") {
+        let c = a_rank[i] - b_rank[i];
+        if(c) return c;
+      } else {
+        throw new TypeError("Unsupported type");
+      }
+    }
+    // Overflow case - pick whichever is shorter
+    return ar.length - br.length;
+  });
+
+  // Map back and return
+  return ir.map(x => x[0]);
 }
 
 /** 

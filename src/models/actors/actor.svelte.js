@@ -12,8 +12,8 @@ export class ActorModel extends foundry.abstract.TypeDataModel {
     // Derived bonuses can be created via svelte derived attributes,
     // or in the more traditional prepareData workflows
     // attack_bonus = $derived(Math.min(this.power, 5));
-    // TODO: Does this need to be $state? As in, will we ever encounter a situation where it is modified rather than recreated wholesale? I'm leaning towards probably not
-    // sv_items = $state([]);
+    // Having this here makes some greedily reactive components happier that its not initially null
+    sv_items = $state([]);
 
     // For all actors we at least prepare a sorted reactive array in the form of sv_items
     prepareBaseData() {

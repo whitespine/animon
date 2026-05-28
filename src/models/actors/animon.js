@@ -1,5 +1,6 @@
 import { SystemActor } from "../../documents/actor.svelte";
 import { ActorModel } from "./actor.svelte";
+import { sortedObjectToArray } from "../base.svelte";
 
 const fields = foundry.data.fields;
 
@@ -17,17 +18,21 @@ export class AnimonModel extends ActorModel {
             ...super.defineSchema(),
 
             // -- Link to its kid
-            kid: new fields.ForeignDocumentField(SystemActor), 
+            kid: new fields.ForeignDocumentField(SystemActor),
+
+            // -- Nature tends to not change per form
+            nature: new fields.StringField(),
 
             // -- Forms
             active_form_id: new fields.StringField(), // used to derive `form`, which can be null
-            forms: new fields.TypedObjectField({
+            forms: new fields.TypedObjectField(new fields.SchemaField({
                 // -- Classification
                 sort: new fields.NumberField(), // Purely for display, doesn't affect evolution
+                classification: new fields.StringField(),
                 elements: new fields.ArrayField(elementField()),
 
                 // Even if you're doing branched evolution, we need these tiers for stat calculation
-                tier: new fields.StringField({choices: ["fledgling", "basic", "super", "ultra", "giga"]}),
+                tier: new fields.StringField({ choices: ["fledgling", "basic", "super", "ultra", "giga"] }),
 
                 // But if you are doing branched evolution, you probably want special names for it
                 name: new fields.StringField(),
@@ -44,20 +49,19 @@ export class AnimonModel extends ActorModel {
                 signature: new fields.SchemaField({
                     name: new fields.StringField(),
                     element: elementField(),
-                    rank: new fields.NumberField({ min: 1, initial: 1, integer: true}),
+                    rank: new fields.NumberField({ min: 1, initial: 1, integer: true }),
                     effects: new fields.TypedObjectField(new fields.SchemaField({
-                        name: fields.StringField({required: true})
+                        name: new fields.StringField({ required: true })
                     }))
                 }),
-                // TODO: uses - seem to be per stage, confirm
 
                 // -- Capabilities
-                qualities: new fields.TypedObjectField({
+                qualities: new fields.TypedObjectField(new fields.SchemaField({
                     sort: new fields.NumberField(),
                     name: new fields.StringField({ required: true }),
                     rank: new fields.NumberField({ min: 1, max: 3, initial: 1, integer: true })
-                }),
-            }),
+                })),
+            })),
 
             // -- HP / Signature Uses
             hp: new fields.SchemaField({
@@ -77,20 +81,70 @@ export class AnimonModel extends ActorModel {
     // However, I don't really love that - svelte is nice and all but there comes a point of
     // deviance from foundry standard that might complicate later work
 
+    /** Converts an animon tier to an arbitrary sortable integer
+     * 
+     * @param {string} tier The tier key
+     * @returns 
+     */
+    static tierToInt(tier) {
+        return {
+            "fledgling": 1,
+            "basic": 2,
+            "super": 3,
+            "ultra": 4,
+            "giga": 5
+        };
+    }
+
+    /** Convert a numeric tier into a key
+     * 
+     * @param {number} tier Tier result from tierToInt
+     * @returns {"fledgling" | "basic" | "super" | "ultra" | "giga"} a tier key
+     */
+    static intToTier(tier) {
+        if(tier >= 6) {
+            return "giga"; // Error correction
+        }
+        return [
+            "fledgling",
+            "basic",
+            "super",
+            "ultra",
+            "giga",
+        ][tier - 1] ?? "fledgling";
+    }
+
     prepareBaseData() {
         // Find our kid
         this.kid = game.actors.get(this.kid);
 
+        // Flatten and sort our forms
+        this.sorted_forms = sortedObjectToArray(this.forms, (f) => [AnimonModel.tierToInt(f.tier), f.sort, f._id]);
+
+        // For each form, establish their evolves_from and devolves_to
+        // For the time being, assume all basics can become supers, etc
+        for (let form of Object.values(this.forms)) {
+            let next_level = AnimonModel.intToTier(AnimonModel.tierToInt(form.tier) + 1);
+            let prev_level = AnimonModel.intToTier(AnimonModel.tierToInt(form.tier) - 1);
+            form.evolves_to = Object.entries(this.forms).filter((k, v) => v.tier == next_level).map((k, v) => k);
+            form.evolves_from = Object.entries(this.forms).filter((k, v) => v.tier == prev_level).map((k, v) => k);
+            // Also give it a name if it lacks one
+            form.name ||= `${this.parent.name} - ${titleCaseString(this.form?.tier ?? "Unknown")}`;
+        }
+
         // Get our active form
         this.form = this.forms[this.active_form_id] ?? null;
-        this.form_name = this.form?.name ?? `${this.parent.name} - ${titleCaseString(this.form?.tier ?? "Unknown")}`;
 
         // Prepare our other fields based on it
         this.stats = {
-            heart: this.form?.stats.heart ?? 0,
-            power: this.form?.stats.power ?? 0,
-            agility: this.form?.stats.agility ?? 0,
-            brains: this.form?.stats.brains ?? 0,
+            heart: 0,
+            power: 0,
+            agility: 0,
+            brains: 0,
+            damage: 0,
+            dodge: 0,
+            initiative: 0,
+            ...(this.form.stats ?? {})
         }
         this.stats.damage = {
             fledgling: this.stats.power,
@@ -109,7 +163,39 @@ export class AnimonModel extends ActorModel {
             giga: 6 * this.stats.heart + 20,
         }[this.form?.tier] ?? 0;
         this.signature_uses.max = this.stats.brains;
-        // These attributes will be further modified by effects
+
+        // Initialize values for bonuses, maybe
+        // These attributes will be further modified by effects, maybe?
+    }
+
+    async evolveTo(id, first_time = false) {
+        if (!this.forms[id]) return;
+        let base_changes = this.shiftChanges(id);
+        let base_update = this.updateSource(this.shiftChanges(id));
+        await base_update;
+        if (first_time) {
+            // TODO handle full heal on first_time. 
+            // Easiest way would just be to perform two back to back updates
+            let new_sys = this.parent.system; // Not us!
+            new_sys.updateSource({
+                "hp.value": new_sys.hp.max
+            });
+        }
+    }
+
+    async devolveTo(id) {
+        if (!this.forms[id]) return;
+        // TODO: handle de-evolution logic? There are some edge cases. Leave to player?
+        this.updateSource(this.shiftChanges(id));
+    }
+
+    shiftChanges(id) {
+        // Keep missing hp, but at most go down to 1 hp? But how how how do we predict...
+    }
+
+    // Get a form for the given tier
+    formForTier(tier) {
+        return all_forms.find((f) => f.tier == new_form_tier);
     }
 
     /** 
