@@ -1,6 +1,6 @@
 {
     "Actor": {
-        "types": ["kid", "npc"],
+        "types": ["kid", "npc", "animon"],
         "htmlFields": ["notes"],
         "kid": {},
         "npc": {}

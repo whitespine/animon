@@ -40,7 +40,7 @@
     }
 </script>
 
-<div class={{ animon: true, dice: true, pushed: roll_data.pushed }}>
+<div class={{ animon: true, dice: true, row: true, pushed: roll_data.pushed }}>
     {#each die_results as die}
         {#if inSuspense(roll_data.suspense)}
             <RollingDie />
@@ -70,9 +70,6 @@
             background-color: var(--color-warm-1);
             color: var(--color-cool-5);
         }
-
-        display: flex;
-        flex-direction: row;
 
         .rolling.result {
             opacity: 0%;

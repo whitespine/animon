@@ -18,7 +18,7 @@
     }
 </script>
 
-<div class="container">
+<div class="container col">
     {#each { length: 10 } as _, i}
         <button
             class={{ col: true, checked: value >= i + 1 }}
@@ -31,8 +31,6 @@
 <style lang="scss">
     .container {
         margin-top: 6px;
-        display: flex;
-        flex-direction: row;
     }
     button {
         --size: 16px;

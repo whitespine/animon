@@ -31,7 +31,7 @@
 </script>
 
 <div class="inner-box relationship-box">
-    <div class="header">
+    <div class="row">
         <h2>
             <span>
                 {loc("animon.sheet.kid.relationship.title")}:
@@ -44,9 +44,9 @@
             </a>
         </h2>
     </div>
-    <div class="relationships">
+    <div class="col">
         {#each relationships as relationship, i (relationship._id)}
-            <div class="relationship prefix-input" transition:slide>
+            <div class="prefix-input" transition:slide>
                 <UpdateInput
                     doc={actor}
                     path="system.relationship.{relationship._id}.name"
@@ -71,11 +71,6 @@
             a {
                 margin-left: auto;
             }
-        }
-
-        .relationships {
-            display: flex;
-            flex-direction: column;
         }
     }
 </style>

@@ -26,6 +26,7 @@
     <div
         class={{
             root: true,
+            col: true,
             contracted: !RollerState.visible,
             expanded: RollerState.visible,
         }}
@@ -34,7 +35,7 @@
         <h1>Roll</h1>
         {#if RollerState.visible}
             <div transition:slide>
-                <div class="difficulty">
+                <div class="difficulty row center">
                     <span>Difficulty:</span>
                     <Incrementer
                         type="number"
@@ -43,7 +44,7 @@
                         bind:value={RollerState.params.difficulty}
                     />
                 </div>
-                <div class="bonus">
+                <div class="bonus row center">
                     <span>Bonus:</span>
                     <Incrementer
                         type="number"
@@ -52,7 +53,7 @@
                         bind:value={RollerState.params.bonus}
                     />
                 </div>
-                <div class="roll-buttons">
+                <div class="even row">
                     <button onclick={(e) => [stop(e), roll("disadvantage")]}>
                         Disadvantage
                     </button>
@@ -90,11 +91,6 @@
         border-radius: 10px 10px 0px 0px;
         padding: 5px;
 
-        // Layout in a sensible way
-        display: flex;
-        flex-direction: column;
-        text-align: center;
-
         transition: all;
         &.expanded {
             bottom: 16px;
@@ -103,20 +99,6 @@
         &.contracted {
             bottom: 0px;
             cursor: pointer;
-        }
-    }
-
-    .bonus, .difficulty {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .roll-buttons {
-        display: flex;
-        flex-direction: row;
-        > * {
-            flex-grow: 1;
         }
     }
 </style>

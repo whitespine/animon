@@ -13,36 +13,28 @@
     }
 </script>
 
-<div class="inner-box kid-type-box">
+<div class="inner-box kid-type-box col">
     <div class="header prefix-input">
-        <label for="system.stamina">{loc("animon.sheet.kid.type.title")}</label>
+        <label for="system.stamina">{loc("animon.sheet.kid.type.title")}:</label>
         <UpdateInput doc={actor} path="system.kid_type" size="1"></UpdateInput>
     </div>
-    <div class="body">
+    <div class="body row center">
         <div class="content">
             {@html actor.system.kid_type_feature ?? loc("animon.sheet.kid.type.placeholder")}
         </div>
-        <button class="edit" onclick={(e) => [stop(e), openEditor()]}>
+        <button class="edit" onclick={(e) => [stop(e), openEditor()] title="edit"}>
             <i class="fas fa-edit"></i>
         </button>
     </div>
 </div>
 
-<style lang="scss" module>
-    .kid-type-box {
-        display: flex;
-        flex-direction: column;
+<style lang="scss">
+    .content {
+        flex-grow: 1;
+        flex-basis: 1;
     }
-
-    .body {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        .content {
-            flex: 1 0;
-        }
-        .edit {
-            flex: 0 1;
-        }
+    .content {
+        flex-grow: 0;
+        flex-basis: 1;
     }
 </style>

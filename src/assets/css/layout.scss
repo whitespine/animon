@@ -2,19 +2,30 @@
 
     .animon,
     #dnd-action-dragged-el {
+        .col {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .center {
+            align-items: center;
+        }
+        .col.center {
+            text-align: center;
+        }
 
         // Make sure that styling persists even for our dragged element
         // For evenly distributed children
-        .even {
-            display: flex;
-            flex-direction: row;
-
+        .even>* {
             // align-items: center;
-            >* {
-                flex-basis: 0;
-                flex-grow: 1;
-                min-width: 0;
-            }
+            flex-basis: 0;
+            flex-grow: 1;
+            min-width: 0;
         }
     }
 }

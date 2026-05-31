@@ -126,4 +126,11 @@ export class AnimonSheet extends SvelteApplicationMixin(SystemActorSheet) {
         actions: {
         }
     }
+
+    // Set kid
+    _onDropActor(event, document) {
+        if(document.type == "kid") {
+            this.actor.update({"system.kid": document._id});
+        }
+    }
 }

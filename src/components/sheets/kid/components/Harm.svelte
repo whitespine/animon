@@ -53,7 +53,12 @@
     <h2>
         <span>{loc("animon.sheet.kid.harm.title")}: {total_harm} / 3</span>
         {#if shaken}
-            <span class="shaken">{loc("animon.sheet.kid.harm.shaken")}</span>
+            <span
+                class="shaken"
+                data-tooltip={loc("animon.sheet.kid.harm.shaken_tooltip")}
+            >
+                - {loc("animon.sheet.kid.harm.shaken")}
+            </span>
         {:else}
             <a onclick={(e) => [stop(e), addHarm()]}>
                 <i
@@ -63,22 +68,28 @@
             </a>
         {/if}
     </h2>
-    <div class="harms">
+    <div class="col center">
         {#each harms as harm (harm._id)}
             <div
-                class="harm prefix-input"
+                class="row center prefix-input"
                 style:height="{harm.severity * 1.5}rem"
                 transition:slide
             >
-                <label for="system.harm.{harm._id}.name"> {harm.severity}: </label>
+                <label for="system.harm.{harm._id}.name">
+                    Lv.{harm.severity}:
+                </label>
                 <UpdateInput
                     doc={actor}
                     path="system.harm.{harm._id}.name"
                     size="1"
                 ></UpdateInput>
+                <!--class={{ disabled: total_harm >= 3, foo: true }}-->
                 <a
                     onclick={(e) => [stop(e), incrementHarm(harm._id)]}
-                    class={{ disabled: harm.severity > 3 }}
+                    class={{ disabled: total_harm >= 3 }}
+                    data-tooltip={total_harm >= 3
+                        ? loc("animon.sheet.kid.harm.shaken_overflow")
+                        : undefined}
                 >
                     <i class="fas fa-plus"></i>
                 </a>
@@ -95,27 +106,11 @@
 </div>
 
 <style lang="scss" module>
-    .harm-box {
-        h2 a,
-        h2 .shaken {
-            margin-left: auto;
-        }
+    .harm {
+        transition: height 0.5s;
 
-        .harms {
-            display: flex;
-            flex-direction: column;
-
-            .harm {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-
-                transition: height 0.5s;
-
-                input {
-                    flex: 1 0;
-                }
-            }
+        input {
+            flex: 1 0;
         }
     }
 </style>

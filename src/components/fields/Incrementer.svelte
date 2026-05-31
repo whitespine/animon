@@ -22,7 +22,7 @@
     }
 </script>
 
-<div {...restProps} style:min-width={width} style:max-width={width}> 
+<div {...restProps} class={all_classes} style:min-width={width} style:max-width={width}> 
     <button onclick={(e) => increment(e, -1)}>-</button>
     <input
         type="number"
@@ -35,10 +35,7 @@
 </div>
 
 <style lang="scss">
-    div {
-        display: flex;
-        height: 100%;
-        align-items: center;
+    .incrementer {
         input {
             margin: 5px;
             text-align: center;

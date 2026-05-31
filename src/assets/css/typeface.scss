@@ -1,14 +1,12 @@
-@font-face {
-    font-family: 'AnimonFont';
-    src: url('./assets/fonts/BUNGEE-REGULAR.woff2') format('woff');
-    // src: url('./assets/fonts/BUNGEE-REGULAR.TTF') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
-
-
 @layer system {
+    @font-face {
+        font-family: 'AnimonFont';
+        src: url('../fonts/BUNGEE-REGULAR.woff2') format('woff');
+        // src: url('./assets/fonts/BUNGEE-REGULAR.TTF') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+    }
 
     .animon,
     #dnd-action-dragged-el {
@@ -20,6 +18,10 @@
         label {
             margin: 0px;
             font-family: var(--animon-font);
+        }
+
+        .word-per-line {
+            word-spacing: 100vw;
         }
 
         h2 {

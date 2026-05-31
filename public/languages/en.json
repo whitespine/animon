@@ -37,8 +37,47 @@
         "sheet": {
             "tab": {
                 "kid": "KID",
+                "animon": "ANIMON",
                 "gear": "GEAR",
                 "notes": "NOTES"
+            },
+            "bond": {
+                "level": "BOND LEVEL",
+                "xp": "XP",
+                "points": "BOND POINTS",
+                "strain": "BOND STRAIN",
+                "missing_kid": "Drag a kid to this sheet to fill out bond information"
+            },
+            "animon": {
+                "kid": "KID",
+                "name": "MON NAME",
+                "nature": "NATURE",
+                "signature": {
+                    "use_label": "SIG. USES"
+                },
+                "stats": {
+                    "title": "STATS",
+                    "heart": {
+                        "name": "HEART",
+                        "description": "",
+                        "usage": ""
+                    },
+                    "agility": {
+                        "name": "AGILITY",
+                        "description": "",
+                        "usage": ""
+                    },
+                    "power": {
+                        "name": "POWER",
+                        "description": "",
+                        "usage": ""
+                    },
+                    "brains": {
+                        "name": "BRAINS",
+                        "description": "",
+                        "usage": ""
+                    }
+                }
             },
             "kid": {
                 "name": "KID NAME",
@@ -94,6 +133,13 @@
                     }
                 }
             }
+        },
+        "forms": {
+            "fledgling": "fledgling",
+            "basic": "basic",
+            "super": "super",
+            "ultra": "ultra",
+            "giga": "giga"
         }
     }
 }

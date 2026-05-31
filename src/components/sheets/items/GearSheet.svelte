@@ -6,7 +6,7 @@
     let edit = $derived(app.isEditable);
 </script>
 
-<div class="container">
+<div class="row center">
     <div>
         <Portrait
             height="128px"
@@ -22,10 +22,5 @@
 
 <style lang="scss">
 
-.container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
 
 </style>

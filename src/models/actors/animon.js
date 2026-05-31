@@ -1,6 +1,6 @@
 import { SystemActor } from "../../documents/actor.svelte";
 import { ActorModel } from "./actor.svelte";
-import { sortedObjectToArray } from "../base.svelte";
+import { sortedObjectToArray, SortField } from "../base.svelte";
 
 const fields = foundry.data.fields;
 
@@ -27,7 +27,7 @@ export class AnimonModel extends ActorModel {
             active_form_id: new fields.StringField(), // used to derive `form`, which can be null
             forms: new fields.TypedObjectField(new fields.SchemaField({
                 // -- Classification
-                sort: new fields.NumberField(), // Purely for display, doesn't affect evolution
+                sort: new SortField(), // Purely for display, doesn't affect evolution
                 classification: new fields.StringField(),
                 elements: new fields.ArrayField(elementField()),
 
@@ -57,7 +57,7 @@ export class AnimonModel extends ActorModel {
 
                 // -- Capabilities
                 qualities: new fields.TypedObjectField(new fields.SchemaField({
-                    sort: new fields.NumberField(),
+                    sort: new SortField(),
                     name: new fields.StringField({ required: true }),
                     rank: new fields.NumberField({ min: 1, max: 3, initial: 1, integer: true })
                 })),
@@ -84,25 +84,22 @@ export class AnimonModel extends ActorModel {
     /** Converts an animon tier to an arbitrary sortable integer
      * 
      * @param {string} tier The tier key
-     * @returns 
+     * @returns {number}
      */
     static tierToInt(tier) {
-        return {
-            "fledgling": 1,
-            "basic": 2,
-            "super": 3,
-            "ultra": 4,
-            "giga": 5
-        };
+        return AnimonModel.TIERS.indexOf(tier);
     }
+
+    // We use these often enough...
+    static TIERS = ["fledgling", "basic", "super", "ultra", "giga"];
 
     /** Convert a numeric tier into a key
      * 
-     * @param {number} tier Tier result from tierToInt
+     * @param {number} tier Tier result from tierToInt. out of bounds is capped to the bounds
      * @returns {"fledgling" | "basic" | "super" | "ultra" | "giga"} a tier key
      */
     static intToTier(tier) {
-        if(tier >= 6) {
+        if(tier >= 5) { // Super case
             return "giga"; // Error correction
         }
         return [
@@ -111,13 +108,14 @@ export class AnimonModel extends ActorModel {
             "super",
             "ultra",
             "giga",
-        ][tier - 1] ?? "fledgling";
+        ][tier] ?? "fledgling";
+    }
+
+    formForTier(tier) {
+        return this.sorted_forms.find(f => f.tier == tier);
     }
 
     prepareBaseData() {
-        // Find our kid
-        this.kid = game.actors.get(this.kid);
-
         // Flatten and sort our forms
         this.sorted_forms = sortedObjectToArray(this.forms, (f) => [AnimonModel.tierToInt(f.tier), f.sort, f._id]);
 
@@ -144,7 +142,7 @@ export class AnimonModel extends ActorModel {
             damage: 0,
             dodge: 0,
             initiative: 0,
-            ...(this.form.stats ?? {})
+            ...(this.form?.stats ?? {})
         }
         this.stats.damage = {
             fledgling: this.stats.power,

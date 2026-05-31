@@ -5,10 +5,10 @@
     let { actor, edit } = $props();
 </script>
 
-<div class="notes inner-box">
+<div class="notes outer-box">
     <h3>{loc("animon.sheet.tab.notes")}</h3>
     {#if edit}
-        <ProsemirrorField doc={actor} path="system.notes"
+        <ProsemirrorField doc={actor} path="system.notes" style="height: 800px"
         ></ProsemirrorField>
     {:else}
         {@html actor.system.biography}

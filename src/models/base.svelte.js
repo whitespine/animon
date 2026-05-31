@@ -33,6 +33,13 @@ export class ControlledLengthArrayField extends fields.ArrayField {
   }
 }
 
+// For sorts
+export class SortField extends fields.NumberField {
+  constructor() {
+    super({initial: 0, integer: true});
+  }
+}
+
 /**
  * Calls options.cast on every value provided to this. 
  * Options.cast should be idempotent.
@@ -73,7 +80,7 @@ export function sortedObjectToArray(tof, ranker=null) {
     ...v
   }));
   ranker ??= (x) => [x.sort, x._id]; // Default ranker stably sorts by sort, then by id. This can be overridden!
-  return rankedSort(as_array);
+  return rankedSort(as_array, ranker);
 }
 
 /** Useful for sorting things with successive tiebreakers

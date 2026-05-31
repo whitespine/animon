@@ -3,7 +3,9 @@
     .animon,
     #dnd-action-dragged-el {
         --border-radius: 24px;
+        --inner-box-margin: 3px;
+        --inner-box-padding: 7px;
         --dash-line: 2px dashed black;
-        --font-animon: 'AnimonFont', sans-serif;
+        --animon-font: 'AnimonFont', sans-serif;
     }
 }

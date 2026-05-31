@@ -51,7 +51,6 @@
 <style lang="scss">
     img {
         object-fit: contain;
-        background-color: grey;
 
         &.edit {
             cursor: pointer;

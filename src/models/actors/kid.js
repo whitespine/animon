@@ -1,4 +1,4 @@
-import { sortedObjectToArray } from "../base.svelte";
+import { sortedObjectToArray, SortField } from "../base.svelte";
 import { ActorModel } from "./actor.svelte";
 
 const fields = foundry.data.fields;
@@ -31,7 +31,7 @@ export class KidModel extends ActorModel {
 
             // -- Relationships
             relationship: new fields.TypedObjectField(new fields.SchemaField({
-                sort: new fields.NumberField(),
+                sort: new SortField(),
                 name: new fields.StringField({required: true}),
                 // Maye eventually have a details section. How to sanitize html on nested fields?
             })),
@@ -43,7 +43,7 @@ export class KidModel extends ActorModel {
                 spirit: statField()
             }),
             talent: new fields.TypedObjectField(new fields.SchemaField({
-                sort: new fields.NumberField(),
+                sort: new SortField(),
                 name: new fields.StringField({required: true}),
                 rank: new fields.NumberField({min: 1, max: 5, initial: 1})
             })),
@@ -54,7 +54,7 @@ export class KidModel extends ActorModel {
                 max: new fields.NumberField({}) // Dummy field to trick foundry. Automatically set as 9 + bond level
             }),
             harm: new fields.TypedObjectField(new fields.SchemaField({
-                sort: new fields.NumberField(),
+                sort: new SortField(),
                 name: new fields.StringField(),
                 severity: new fields.NumberField({initial: 1, min: 1, max: 3, integer: true})
             })), // Todo verify syntax
@@ -62,12 +62,12 @@ export class KidModel extends ActorModel {
             // -- Bond
             bond_level: new fields.NumberField({ initial: 1, max: 10, integer: true }),
             bond_points: new fields.SchemaField({
-                value: new fields.NumberField({ initial: 9, min: 0, integer: true }),
-                max: new fields.NumberField({}) // Dummy field to trick foundry. Automatically set as 9 + bond level
+                value: new fields.NumberField({ initial: 6, min: 0, integer: true }),
+                max: new fields.NumberField({}) // Dummy field to trick foundry. Automatically set as 5 + bond level
             }),
             bond_strain: new fields.SchemaField({
                 value: new fields.NumberField({ initial: 0, min: 0, integer: true }),
-                max: new fields.NumberField({}) // Dummy field to trick foundry. Automatically set as 9 + bond level
+                max: new fields.NumberField({}) // Dummy field to trick foundry. Automatically set as 5 + bond level
             }),
 
             // -- Progression

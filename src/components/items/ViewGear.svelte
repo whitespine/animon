@@ -6,7 +6,7 @@
     import Portrait from "../fields/Portrait.svelte";
 </script>
 
-<div class="gear">
+<div class="gear center row">
     <Portrait doc={item} {edit} height="48px" />
     <div class="body">
         <span>{item.name}</span>
@@ -22,10 +22,6 @@
 <style lang="scss">
     .gear {
         width: 100%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-
         .body {
             flex: 1;
             height: 100%;
@@ -35,7 +31,6 @@
             }
         }
 
-        border: 1px solid black;
         padding-right: 5px;
     }
 </style>

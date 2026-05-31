@@ -12,7 +12,7 @@
     }
 </script>
 
-<div class="frame-body">
+<div class="frame-body row center">
     <div class="header">
         <div class="portrait-stack">
             <Portrait
@@ -32,10 +32,6 @@
 
 <style lang="scss" module>
     .frame-body {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
         .portrait-stack {
             display: flex;
             flex-direction: column;

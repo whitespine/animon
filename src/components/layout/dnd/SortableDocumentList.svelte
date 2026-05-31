@@ -86,7 +86,7 @@
 </script>
 
 <div
-    class="list"
+    class="list col"
     use:dndzone={{
         items: wrapped_documents,
         flipDurationMs: flip_duration_ms,
@@ -112,7 +112,5 @@
     .list {
         height: 100%;
         min-height: 60px;
-        display: flex;
-        flex-direction: column;
     }
 </style>

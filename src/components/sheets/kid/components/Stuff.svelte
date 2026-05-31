@@ -3,12 +3,11 @@
 
     let { actor, edit } = $props();
     let items = $derived(actor.system.sv_items.filter(x => x.type != "upgrade"));
-    $inspect(items);
 </script>
 
 <div class="inner-box stuff-box">
     <h2>{loc("animon.sheet.kid.stuff.title")}</h2>
-    <div class="stuff">
+    <div class="stuff row">
         {#each items as item}
             <span class="item">{item.name}</span>
         {/each}
@@ -21,8 +20,6 @@
 
     }
     .stuff {
-        display: flex;
-        flex-direction: row;
         flex-wrap: wrap;
 
         .item {

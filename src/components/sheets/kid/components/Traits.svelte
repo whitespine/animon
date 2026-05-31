@@ -7,15 +7,16 @@
 
 <div class="inner-box traits-box">
     <h2>{loc("animon.sheet.kid.traits.title")}</h2>
-    <div class="traits">
+    <div class="traits row even center">
         {#each ["logic", "reflex", "spirit"] as trait, i}
-            <div class="trait">
+            <div class="trait col center">
                 <label for="system.traits.{trait}">
                     {loc(`animon.sheet.kid.traits.${trait}.name`)}:
                 </label>
                 <UpdateInput
                     doc={actor}
                     path="system.trait.{trait}"
+                    style="text-align: center"
                     size="1"
                 ></UpdateInput>
             </div>
@@ -23,25 +24,12 @@
     </div>
 </div>
 
-<style lang="scss" module>
+<style lang="scss">
     .traits-box {
         text-align: center;
-
     }
-    .traits {
-        display: flex;
-        flex-direction: row;
 
-        .trait {
-            min-width: 0px;
-            flex: 1 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-
-            &:nth-child(-n + 2) {
-                border-right: var(--dash-line);
-            }
-        }
+    .trait:not(:last-child) {
+        border-right: var(--dash-line);
     }
 </style>

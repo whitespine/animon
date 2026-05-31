@@ -11,9 +11,9 @@
     let { actor, edit } = $props();
 </script>
 
-<div class="main">
+<div class="main outer-box">
     <Header {actor} {edit}></Header>
-    <div class="even">
+    <div class="row even">
         <div>
             <Traits {actor} {edit}></Traits>
             <Stamina {actor} {edit}></Stamina>
@@ -29,17 +29,4 @@
 </div>
 
 <style lang="scss" module>
-    .main {
-        .columns {
-            display: flex;
-            flex-direction: row;
-            > * {
-                min-width: none;
-                flex: 1 0; 
-
-                display: flex;
-                flex-direction: column;
-            }
-        }
-    }
 </style>

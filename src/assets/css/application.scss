@@ -6,13 +6,17 @@
         // Make sure that styling persists even for our dragged element
         // Sheet styling
         &.application.sheet {
-            background-color: grey;
-            border: 3px solid #505050;
-            border-radius: var(--border-radius);
-            contain: paint;
+            background-color: white;
+            //border: 3px solid #505050;
+            border: none;
+            // border-radius: var(--border-radius);
+
+            .window-resize-handle {
+                filter: unset;
+            }
 
             .window-content {
-                padding: 0px;
+                padding: 5px;
             }
         }
 
