@@ -182,6 +182,25 @@ export class AnimonModel extends ActorModel {
         }
     }
 
+    /** A more aggressive form of formForTier that will update the document to have a
+     * form of the given tier.
+     * 
+     * @param {string} tier The tier that we want
+     * @returns {string} The appropriate tier id
+     */
+    async getOrCreateForm(tier) {
+        let existing = this.formForTier(tier);
+        if(existing) return existing._id;
+        let new_id = foundry.utils.randomID();
+        await this.parent.update({
+            [`system.forms.${new_id}`]: {
+                name: `New ${tier} form`,
+                tier
+            }
+        });
+        return new_id;
+    }
+
     async devolveTo(id) {
         if (!this.forms[id]) return;
         // TODO: handle de-evolution logic? There are some edge cases. Leave to player?
@@ -194,7 +213,7 @@ export class AnimonModel extends ActorModel {
 
     // Get a form for the given tier
     formForTier(tier) {
-        return all_forms.find((f) => f.tier == new_form_tier);
+        return this.sorted_forms.find((f) => f.tier == tier);
     }
 
     /** 

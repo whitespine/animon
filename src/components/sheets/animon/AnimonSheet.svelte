@@ -12,54 +12,35 @@
     let mon = $derived(app.actor);
     let kid = $derived(mon.system.kid);
 
-    // Dynamically generate
-    let tabs = $derived.by(() => {
-        let r = {};
-        const establishForm = (tier) => {
-            let existing_form = mon.system.formForTier(tier);
-            if (existing_form) {
-                r[tier] = {
-                    label: `${tier} - ${existing_form.name}`,
-                    onselect: () => swapForm(tier),
-                };
-            } else {
-                r[tier] = {
-                    label: `+${tier}`,
-                    onselect: () => swapEmptyForm(tier),
-                };
-            }
-        };
-        AnimonModel.TIERS.forEach((t) => establishForm(t));
-    });
-
     // Human readable
-    let current_form_tier = $derived(mon.system.form?.tier ?? "fledgling");
     let edit = $state(true);
 
-    // Swap to a form that doesn't exist yet
-    async function swapEmptyForm(new_form_tier) {
-        let new_id = foundry.utils.randomID();
-        await mon.update({
-            [`system.forms.${new_id}`]: {
-                tier: new_form_tier,
-            }, // Rest will default
-            "system.active_form_id": new_id,
-        });
+    let active_mode = $state("form");
+    // svelte-ignore state_referenced_locally
+    let active_args = $state({form_id: mon.system.active_form_id ?? ""});
+
+    function selectTab(new_active_mode, new_active_args) {
+        active_mode = new_active_mode;
+        active_args = new_active_args;
     }
 
-    function toggleEdit(e) {
-        stop(e);
-        edit = !edit;
-    }
+    let activeTab = $derived.by(() => {
+        if(active_mode == "form") {
+            return mon.system.forms[active_args.form_id].tier;
+        }
+    });
 </script>
 
 <form class="root" onsubmit={stop}>
     <button hidden disabled>Snake Eater</button>
 
-    <AnimonHeader actor={mon} {edit} ></AnimonHeader>
+    <AnimonHeader actor={mon} {edit} {selectTab} {activeTab}></AnimonHeader>
 
     <div class="row">
         <BondBox mon={mon} {kid} {edit}></BondBox>
-        <FormTab actor={mon} form_id={mon.system.active_form_id} {edit}></FormTab>
+        {#if active_mode=="form"}
+            <FormTab actor={mon} {edit} {...active_args}></FormTab>
+        {/if}
+        <!-- TODO: Other modes, like notes-->
     </div>
 </form>

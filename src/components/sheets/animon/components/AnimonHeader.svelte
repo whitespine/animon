@@ -9,20 +9,21 @@
 
     let tabs = $derived.by(() => {
         let result = {};
+        // Add a button to view each tier
         AnimonModel.TIERS.forEach((t) => {
             result[t] = {
                 label: loc(`animon.forms.${t}`),
-                onselect: () => {
+                onselect: async () => {
                     // Show a context menu?
-                    alert(t);
+                    let form_id = await actor.system.getOrCreateForm(t);
+                    selectTab("form", {form_id});
                 },
             };
         });
         return result;
     });
 
-    let { actor, edit } = $props();
-    let active = $derived(actor.system.form?.tier);
+    let { actor, edit, selectTab, activeTab } = $props();
 </script>
 
 <div class="header row inner-box">
@@ -53,7 +54,7 @@
         </div>
 
         <div class="forms">
-            <Tabs {tabs} {active}></Tabs>
+            <Tabs {tabs} active={activeTab}></Tabs>
         </div>
     </div>
 </div>
