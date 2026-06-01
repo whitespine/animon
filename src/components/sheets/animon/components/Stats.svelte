@@ -16,6 +16,7 @@
             doc={actor}
             path="system.forms.{form_id}.{stat}"
             class="center nude"
+            fallback=2
             size="1"
         ></UpdateInput>
         <div class="border"></div>

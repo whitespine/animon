@@ -10,7 +10,6 @@
         if (xp == number) {
             number--;
         }
-        console.log(actor, number);
         actor.update({ "system.xp": number });
     }
 </script>

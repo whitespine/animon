@@ -5,6 +5,7 @@
     import { AnimonModel } from "../../../models/actors/animon";
     import FormTab from "./FormTab.svelte";
     import BondBox from "../bond/BondBox.svelte";
+    import AnimonHeader from "./components/AnimonHeader.svelte";
 
     let { app, context } = $props();
 
@@ -54,6 +55,8 @@
 
 <form class="root" onsubmit={stop}>
     <button hidden disabled>Snake Eater</button>
+
+    <AnimonHeader actor={mon} {edit} ></AnimonHeader>
 
     <div class="row">
         <BondBox mon={mon} {kid} {edit}></BondBox>

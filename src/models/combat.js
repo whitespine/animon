@@ -34,7 +34,6 @@ export class CombatantModel extends foundry.abstract.TypeDataModel {
     }
 
     async _preCreate(data, options, user) {
-        await super._preCreate(data, options, user);
         this.updateSource({
             available_dice: this.parent.actor.system.base_action_dice
         });

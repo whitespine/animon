@@ -1,7 +1,6 @@
 <script>
     let { text } = $props();
     let words = $derived(text.split(/\s+/));
-    $inspect(text, words);
 </script>
 
 {#each words as w, i}

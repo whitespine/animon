@@ -50,7 +50,7 @@ export class KidModel extends ActorModel {
 
             // -- Stamina / Harm
             stamina: new fields.SchemaField({
-                value: new fields.NumberField({ initial: 9, min: 0, integer: true }),
+                value: new fields.NumberField({ initial: 10, min: 0, integer: true }),
                 max: new fields.NumberField({}) // Dummy field to trick foundry. Automatically set as 9 + bond level
             }),
             harm: new fields.TypedObjectField(new fields.SchemaField({

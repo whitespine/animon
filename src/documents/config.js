@@ -13,8 +13,12 @@ export function setupDocuments() {
     CONFIG.Combat.documentClass = SystemCombat;
     CONFIG.Combatant.documentClass = SystemCombatant;
 
-    CONFIG.Actor.trackableAttributes["player"] = {
-        bar: ["hp"],
-        value: ["power"]
+    CONFIG.Actor.trackableAttributes["kid"] = {
+        bar: ["stamina", "bond_points"],
+        value: []
+    };
+    CONFIG.Actor.trackableAttributes["animon"] = {
+        bar: ["hp", "signature_uses"],
+        value: []
     };
 }

@@ -19,6 +19,13 @@
             text-align: center;
         }
 
+        .grow {
+            flex-grow: 1;
+        }
+        .basis {
+            flex-basis: 1;
+        }
+
         // Make sure that styling persists even for our dragged element
         // For evenly distributed children
         .even>* {

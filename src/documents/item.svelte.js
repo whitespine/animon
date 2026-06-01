@@ -7,7 +7,8 @@ export class SystemItem extends Item {
      * and prototype token attributes. Otherwise, use models
      */
     async _preCreate(...[data, options, user]) {
-        await super._preCreate(data, options, user);
+        let spc = await super._preCreate(data, options, user);
+        if(spc===false) return spc;
 
         let mods = {}
 

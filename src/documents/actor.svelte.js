@@ -11,34 +11,41 @@ export class SystemActor extends Actor {
      * and prototype token attributes. Otherwise, use models
      */
     async _preCreate(...[data, options, user]) {
-        await super._preCreate(data, options, user);
+        let spc = await super._preCreate(data, options, user);
+        if(spc===false) return spc;
 
         let mods = {}
 
         // Set token defaults
-        if (data.prototypeToken?.displayBars) {
+        if (!data.prototypeToken?.displayBars) {
             mods["prototypeToken.displayBars"] = 50;
         }
-        if (data.prototypeToken?.displayName) {
+        if (!data.prototypeToken?.displayName) {
             mods["prototypeToken.displayName"] = 50;
         }
-        if (data.prototypeToken?.bar1?.attribute) {
-            mods["prototypeToken.bar1.attribute"] = "toughness";
+        if (!data.prototypeToken?.bar1?.attribute) {
+            mods["prototypeToken.bar1.attribute"] = {
+                "kid": "stamina",
+                "animon": "hp"
+            }[data.type];
         }
-        if (data.prototypeToken?.bar2?.attribute) {
-            mods["prototypeToken.bar2.attribute"] = "toughness";
+        if (!data.prototypeToken?.bar2?.attribute) {
+            mods["prototypeToken.bar2.attribute"] = {
+                "kid": "bond_points",
+                "animon": "signature_uses"
+            }[data.type];
         }
 
         // Set actorlink defaults
         if (data.prototypeToken?.actorLink == undefined) {
-            let link = data.type === "player";
-            mods["prototypeToken.actorLink"] = link;
+            mods["prototypeToken.actorLink"] = ["kid", "animon"].includes(data.type);
         }
 
         // Set disposition defaults
         if (data.prototypeToken?.disposition == undefined) {
             mods["prototypeToken.disposition"] = {
                 "player": CONST.TOKEN_DISPOSITIONS.FRIENDLY,
+                "animon": CONST.TOKEN_DISPOSITIONS.NEUTRAL, // More for coloration
                 "npc": CONST.TOKEN_DISPOSITIONS.HOSTILE,
             }[data.type] || CONST.TOKEN_DISPOSITIONS.NEUTRAL;
         }

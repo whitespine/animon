@@ -67,11 +67,13 @@
 {/if}
 
 <style lang="scss" module>
-    .bondless-box,
     .bond-box {
         --col1: 50px;
         --col2: 100px;
         --padding: 10px;
         max-width: fit-content;
+    }
+    .bondless-box {
+        max-width: min-content;
     }
 </style>

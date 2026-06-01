@@ -52,6 +52,8 @@
                 "kid": "KID",
                 "name": "MON NAME",
                 "nature": "NATURE",
+                "form_name": "FORM NAME",
+                "element": "ELEMENT",
                 "signature": {
                     "use_label": "SIG. USES"
                 },

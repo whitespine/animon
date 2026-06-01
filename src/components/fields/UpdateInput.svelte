@@ -7,11 +7,12 @@
         path,
         preprocess_value = null,
         update_callback = null,
+        fallback = undefined,
         ...restProps
     } = $props();
 
     let name = $derived(restProps.name ?? path);
-    let value = $derived(resolveDotpath(doc, path, ""));
+    let value = $derived(resolveDotpath(doc, path, fallback));
 
     let change_timeout = null;
     function commit(new_value, delay) {

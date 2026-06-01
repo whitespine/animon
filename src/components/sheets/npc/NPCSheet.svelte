@@ -3,7 +3,6 @@
     import NPCEditSheet from "./NPCEditSheet.svelte";
     let { edit = false, context, app } = $props();
 
-    $effect(() => console.log(app));
     /*
      * The NPC sheet demonstrates adding an additional prop (edit)
      * and controlling it via vertical-dots menu item

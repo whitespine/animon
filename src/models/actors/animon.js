@@ -1,6 +1,6 @@
 import { SystemActor } from "../../documents/actor.svelte";
 import { ActorModel } from "./actor.svelte";
-import { sortedObjectToArray, SortField } from "../base.svelte";
+import { sortedObjectToArray, SortField, titleCaseString } from "../base.svelte";
 
 const fields = foundry.data.fields;
 
@@ -9,7 +9,7 @@ export const ELEMENTS = [
     "neutral", "fire", "water", "nature", "electric", "earth", "wind", "light", "dark", "mirage"
 ];
 const elementField = () => new fields.StringField({
-    required: true, choices: ELEMENTS
+    required: true, choices: ELEMENTS, initial: ELEMENTS[0]
 });// TODO, choices or options?
 
 export class AnimonModel extends ActorModel {
@@ -24,12 +24,13 @@ export class AnimonModel extends ActorModel {
             nature: new fields.StringField(),
 
             // -- Forms
-            active_form_id: new fields.StringField(), // used to derive `form`, which can be null
+            active_form_id: new fields.StringField({required: true}), // used to derive `form`, which can be null
             forms: new fields.TypedObjectField(new fields.SchemaField({
                 // -- Classification
                 sort: new SortField(), // Purely for display, doesn't affect evolution
                 classification: new fields.StringField(),
-                elements: new fields.ArrayField(elementField()),
+                // elements: new fields.ArrayField(elementField()),
+                element: elementField(),
 
                 // Even if you're doing branched evolution, we need these tiers for stat calculation
                 tier: new fields.StringField({ choices: ["fledgling", "basic", "super", "ultra", "giga"] }),
@@ -66,11 +67,11 @@ export class AnimonModel extends ActorModel {
             // -- HP / Signature Uses
             hp: new fields.SchemaField({
                 value: new fields.NumberField({ initial: 5, min: 0, integer: true }),
-                max: new fields.NumberField({}) // Dummy field to trick foundry. Automatically set as 9 + bond level
+                max: new fields.NumberField({}) // Dummy field to trick foundry. 
             }),
             signature_uses: new fields.SchemaField({
                 value: new fields.NumberField({ initial: 0, min: 0, integer: true }),
-                max: new fields.NumberField({}) // Dummy field to trick foundry. Automatically set as 9 + bond level
+                max: new fields.NumberField({}) // Dummy field to trick foundry. 
             }),
         }
     }
@@ -201,9 +202,21 @@ export class AnimonModel extends ActorModel {
      * just what is allowed via the fields logic
      */
     async _preCreate(data, options, user) {
-        // TODO: Pre-create with a fledgling and basic form?
         await super._preCreate(data, options, user);
         // Put in the basics
-        // this.updateSource(mods);
+        let mods = {};
+        let active_form = data.active_form_id;
+        if(!active_form) {
+            active_form = foundry.utils.randomID();
+            mods.active_form_id = active_form;
+        }
+        if(!data.forms?.[active_form]) {
+            mods.forms = {};
+            mods.forms[active_form] = {
+                tier: "fledgling",
+                name: "Just a baby <name it!>"
+            }
+        }
+        this.updateSource(mods);
     }
 }
