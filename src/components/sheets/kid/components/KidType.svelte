@@ -22,7 +22,7 @@
         <div class="content">
             {@html actor.system.kid_type_feature ?? loc("animon.sheet.kid.type.placeholder")}
         </div>
-        <button class="edit" onclick={(e) => [stop(e), openEditor()] title="edit"}>
+        <button class="edit" onclick={(e) => [stop(e), openEditor()]} title="edit">
             <i class="fas fa-edit"></i>
         </button>
     </div>

@@ -68,10 +68,10 @@
             </a>
         {/if}
     </h2>
-    <div class="col center">
+    <div class="col">
         {#each harms as harm (harm._id)}
             <div
-                class="row center prefix-input"
+                class="harm prefix-input"
                 style:height="{harm.severity * 1.5}rem"
                 transition:slide
             >
