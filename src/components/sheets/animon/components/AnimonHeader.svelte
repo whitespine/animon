@@ -2,28 +2,48 @@
     import { AnimonModel } from "../../../../models/actors/animon";
     import { stop } from "../../../../utils/handlers";
     import loc from "../../../../utils/localize";
+    import { fixClasses } from "../../../../utils/classes";
     import Portrait from "../../../fields/Portrait.svelte";
     import UpdateInput from "../../../fields/UpdateInput.svelte";
     import Breaker from "../../../layout/Breaker.svelte";
-    import Tabs from "../../../layout/Tabs.svelte";
 
-    let tabs = $derived.by(() => {
-        let result = {};
-        // Add a button to view each tier
-        AnimonModel.TIERS.forEach((t) => {
-            result[t] = {
-                label: loc(`animon.forms.${t}`),
-                onselect: async () => {
-                    // Show a context menu?
-                    let form_id = await actor.system.getOrCreateForm(t);
-                    selectTab("form", {form_id});
-                },
-            };
-        });
-        return result;
+    let { actor, edit, activeTab = $bindable() } = $props();
+
+    // What to show on the volve button
+    let volve_message = $derived.by(() => {
+        let current_form = actor.system.form; // Can be undefined
+        let viewed_form = actor.system.forms[activeTab]; // Can be undefined
+        if (!current_form) return "animon.forms.init"; // Don't have a form - jump to one.
+        if (!viewed_form || viewed_form == current_form) return "animon.forms.active"; // Nothing to volve
+
+        let cft = AnimonModel.tierAsInt(current_form.tier);
+        let nft = AnimonModel.tierAsInt(viewed_form.tier);
+        console.log(cft, nft);
+        if (cft < nft) {
+            return "animon.forms.evolve";
+        } else if (cft > nft) {
+            return "animon.forms.devolve";
+        } else {
+            return "animon.forms.revolve";
+        }
     });
 
-    let { actor, edit, selectTab, activeTab } = $props();
+    // Whether pushing the button is something we want to be allowed
+    let can_volve = $derived("animon.forms.active" != volve_message);
+
+    let active_tier = $derived(actor.system.form?.tier);
+    let viewed_tier = $derived(actor.system.forms[activeTab]?.tier);
+
+    function volve(e) {
+        stop(e);
+        console.log("Volving");
+        actor.system.volveTo(activeTab);
+    }
+
+    async function viewTier(tier) {
+        let form_id = await actor.system.getOrCreateForm(tier);
+        activeTab = form_id;
+    }
 </script>
 
 <div class="header row inner-box">
@@ -35,7 +55,7 @@
         height="128px"
     ></Portrait>
     <div class="grow col">
-        <div class="grow bio">
+        <div class="even">
             <div class="prefix-input">
                 <label for="name">
                     <Breaker text={loc("animon.sheet.animon.name") + ":"}
@@ -53,21 +73,47 @@
             </div>
         </div>
 
-        <div class="forms">
-            <Tabs {tabs} active={activeTab}></Tabs>
+        <div class="forms row even">
+            {#each AnimonModel.TIERS as tier}
+                <button
+                    class={{
+                        active: active_tier == tier,
+                        viewed: viewed_tier == tier,
+                    }}
+                    onclick={(e) => [stop(e), viewTier(tier)]}
+                >
+                    {loc(`animon.forms.${tier}`)}
+                </button>
+            {/each}
         </div>
     </div>
+
+    <button
+        class={fixClasses("grow", { disabled: !can_volve })}
+        onclick={volve}
+    >
+        {loc(volve_message)}
+    </button>
 </div>
 
 <style lang="scss">
     .header {
-        .bio {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+        input {
+            margin-right: 5px;
+        }
+    }
 
-            input {
-                margin-right: 5px;
-            }
+    .forms button {
+        height: 3em;
+        margin-bottom: var(--unpad);
+
+        &.active {
+            font-weight: bolder;
+        }
+
+        &.viewed {
+            background-color: var(--color-warm-1);
+            color: var(--color-cool-5);
         }
     }
 </style>

@@ -5,6 +5,7 @@
         --border-radius: 24px;
         --inner-box-margin: 3px;
         --inner-box-padding: 7px;
+        --unpad: calc(var(--inner-box-padding) * -1);
         --dash-line: 2px dashed black;
         --animon-font: 'AnimonFont', sans-serif;
     }

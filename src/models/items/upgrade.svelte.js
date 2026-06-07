@@ -35,7 +35,7 @@ export class UpgradeModel extends ItemModel {
                 yield {
                     ...base,
                     changes: [{
-                        key: "system.hp.max",
+                        key: "system.bonuses.hp",
                         type: "add",
                         value: 5
                     }],
@@ -44,7 +44,7 @@ export class UpgradeModel extends ItemModel {
                 yield {
                     ...base,
                     changes: [{
-                        key: "system.stats.damage",
+                        key: "system.bonuses.damage",
                         type: "add",
                         value: 2
                     }],
@@ -53,20 +53,20 @@ export class UpgradeModel extends ItemModel {
                 yield {
                     ...base,
                     changes: [{
-                        key: "system.stats.dodge",
+                        key: "system.bonuses.dodge",
                         type: "add",
                         value: 1
                     }],
                 };
-            } else if(this.key == "damage") {
+            } else if(this.key == "sig_init") {
                 yield {
                     ...base,
                     changes: [{
-                        key: "system.stats.initiative",
+                        key: "system.bonuses.initiative",
                         type: "add",
                         value: 1
                     }, {
-                        key: "system.signature_uses.max",
+                        key: "system.bonuses.signature",
                         type: "add",
                         value: 1
                     }],

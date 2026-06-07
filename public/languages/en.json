@@ -141,7 +141,12 @@
             "basic": "basic",
             "super": "super",
             "ultra": "ultra",
-            "giga": "giga"
+            "giga": "giga",
+            "init": "INITIALIZE",
+            "active": "ACTIVE",
+            "evolve": "EVOLVE",
+            "devolve": "DEVOLVE",
+            "revolve": "REVOLVE"
         }
     }
 }

@@ -14,7 +14,6 @@
         }
 
         img.inner-portrait {
-            --unpad: calc(var(--inner-box-padding) * -1);
             margin-left: var(--unpad);
             margin-top: var(--unpad);
             margin-bottom: var(--unpad);
