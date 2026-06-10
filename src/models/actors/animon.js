@@ -12,6 +12,10 @@ const elementField = () => new fields.StringField({
     required: true, choices: ELEMENTS, initial: ELEMENTS[0]
 });// TODO, choices or options?
 
+const effectField = () => new fields.SchemaField({
+    name: new fields.StringField()
+});
+
 export class AnimonModel extends ActorModel {
     static defineSchema() {
         return {
@@ -51,9 +55,11 @@ export class AnimonModel extends ActorModel {
                     name: new fields.StringField(),
                     element: elementField(),
                     rank: new fields.NumberField({ min: 1, initial: 1, integer: true }),
-                    effects: new fields.TypedObjectField(new fields.SchemaField({
-                        name: new fields.StringField({ required: true })
-                    }))
+                    effects: new fields.SchemaField({
+                        1: effectField(),
+                        2: effectField(),
+                        3: effectField(),
+                    })
                 }),
 
                 // -- Capabilities

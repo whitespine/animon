@@ -5,6 +5,7 @@
         max = undefined,
         name = undefined,
         width = "140px",
+        class: class_ = "row even",
         ...restProps
     } = $props();
 
@@ -22,7 +23,7 @@
     }
 </script>
 
-<div {...restProps} class={all_classes} style:min-width={width} style:max-width={width}> 
+<div {...restProps} class={class_}> 
     <button onclick={(e) => increment(e, -1)}>-</button>
     <input
         type="number"
@@ -30,6 +31,7 @@
         {max}
         {name}
         bind:value
+        size="1"
     />
     <button class="invert" onclick={(e) => increment(e, 1)}>+</button>
 </div>

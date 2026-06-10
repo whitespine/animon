@@ -20,12 +20,14 @@
             font-family: var(--animon-font);
         }
 
-        .word-per-line {
-            word-spacing: 100vw;
-        }
-
         h2 {
             font-size: 1.2rem;
+        }
+        h3 {
+            font-size: 1.0rem;
+        }
+        h4 {
+            font-size: 0.8rem;
         }
 
         .clip-text {

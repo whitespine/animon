@@ -35,6 +35,7 @@
             }
         },
         "sheet": {
+            "rank": "RANK",
             "tab": {
                 "kid": "KID",
                 "animon": "ANIMON",
@@ -55,7 +56,10 @@
                 "form_name": "FORM NAME",
                 "element": "ELEMENT",
                 "signature": {
-                    "use_label": "SIG. USES"
+                    "use_label": "SIG. USES",
+                    "title": "SIGNATURE MOVES",
+                    "name": "NAME",
+                    "effect": "EFFECT"
                 },
                 "stats": {
                     "title": "STATS",
@@ -78,7 +82,31 @@
                         "name": "BRAINS",
                         "description": "",
                         "usage": ""
+                    }, 
+                    "initiative": {
+                        "name": "INIT.",
+                        "description": "",
+                        "usage": ""
+                    },
+                    "dodge": {
+                        "name": "DODGE",
+                        "description": "",
+                        "usage": ""
+                    },
+                    "hp": {
+                        "name": "HP",
+                        "description": "",
+                        "usage": ""
+                    },
+                    "damage": {
+                        "name": "DAMAGE",
+                        "description": "",
+                        "usage": ""
                     }
+                },
+                "quality": {
+                    "title": "QUALITIES",
+                    "add": "Add a new quality for this form"
                 }
             },
             "kid": {
@@ -90,7 +118,6 @@
                 "special_item": "SPECIAL ITEM",
                 "talent": {
                     "title": "TALENTS",
-                    "rank": "RANK",
                     "placeholder": "New Talent",
                     "add": "Add Talent"
                 },
@@ -108,7 +135,6 @@
                     "add": "Add Harm",
                     "shaken": "SHAKEN!"
                 },
-                "rank": "RANK",
                 "relationship": {
                     "title": "RELATIONSHIPS",
                     "add": "Add Relationship"

@@ -31,19 +31,17 @@
 </script>
 
 <div class="inner-box relationship-box">
-    <div class="row">
-        <h2>
-            <span>
-                {loc("animon.sheet.kid.relationship.title")}:
-            </span>
-            <a onclick={(e) => [stop(e), addRelationship()]}>
-                <i
-                    class="fas fa-plus"
-                    data-tooltip={loc("animon.sheet.kid.relationship.add")}
-                ></i>
-            </a>
-        </h2>
-    </div>
+    <h2 class="row">
+        <span class="grow">
+            {loc("animon.sheet.kid.relationship.title")}:
+        </span>
+        <a onclick={(e) => [stop(e), addRelationship()]}>
+            <i
+                class="fas fa-plus"
+                data-tooltip={loc("animon.sheet.kid.relationship.add")}
+            ></i>
+        </a>
+    </h2>
     <div class="col">
         {#each relationships as relationship, i (relationship._id)}
             <div class="prefix-input" transition:slide>

@@ -6,20 +6,21 @@
     let form = $derived(actor.system.forms[form_id]);
 </script>
 
-<div class="inner-box stats-box col center">
+<div class="inner-box stats-box col">
     <h2>{loc("animon.sheet.animon.stats.title")}</h2>
     {#each ["heart", "power", "agility", "brains"] as stat (stat)}
-        <label for="system.stats.{stat}">
-            {loc(`animon.sheet.animon.stats.${stat}.name`)}:
-        </label>
-        <UpdateInput
-            doc={actor}
-            path="system.forms.{form_id}.{stat}"
-            class="center nude"
-            fallback=2
-            size="1"
-        ></UpdateInput>
-        <div class="border"></div>
+        <div class="grow col center border">
+            <label for="system.stats.{stat}">
+                {loc(`animon.sheet.animon.stats.${stat}.name`)}:
+            </label>
+            <UpdateInput
+                doc={actor}
+                path="system.forms.{form_id}.{stat}"
+                class="center nude"
+                fallback="2"
+                size="1"
+            ></UpdateInput>
+        </div>
     {/each}
 </div>
 

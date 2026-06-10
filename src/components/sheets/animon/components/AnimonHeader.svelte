@@ -18,7 +18,6 @@
 
         let cft = AnimonModel.tierAsInt(current_form.tier);
         let nft = AnimonModel.tierAsInt(viewed_form.tier);
-        console.log(cft, nft);
         if (cft < nft) {
             return "animon.forms.evolve";
         } else if (cft > nft) {
@@ -36,7 +35,6 @@
 
     function volve(e) {
         stop(e);
-        console.log("Volving");
         actor.system.volveTo(activeTab);
     }
 

@@ -8,7 +8,7 @@
 </script>
 
 <div class="xofx inner-box center col">
-    <label class="word-per-line" for={value_path}><Breaker text={label}></Breaker></label>
+    <label for={value_path}><Breaker text={label}></Breaker></label>
     <div class="body">
         <div class="numerator"><UpdateInput class="nude" {doc} path={value_path} size=1></UpdateInput></div>
         <div class="denominator">{max}</div>

@@ -68,17 +68,29 @@ export function titleCaseString(text) {
     .join(' ');
 }
 
-/** Turns a sorted typed object field into a conventional array.
+/** Turns a typed object field into a conventional array.
  * Each element has "_id" added as a key representing their original key
  * 
- * @param {Record<{sort: number}, any} tof The typed object field to sort. Assumes every element has a numeric "sort" key
- * @param {(object) => Array<number>} sort The typed object field to sort. Assumes every element has a numeric "sort" key
+ * @param {Record<string, T>} tof The typed object field to flatten. 
+ * @returns {Array<T & {_id: string}>}
  */
-export function sortedObjectToArray(tof, ranker=null) {
+export function typedObjectToArray(tof) {
   let as_array = Object.entries(tof).map(([k, v]) => ({
     _id: k,
     ...v
   }));
+  return as_array;
+}
+
+/** Turns a sorted typed object field into a conventional array.
+ * Each element has "_id" added as a key representing their original key
+ * 
+ * @param {Record<string, T>} tof The typed object field to sort. Assumes every element has a numeric "sort" key
+ * @param {(object) => Array<number>} ranker The typed object field to sort. Assumes every element has a numeric "sort" key
+ * @returns {Array<T & {_id: string}>}
+ */
+export function sortedObjectToArray(tof, ranker=undefined) {
+  let as_array = typedObjectToArray(tof);
   ranker ??= (x) => [x.sort, x._id]; // Default ranker stably sorts by sort, then by id. This can be overridden!
   return rankedSort(as_array, ranker);
 }

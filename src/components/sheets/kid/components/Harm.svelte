@@ -50,8 +50,8 @@
 </script>
 
 <div class="inner-box harm-box">
-    <h2>
-        <span>{loc("animon.sheet.kid.harm.title")}: {total_harm} / 3</span>
+    <h2 class="row">
+        <span class="grow">{loc("animon.sheet.kid.harm.title")}: {total_harm} / 3</span>
         {#if shaken}
             <span
                 class="shaken"

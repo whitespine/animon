@@ -6,15 +6,19 @@
     import { stop } from "../../../../utils/handlers";
     import { slide } from "svelte/transition";
 
-    let { actor, edit } = $props();
+    let { actor, edit, form_id } = $props();
 
-    let talents = $derived(sortedObjectToArray(actor.system.talent));
+    // Qualities on this form specifically
+    let qualities = $derived(actor.system.forms[form_id].qualities);
 
-    // Add a new talent
-    function addTalent() {
+    // Todo: inherited qualities, for display only
+
+    // Add a new quality
+    function addQuality() {
+        console.log(qualities);
         actor.update({
-            "system.talent": sortedArrayToObject([
-                ...talents,
+            [`system.forms.${form_id}.qualities`]: sortedArrayToObject([
+                ...qualities,
                 {
                     _id: foundry.utils.randomID(),
                 },
@@ -22,31 +26,31 @@
         });
     }
 
-    // Remove the talent with _id
-    function removeTalent(_id) {
-        actor.update({ [`system.talent.${_id}`]: _del });
+    // Remove the quality with _id
+    function removeQuality(_id) {
+        actor.update({ [`system.forms.${form_id}.${_id}`]: _del });
     }
 </script>
 
-<div class="inner-box talent-box">
+<div class="inner-box quality-box">
     <div class="grid">
         <h2 class="title row">
-            <span class="grow">{loc("animon.sheet.kid.talent.title")}:</span>
-            <a onclick={(e) => [stop(e), addTalent()]} >
+            <span class="grow">{loc("animon.sheet.animon.quality.title")}:</span>
+            <a onclick={(e) => [stop(e), addQuality()]} >
                 <i
                     class="fas fa-plus"
-                    data-tooltip={loc("animon.sheet.kid.talent.add")}
+                    data-tooltip={loc("animon.sheet.animon.quality.add")}
                 ></i>
             </a>
         </h2>
         <h2 class="header-rank">{loc("animon.sheet.rank")}:</h2>
         <div></div>
-        {#each talents as talent, i (talent._id)}
+        {#each qualities as quality, i (quality._id)}
             <div transition:slide>
                 <UpdateInput
                     doc={actor}
                     class="name prefix-input"
-                    path="system.talent.{talent._id}.name"
+                    path="system.forms.{form_id}.{quality._id}.name"
                     size="1"
                 ></UpdateInput>
             </div>
@@ -54,12 +58,12 @@
                 <UpdateInput
                     doc={actor}
                     class="rank prefix-input"
-                    path="system.talent.{talent._id}.rank"
+                    path="system.forms.{form_id}.{quality._id}.rank"
                     size="1"
                 ></UpdateInput>
             </div>
             <a
-                onclick={(e) => [stop(e), removeTalent(talent._id)]}
+                onclick={(e) => [stop(e), removeQuality(quality._id)]}
                 transition:slide
             >
                 <i class="fas fa-trash"></i>
@@ -69,7 +73,7 @@
 </div>
 
 <style lang="scss" module>
-    .talent-box {
+    .quality-box {
         .grid {
             display: grid;
             grid-template-rows: 1fr;
