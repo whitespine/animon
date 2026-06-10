@@ -26,7 +26,7 @@
             >
             <UpdateInput
                 doc={actor}
-                path="system.form.{form_id}.signature.name"
+                path="system.forms.{form_id}.signature.name"
                 size="1"
             ></UpdateInput>
         </div>
@@ -36,7 +36,7 @@
             >
             <UpdateInput
                 doc={actor}
-                path="system.form.{form_id}.signature.rank"
+                path="system.forms.{form_id}.signature.rank"
                 size="1"
             ></UpdateInput>
         </div>
@@ -48,7 +48,7 @@
             >
             <UpdateInput
                 doc={actor}
-                path="system.form.{form_id}.signature.element"
+                path="system.forms.{form_id}.signature.element"
                 size="1"
             ></UpdateInput>
         </div>
@@ -58,13 +58,13 @@
     </div>
     {#each [1, 2, 3] as i}
         <div class="prefix-input">
-            <label for="system.forms.{form_id}.signature.effect.{i}">
+            <label for="system.forms.{form_id}.signature.effects.{i}">
                 {loc("animon.sheet.animon.signature.effect")}
                 {i}:
             </label>
             <UpdateInput
                 doc={actor}
-                path="system.form.{form_id}.signature.effect.{i}"
+                path="system.forms.{form_id}.signature.effects.{i}.name"
                 size=1
             ></UpdateInput>
         </div>

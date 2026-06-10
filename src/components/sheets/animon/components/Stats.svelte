@@ -15,7 +15,7 @@
             </label>
             <UpdateInput
                 doc={actor}
-                path="system.forms.{form_id}.{stat}"
+                path="system.forms.{form_id}.stats.{stat}"
                 class="center nude"
                 fallback="2"
                 size="1"

@@ -30,10 +30,12 @@ export function formatDotpath(path) {
  * @param {object} obj The object to drill down into
  *
  * @param {string} path The dotpath to use
+ * 
+ * @param {boolean} [warn_on_unresolved] Whether to warn if we can't resolve
  *
  * @returns {Array<PathResolutionStep>} An array of the steps we took resolving the path
  */
-export function stepwiseResolveDotpath(obj, path) {
+export function stepwiseResolveDotpath(obj, path, warn_on_unresolved=false) {
   const pathlets = formatDotpath(path).split(".");
 
   // Resolve each key, starting with root
@@ -45,6 +47,10 @@ export function stepwiseResolveDotpath(obj, path) {
   ];
 
   for (const pathlet of pathlets) {
+    if(warn_on_unresolved && !Object.hasOwn(obj, pathlet)) {
+      console.warn(`Failed to resolve path ${path} at pathlet ${pathlet}`, obj);
+      warn_on_unresolved = false;
+    }
     obj = obj?.[pathlet];
     result.push({
       pathlet,
@@ -97,6 +103,7 @@ export function drilldownDocument(root_doc, path) {
  * @typedef {object} ResolveDotpathOptions
  *
  * @property {number} [shorten_by] If provided, skip the last <shorten_by> path items. Useful for getting e.x. the containing array of an item
+ * @property {boolean} [warn_on_unresolved] If not provided or true, warn when we don't actually find the value we're looking for
  */
 
 /**
@@ -114,7 +121,7 @@ export function drilldownDocument(root_doc, path) {
  * @returns {any} Value at end of path, or default value
  */
 export function resolveDotpath(obj, path, default_ = undefined, opts = null) {
-  const evaluated = stepwiseResolveDotpath(obj, path);
+  const evaluated = stepwiseResolveDotpath(obj, path, opts?.warn_on_unresolved ?? true);
   let item;
 
   // Get the last item, or one even further back if shorten-by provided
@@ -125,6 +132,8 @@ export function resolveDotpath(obj, path, default_ = undefined, opts = null) {
   }
   return item.val === undefined ? default_ : item.val;
 }
+
+export const ERR_ON_UNRESOLVED = Symbol("ERR_ON_UNRESOLVED");
 
 /**
  * @typedef {object} SpliceArrayResult
