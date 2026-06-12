@@ -15,7 +15,7 @@
     const id = foundry.utils.randomID();
     const anchorID = `--anchor-${id}`;
 
-    // let tooltip;
+    let tooltip;
 
     /** @type {ReturnType<typeof setTimeout> | null} */
     let hover_timeout = null;
@@ -44,7 +44,7 @@
                 hover_timeout = setTimeout(() => {
                     if (is_hovered && !visible) {
                         visible = true;
-                        // tooltip.showPopover();
+                        tooltip.showPopover();
                     }
                     hover_timeout = null;
                 }, showDelay);
@@ -55,27 +55,25 @@
             unhover_timeout = setTimeout(() => {
                 if (visible) {
                     visible = false;
-                    // tooltip.hidePopover();
+                    tooltip.hidePopover();
                 }
             }, hideFadeTime);
         },
     });
 </script>
 
-{#if visible}
     <div
-        // bind:this={tooltip}
-        // popover="manual"
+        bind:this={tooltip}
+        popover="manual"
         class={fixClasses("animon tooltip", {
             "fade-in": is_hovered,
             "fade-out": !is_hovered,
         })}
         // {@attach portalTo(document.body)}
-        style="--fade-in-time={showFadeTime}; --fade-out-time={hideFadeTime}; position-anchor: {anchorID}"
+        style="--fade-in-time: {showFadeTime}ms; --fade-out-time: {hideFadeTime}ms; position-anchor: {anchorID}"
     >
         {@render tip?.()}
     </div>
-{/if}
 
 <div>
     {@render on?.(mountListeners)}
@@ -83,14 +81,15 @@
 
 <style lang="scss">
     .tooltip {
-        --fade-in-time: 200ms;
-        --fade-out-time: 200ms; // keep in sync with TOOLTIP_DISAPPEAR_DELAY_MS
-
-        position: absolute;
+        position: fixed;
         // position-area: right;
         left: anchor(right);
         align-self: anchor-center;
         margin-left: 10px;
+
+        background: transparent;
+        border: none;
+        pointer-events: none;
 
         // position-anchor: --foo;
         // left: anchor(right);
