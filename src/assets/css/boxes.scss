@@ -7,7 +7,6 @@
             background-color: grey;
             border: 5px solid #505050;
             border-radius: var(--border-radius);
-            contain: paint;
         }
 
         // Inner boxes on a sheet
@@ -15,7 +14,6 @@
             background-color: white;
             border: 3px solid black;
             border-radius: var(--border-radius);
-            contain: paint;
             color: black;
             margin: var(--inner-box-margin);
             padding: var(--inner-box-padding);
@@ -27,6 +25,10 @@
             h4 {
                 color: black;
             }
+        }
+
+        .contain {
+            contain: paint;
         }
     }
 }

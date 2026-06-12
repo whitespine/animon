@@ -21,7 +21,7 @@
                 {/snippet}
 
                 {#snippet tip()}
-                    <div class="col">
+                    <div class="sig-tooltip inner-box col">
                         <h2 class="row even">
                             <span class="grow">{loc("animon.sheet.animon.element")}: {move.element}</span>
                             <span>{loc("animon.sheet.rank")}: {move.rank}</span>
@@ -39,6 +39,7 @@
 </div>
 
 <style lang="scss" module>
-    .sig-pill {
+    .sig-tooltip {
+        min-width: 400px;
     }
 </style>

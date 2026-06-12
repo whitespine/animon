@@ -37,3 +37,12 @@ export function buildListenerAttacher(listeners) {
         return tearDown;
     }
 }
+
+export function portalTo(to) {
+    return (elt) => {
+        to.appendChild(elt);
+        return () => {
+            to.removeChild(elt);
+        }
+    }
+}

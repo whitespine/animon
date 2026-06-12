@@ -44,7 +44,7 @@
     }
 </script>
 
-<div class="header row inner-box">
+<div class="header row inner-box contain">
     <Portrait
         doc={actor}
         {edit}

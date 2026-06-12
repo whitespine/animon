@@ -7,7 +7,7 @@
     let { actor, edit } = $props();
 </script>
 
-<div class="header row inner-box">
+<div class="header row inner-box contain">
     <Portrait doc={actor} {edit} class="inner-portrait" width="128px" height="128px"></Portrait>
     <div class="bio">
         <div class="prefix-input">

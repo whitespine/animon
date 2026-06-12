@@ -25,10 +25,6 @@
         .body {
             flex: 1;
             height: 100%;
-
-            p {
-                margin: 0px;
-            }
         }
 
         padding-right: 5px;

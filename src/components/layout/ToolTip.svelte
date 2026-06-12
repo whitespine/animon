@@ -1,6 +1,6 @@
 <script>
     import { fixClasses } from "../../utils/classes";
-    import { buildListenerAttacher } from "../../utils/attach";
+    import { buildListenerAttacher, portalTo } from "../../utils/attach";
 
     let {
         on,
@@ -15,7 +15,7 @@
     const id = foundry.utils.randomID();
     const anchorID = `--anchor-${id}`;
 
-    let tooltip;
+    // let tooltip;
 
     /** @type {ReturnType<typeof setTimeout> | null} */
     let hover_timeout = null;
@@ -30,7 +30,7 @@
 
     const mountListeners = buildListenerAttacher({
         on: (elt) => {
-            elt.style.anchorName = anchorID
+            elt.style.anchorName = anchorID;
         },
         mouseenter: () => {
             is_hovered = true;
@@ -62,17 +62,20 @@
     });
 </script>
 
-<div
-    bind:this={tooltip}
-    // popover="manual"
-    class={fixClasses("inner-box fade-in-on-mount tooltip", {
-        "fade-in": is_hovered,
-        "fade-out": !is_hovered,
-    })}
-    style="--fade-in-time={showFadeTime}; --fade-out-time={hideFadeTime}; position-anchor: {anchorID}"
->
-    {@render tip?.()}
-</div>
+{#if visible}
+    <div
+        // bind:this={tooltip}
+        // popover="manual"
+        class={fixClasses("animon tooltip", {
+            "fade-in": is_hovered,
+            "fade-out": !is_hovered,
+        })}
+        // {@attach portalTo(document.body)}
+        style="--fade-in-time={showFadeTime}; --fade-out-time={hideFadeTime}; position-anchor: {anchorID}"
+    >
+        {@render tip?.()}
+    </div>
+{/if}
 
 <div>
     {@render on?.(mountListeners)}
