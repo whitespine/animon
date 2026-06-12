@@ -13,7 +13,7 @@ const elementField = () => new fields.StringField({
 });// TODO, choices or options?
 
 const effectField = () => new fields.SchemaField({
-    name: new fields.StringField()
+    name: new fields.StringField({required: true})
 });
 
 export class AnimonModel extends ActorModel {

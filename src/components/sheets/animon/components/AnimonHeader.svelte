@@ -95,12 +95,6 @@
 </div>
 
 <style lang="scss">
-    .header {
-        input {
-            margin-right: 5px;
-        }
-    }
-
     .forms button {
         height: 3em;
         margin-bottom: var(--unpad);

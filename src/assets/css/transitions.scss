@@ -1,0 +1,19 @@
+@layer system {
+    .animon,
+    #dnd-action-dragged-el {
+        .fade-in {
+            opacity: 1;
+            transition: opacity var(--fade-in-time, var(--fade-time)) ease-in;
+
+            /* This tells the browser to animate the entrance when first rendered */
+            @starting-style {
+                opacity: 0;
+            }
+        }
+
+        .fade-out {
+            transition: opacity var(--fade-out-time, var(--fade-time)) ease-in;
+            opacity: 0;
+        }
+    }
+}

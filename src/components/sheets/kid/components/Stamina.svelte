@@ -22,7 +22,6 @@
         padding-right: 10px;
     }
 
-    input,
     span {
         flex: 1 0;
         text-align: center;

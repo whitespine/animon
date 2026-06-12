@@ -140,6 +140,7 @@ export function sortedArrayToObject(saf) {
   for(let val of saf) {
     val.sort = 100*index;
     as_object[val._id] = val;
+    index++;
   }
   return as_object;
 }

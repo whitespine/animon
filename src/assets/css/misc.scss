@@ -18,6 +18,18 @@
                 text-align: start;
             }
         }
+
+        .pill {
+            border-radius: .5rem;
+            background-color: green;
+            margin-right: 5px;
+            padding: 5px;
+            color: black;
+        }
+
+        .popover {
+            color: black;
+        }
     }
 
 }

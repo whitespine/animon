@@ -26,7 +26,7 @@ export function fixClasses(...classes) {
     let all_classes = {};
     for (let c of classes) {
         if (typeof c == "string") {
-            let segments = c.split(/\S+/);
+            let segments = c.split(/\s+/);
             segments.forEach(element => {
                 all_classes[element] = true;
             });

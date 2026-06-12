@@ -9,13 +9,12 @@
     let { actor, edit, form_id } = $props();
 
     // Qualities on this form specifically
-    let qualities = $derived(actor.system.forms[form_id].qualities);
+    let qualities = $derived(sortedObjectToArray(actor.system.forms[form_id].qualities));
 
     // Todo: inherited qualities, for display only
 
     // Add a new quality
     function addQuality() {
-        console.log(qualities);
         actor.update({
             [`system.forms.${form_id}.qualities`]: sortedArrayToObject([
                 ...qualities,
@@ -28,7 +27,7 @@
 
     // Remove the quality with _id
     function removeQuality(_id) {
-        actor.update({ [`system.forms.${form_id}.${_id}`]: _del });
+        actor.update({ [`system.forms.${form_id}.qualities.${_id}`]: _del });
     }
 </script>
 
@@ -50,7 +49,7 @@
                 <UpdateInput
                     doc={actor}
                     class="name prefix-input"
-                    path="system.forms.{form_id}.{quality._id}.name"
+                    path="system.forms.{form_id}.qualities.{quality._id}.name"
                     size="1"
                 ></UpdateInput>
             </div>
@@ -58,7 +57,7 @@
                 <UpdateInput
                     doc={actor}
                     class="rank prefix-input"
-                    path="system.forms.{form_id}.{quality._id}.rank"
+                    path="system.forms.{form_id}.qualities.{quality._id}.rank"
                     size="1"
                 ></UpdateInput>
             </div>
