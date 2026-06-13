@@ -4,9 +4,8 @@
     import loc from "../../../../utils/localize";
     let { actor, edit, form_id } = $props();
 
-    let moves = $derived(
-        actor.system.form?.signature ? [actor.system.form.signature] : [],
-    );
+    let form = $derived(actor.system.forms[form_id]);
+    let moves = $derived(form?.prior_forms.map(x => x.signature) ?? []) ;
 </script>
 
 <div class="inner-box signature-box">

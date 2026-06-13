@@ -14,7 +14,7 @@
         rollCheck(RollerState.params);
     }
 
-    function onClickRoot(e) {
+    function toggle(e) {
         stop(e);
         RollerState.visible = !RollerState.visible;
     }
@@ -30,9 +30,9 @@
             contracted: !RollerState.visible,
             expanded: RollerState.visible,
         }}
-        onclick={onClickRoot}
+        onclick={toggle}
     >
-        <h1>Roll</h1>
+        <h1 onclick={toggle}>Roll</h1>
         {#if RollerState.visible}
             <div transition:slide>
                 <div class="difficulty row center">
@@ -69,8 +69,6 @@
 
 <style lang="scss">
     .anchor, .root {
-        width: 350px;
-        margin-bottom: -16px;
         align-self: end;
     }
 
@@ -80,7 +78,8 @@
 
     .root {
         // This is what keeps it where it ought to be!
-        position: absolute;
+        position: fixed;
+        width: 350px;
 
         // Make it mostly on top of things, but not too ontop!
         z-index: calc(var(--z-index-ui) + 10);
@@ -92,12 +91,12 @@
         padding: 5px;
 
         transition: all;
+        bottom: 1px;
         &.expanded {
-            bottom: 16px;
+            z-index: calc(var(--z-index-ui) + 1000);
         }
 
         &.contracted {
-            bottom: 0px;
             cursor: pointer;
         }
     }
