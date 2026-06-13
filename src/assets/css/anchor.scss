@@ -1,0 +1,19 @@
+@position-try --right {
+    margin-left: var(--anchor-dist);
+    left: anchor(right);
+}
+
+@position-try --left {
+    margin-right: var(--anchor-dist);
+    right: anchor(left);
+}
+
+@position-try --bottom {
+    margin-top: var(--anchor-dist);
+    top: anchor(bottom);
+}
+
+@position-try --top {
+    margin-bottom: var(--anchor-dist);
+    bottom: anchor(top);
+}

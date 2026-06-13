@@ -62,30 +62,37 @@
     });
 </script>
 
-    <div
-        bind:this={tooltip}
-        popover="manual"
-        class={fixClasses("animon tooltip", {
-            "fade-in": is_hovered,
-            "fade-out": !is_hovered,
-        })}
-        // {@attach portalTo(document.body)}
-        style="--fade-in-time: {showFadeTime}ms; --fade-out-time: {hideFadeTime}ms; position-anchor: {anchorID}"
-    >
-        {@render tip?.()}
-    </div>
+<div
+    bind:this={tooltip}
+    popover="manual"
+    class={fixClasses("animon tooltip", {
+        "fade-in": is_hovered,
+        "fade-out": !is_hovered,
+    })}
+    // {@attach portalTo(document.body)}
+    style="--fade-in-time: {showFadeTime}ms; --fade-out-time: {hideFadeTime}ms; position-anchor: {anchorID}"
+>
+    {@render tip?.()}
+</div>
 
 <div>
     {@render on?.(mountListeners)}
 </div>
 
 <style lang="scss">
+    @use "../../assets/css/anchor.scss";
     .tooltip {
+        --anchor-dist: 10px;
         position: fixed;
         // position-area: right;
         left: anchor(right);
         align-self: anchor-center;
-        margin-left: 10px;
+        // position-try: bottom, bottom right, top, top left;
+        // position-try: most-width --left, --bottom, --right, --top;
+        // position-try: most-width --left;
+
+        // align-self: anchor-center;
+        margin: 10px;
 
         background: transparent;
         border: none;
