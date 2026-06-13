@@ -1,4 +1,4 @@
-import { sortedObjectToArray, SortField } from "../base.svelte";
+import { SortField } from "../base.svelte";
 import { ActorModel } from "./actor.svelte";
 
 const fields = foundry.data.fields;
@@ -11,28 +11,28 @@ export class KidModel extends ActorModel {
             ...super.defineSchema(),
 
             // -- Biographical details
-            player_name: new fields.StringField({}),
-            virtue: new fields.StringField(),
-            desire: new fields.StringField(),
-            flaw: new fields.StringField(),
+            player_name: new fields.StringField({ required: true }),
+            virtue: new fields.StringField({ required: true }),
+            desire: new fields.StringField({ required: true }),
+            flaw: new fields.StringField({ required: true }),
 
             notes: new fields.HTMLField(), // Though not in the character sheet, you can't scribble in the margins of HTML!
 
             // -- Special item(s?). As a one-of, easier to not track as an item
-            special_item: new fields.StringField(),
-            special_item_used: new fields.BooleanField({initial: false}),
+            special_item: new fields.StringField({ required: true }),
+            special_item_used: new fields.BooleanField({ initial: false }),
 
             // -- Currency.
-            currency: new fields.NumberField({integer: true, min: 0}),
+            currency: new fields.NumberField({ integer: true, min: 0 }),
 
             // -- Kid type and feature. As a one-of, easier to not track as an item for now
-            kid_type: new fields.StringField(),
-            kid_type_feature: new fields.HTMLField({}),
+            kid_type: new fields.StringField({ required: true }),
+            kid_type_feature: new fields.HTMLField({ required: true }),
 
             // -- Relationships
             relationship: new fields.TypedObjectField(new fields.SchemaField({
                 sort: new SortField(),
-                name: new fields.StringField({required: true}),
+                name: new fields.StringField({ required: true }),
                 // Maye eventually have a details section. How to sanitize html on nested fields?
             })),
 
@@ -44,8 +44,8 @@ export class KidModel extends ActorModel {
             }),
             talent: new fields.TypedObjectField(new fields.SchemaField({
                 sort: new SortField(),
-                name: new fields.StringField({required: true}),
-                rank: new fields.NumberField({min: 1, max: 5, initial: 1})
+                name: new fields.StringField({ required: true }),
+                rank: new fields.NumberField({ min: 1, max: 5, initial: 1 })
             })),
 
             // -- Stamina / Harm
@@ -55,8 +55,8 @@ export class KidModel extends ActorModel {
             }),
             harm: new fields.TypedObjectField(new fields.SchemaField({
                 sort: new SortField(),
-                name: new fields.StringField(),
-                severity: new fields.NumberField({initial: 1, min: 1, max: 3, integer: true})
+                name: new fields.StringField({ required: true }),
+                severity: new fields.NumberField({ initial: 1, min: 1, max: 3, integer: true })
             })), // Todo verify syntax
 
             // -- Bond
@@ -82,17 +82,17 @@ export class KidModel extends ActorModel {
      * just what is allowed via the fields logic
      */
     // async _preCreate(data, options, user) {
-        // await super._preCreate(data, options, user);
+    // await super._preCreate(data, options, user);
 
-        // let mods = {
-            // power: 3 // Players should start with some power
-        // };
+    // let mods = {
+    // power: 3 // Players should start with some power
+    // };
 
-        // Put in the basics
-        // this.updateSource(mods);
+    // Put in the basics
+    // this.updateSource(mods);
     // }
     _onUpdate(changed, options, userId) {
-        if(userId == game.user.id && !this.parent.isToken) {
+        if (userId == game.user.id && !this.parent.isToken) {
             console.log("TODO: update all linked animon");
             // Determine when this is run - after prepareBaseData? on item changes?
         }
@@ -119,8 +119,8 @@ export class KidModel extends ActorModel {
         });
 
         // Sort our upgrades by level and then rank
-        
-       // TODO: is this re-run any time items are added? Does the above need to go in $state?
+
+        // TODO: is this re-run any time items are added? Does the above need to go in $state?
     }
 
 

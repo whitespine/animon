@@ -2,17 +2,9 @@
     import loc from "../../../../utils/localize";
     import {} from "../../../../models/base.svelte";
     import UpdateInput from "../../../fields/UpdateInput.svelte";
-    import {
-        typedObjectToArray,
-        sortedArrayToObject,
-    } from "../../../../models/base.svelte";
     import { stop } from "../../../../utils/handlers";
 
     let { actor, edit, form_id } = $props();
-
-    // Qualities on this form specifically
-    let sig = $derived(actor.system.forms[form_id].signature);
-    let effects = $derived(typedObjectToArray(sig.effects));
 </script>
 
 <div class="col main-signature-box">

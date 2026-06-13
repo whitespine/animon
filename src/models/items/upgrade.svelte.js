@@ -13,10 +13,10 @@ export class UpgradeModel extends ItemModel {
 
             // Keys aren't strictly categorized, but some will have no effect
             // Should match localization keys
-            key: new fields.StringField(),
+            key: new fields.StringField({ required: true }),
 
             // For player tracking of what they applied their upgrade to
-            note: new fields.StringField(),
+            note: new fields.StringField({ required: true }),
 
             // The level at which this was acquired. Used for warning against repeat choices, etc
             level: new fields.NumberField({integer: true, min: 0, initial: 0}),
