@@ -9,7 +9,26 @@
     let { actor, edit, form_id } = $props();
 
     // Qualities on this form specifically
-    let qualities = $derived(sortedObjectToArray(actor.system.forms[form_id].qualities));
+    let prior_qualities = $derived.by(() => {
+        let form = actor.system.forms[form_id];
+        if (!form) return [];
+        return form.prior_forms.flatMap((f) =>
+            sortedObjectToArray(f.qualities),
+        );
+    });
+    let this_qualities = $derived(
+        sortedObjectToArray(actor.system.forms[form_id].qualities),
+    );
+    let combined_qualities = $derived([
+        ...prior_qualities.map((quality) => ({
+            editable: false,
+            quality,
+        })),
+        ...this_qualities.map((quality) => ({
+            editable: edit,
+            quality,
+        })),
+    ]);
 
     // Todo: inherited qualities, for display only
 
@@ -17,7 +36,7 @@
     function addQuality() {
         actor.update({
             [`system.forms.${form_id}.qualities`]: sortedArrayToObject([
-                ...qualities,
+                ...this_qualities,
                 {
                     _id: foundry.utils.randomID(),
                 },
@@ -34,8 +53,9 @@
 <div class="inner-box quality-box">
     <div class="grid">
         <h2 class="title row">
-            <span class="grow">{loc("animon.sheet.animon.quality.title")}:</span>
-            <a onclick={(e) => [stop(e), addQuality()]} >
+            <span class="grow">{loc("animon.sheet.animon.quality.title")}:</span
+            >
+            <a onclick={(e) => [stop(e), addQuality()]}>
                 <i
                     class="fas fa-plus"
                     data-tooltip={loc("animon.sheet.animon.quality.add")}
@@ -44,29 +64,40 @@
         </h2>
         <h2 class="header-rank">{loc("animon.sheet.rank")}:</h2>
         <div></div>
-        {#each qualities as quality, i (quality._id)}
-            <div transition:slide>
-                <UpdateInput
-                    doc={actor}
-                    class="name prefix-input"
-                    path="system.forms.{form_id}.qualities.{quality._id}.name"
-                    size="1"
-                ></UpdateInput>
+        {#each combined_qualities as q (q.quality._id)}
+            <div class="prefix-input name" transition:slide>
+                {#if q.editable}
+                    <UpdateInput
+                        doc={actor}
+                        path="system.forms.{form_id}.qualities.{q.quality
+                            ._id}.name"
+                        size="1"
+                    ></UpdateInput>
+                {:else}
+                    <span>{q.quality.name}</span>
+                {/if}
+            </div>
+            <div class="prefix-input rank" transition:slide>
+                {#if q.editable}
+                    <UpdateInput
+                        doc={actor}
+                        path="system.forms.{form_id}.qualities.{q.quality
+                            ._id}.rank"
+                        size="1"
+                    ></UpdateInput>
+                {:else}
+                    <span>{q.quality.rank}</span>
+                {/if}
             </div>
             <div transition:slide>
-                <UpdateInput
-                    doc={actor}
-                    class="rank prefix-input"
-                    path="system.forms.{form_id}.qualities.{quality._id}.rank"
-                    size="1"
-                ></UpdateInput>
+                {#if q.editable}
+                    <a
+                        onclick={(e) => [stop(e), removeQuality(q.quality._id)]}
+                    >
+                        <i class="fas fa-trash"></i>
+                    </a>
+                {/if}
             </div>
-            <a
-                onclick={(e) => [stop(e), removeQuality(quality._id)]}
-                transition:slide
-            >
-                <i class="fas fa-trash"></i>
-            </a>
         {/each}
     </div>
 </div>
@@ -79,8 +110,7 @@
             grid-template-columns: 1fr 60px 30px;
             align-items: center;
 
-            div input {
-                width: 100%;
+            div {
                 height: 100%;
             }
 
@@ -97,11 +127,8 @@
                 border-left: none !important;
                 border-top: none !important;
                 border-bottom: var(--dash-line);
-                padding-left: 5px;
-                padding-right: 5px;
                 background-color: inherit;
                 color: black;
-                margin-bottom: 2px;
             }
             .rank {
                 border-right: none !important;

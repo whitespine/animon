@@ -90,6 +90,7 @@ export function typedObjectToArray(tof) {
  * @returns {Array<T & {_id: string}>}
  */
 export function sortedObjectToArray(tof, ranker=undefined) {
+  if(!tof) return [];
   let as_array = typedObjectToArray(tof);
   ranker ??= (x) => [x.sort, x._id]; // Default ranker stably sorts by sort, then by id. This can be overridden!
   return rankedSort(as_array, ranker);

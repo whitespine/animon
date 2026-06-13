@@ -46,7 +46,6 @@
     }
 
     function handleDndConsider(e) {
-        // console.error("CONSIDER", area.category, e.detail.info.trigger);
         if(e.detail.info.trigger == TRIGGERS.DRAG_STARTED) {
             let item = wrapped_documents.find(i => i.id == e.detail.info.id); // Fetch item before drag. Might be null on anything besides
             DRAG_STATE.setItem(item);
@@ -59,7 +58,6 @@
     function handleDndFinalize(e) {
         // Do default drop handling, always
         wrapped_documents = e.detail.items;
-        // console.error("FINALIZE", area.category, e.detail.info.trigger);
 
         // Update drag state
         if(e.detail.info.trigger == TRIGGERS.DROPPED_INTO_ANOTHER) {

@@ -167,7 +167,7 @@ export class AnimonModel extends ActorModel {
 
     prepareBaseData() {
         // Flatten and sort our forms
-        this.sorted_forms = rankedSort(Object.entries(this.forms), ([k, f]) => [AnimonModel.tierAsInt(f.tier), f.sort, f._id]);
+        this.sorted_forms = rankedSort(Object.entries(this.forms), ([k, f]) => [AnimonModel.tierAsInt(f.tier), f.sort, k]);
 
         // For each form, establish their evolves_from and devolves_to
         // For the time being, assume all basics can become supers, etc
@@ -199,7 +199,7 @@ export class AnimonModel extends ActorModel {
     prepareDerivedData() {
         // For now, just stupidly build up qualities
         let prior_forms = [];
-        for (let [key, form] of this.sorted_forms) {
+        for (let [_, form] of this.sorted_forms) {
             form.stats.hp = AnimonModel.maxHp(form.tier, form.stats.heart) + this.bonuses.hp;
             form.stats.signature_uses = form.stats.brains + this.bonuses.signature_uses;
             form.stats.damage = AnimonModel.damage(form.tier, form.stats.power) + this.bonuses.damage;
@@ -256,10 +256,10 @@ export class AnimonModel extends ActorModel {
     async getOrCreateForm(tier, set_current = false) {
         let existing = this.formForTier(tier);
         if (existing) {
-            if (set_current && this.active_form_id != existing._id) {
-                await this.parent.update({ "system.active_form_id": existing._id })
+            if (set_current && this.active_form_id != existing[0]) {
+                await this.parent.update({ "system.active_form_id": existing[0] })
             }
-            return existing._id;
+            return existing[0];
         } else {
             // Make a new one
             let new_id = foundry.utils.randomID();
@@ -308,7 +308,7 @@ export class AnimonModel extends ActorModel {
     // Get a form for the given tier
     formForTier(tier) {
         tier = AnimonModel.tierAsString(tier);
-        return this.sorted_forms.find((f) => f.tier == tier);
+        return this.sorted_forms.find(([k, f]) => f.tier == tier);
     }
 
     /** 
