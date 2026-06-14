@@ -15,10 +15,11 @@
     </div>
 </div>
 
-<style lang="scss">
+<style lang="scss" module>
     .xofx {
-        --width: 60px;
-        --inset: 10px;
+        --cell: 1.5rem;
+        --slash-width: 2px;
+        --slash-fade: 1px;
 
         label {
             text-align: center;
@@ -26,7 +27,19 @@
         }
 
         .body {
-            display: inline-grid;
+            display: grid;
+            grid-template-columns: var(--cell) var(--cell);
+            grid-template-rows: var(--cell) var(--cell);
+
+            background: 
+                linear-gradient(to top left,
+                    rgba(0,0,0,0) 0%,
+                    rgba(0,0,0,0) calc(50% - var(--slash-width)),
+                    rgba(0,0,0,1) calc(50% - var(--slash-width) + var(--slash-fade)),
+                    rgba(0,0,0,1) 50%,
+                    rgba(0,0,0,1) calc(50% + var(--slash-width) - var(--slash-fade)),
+                    rgba(0,0,0,0) calc(50% + var(--slash-width)),
+                    rgba(0,0,0,0) 100%),
         }
 
         .denominator {
@@ -35,19 +48,26 @@
         }
 
         .numerator {
-            position: relative;
+            grid-column: 1;
+            grid-row: 1;
         }
 
-        .numerator:after {
-            content: "";
-            position: absolute;
-            left: 75%;
-            /* Give top and bottom the same value*/
-            top: 0%;
-            bottom: -100%;
-            width: 3px;
+        input, span {
+            justify-self: center;
+            align-self: center;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slash {
+            grid-column: 1 / 3;
+            grid-row: 1 / 3;
             background: black;
-            transform: rotate(45deg); /* Adjust this like you want */
+            justify-self: center;
+            height: 100%;
+            width: var(--slash-width);
+            transform: rotate(45deg);
         }
     }
 </style>
