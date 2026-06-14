@@ -4,6 +4,7 @@
     import FormTab from "./FormTab.svelte";
     import BondBox from "../bond/BondBox.svelte";
     import AnimonHeader from "./components/AnimonHeader.svelte";
+    import Sidebar from "../../layout/Sidebar.svelte";
 
     let { app, context } = $props();
 
@@ -23,8 +24,10 @@
     <AnimonHeader actor={mon} {edit} bind:activeTab={active_tab}></AnimonHeader>
 
     <div class="row">
-        <BondBox mon={mon} {kid} {edit}></BondBox>
-        {#if active_tab=="notes"}
+        <Sidebar>
+            <BondBox {mon} {kid} {edit}></BondBox>
+        </Sidebar>
+        {#if active_tab == "notes"}
             <span>TODO notes</span>
         {:else if mon.system.forms[active_tab]}
             <FormTab actor={mon} {edit} form_id={active_tab}></FormTab>
