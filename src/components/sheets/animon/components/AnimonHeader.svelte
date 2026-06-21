@@ -56,14 +56,16 @@
         <div class="even">
             <div class="prefix-input">
                 <label for="name">
-                    <Breaker text={loc("animon.sheet.animon.name") + ":"}
-                    ></Breaker>
+                    <!--<Breaker text={loc("animon.sheet.animon.name") + ":"}
+                    ></Breaker>-->
+                    {loc("animon.sheet.animon.name")}:
                 </label>
                 <UpdateInput doc={actor} path="name" size="1"></UpdateInput>
             </div>
             <div class="prefix-input">
                 <label for="name">
-                    <Breaker text={loc("animon.sheet.kid.name")}></Breaker>:
+                    <!--<Breaker text={loc("animon.sheet.kid.name")}></Breaker>:-->
+                    {loc("animon.sheet.kid.name")}:
                 </label>
                 <span class="readonly">
                     {actor.system.kid?.name ?? "No Kid"}
