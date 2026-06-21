@@ -42,17 +42,18 @@
                 return;
             } else {
                 hover_timeout = setTimeout(() => {
+                    hover_timeout = null;
                     if (is_hovered && !visible) {
                         visible = true;
                         tooltip.showPopover();
                     }
-                    hover_timeout = null;
                 }, showDelay);
             }
         },
         mouseleave: () => {
             is_hovered = false;
             unhover_timeout = setTimeout(() => {
+                unhover_timeout = null;
                 if (visible) {
                     visible = false;
                     tooltip.hidePopover();
@@ -82,7 +83,7 @@
 <style lang="scss">
     @use "../../assets/css/anchor.scss";
     .tooltip {
-        --anchor-dist: 10px;
+        --anchor-dist: 5px;
         position: fixed;
         // position-area: right;
         left: anchor(right);
@@ -92,7 +93,7 @@
         // position-try: most-width --left;
 
         // align-self: anchor-center;
-        margin: 10px;
+        margin: var(--anchor-dist);
 
         background: transparent;
         border: none;

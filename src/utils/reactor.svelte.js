@@ -77,7 +77,7 @@ const CORE_INJECTS = [
         keys: ["name", "img", "system"]
     }, {
         target: ChatMessage,
-        keys: ["rolls", "flags"]
+        keys: ["rolls", "flags", "system"]
     }
 ];
 

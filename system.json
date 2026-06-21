@@ -16,18 +16,13 @@
   ],
   "relationships": {
     "systems": [],
-    "requires": [
-
-    ], 
-    "recommends": [
-
-    ]
+    "requires": [],
+    "recommends": []
   },
   "esmodules": [
     "system.mjs"
   ],
-  "scripts": [
-  ],
+  "scripts": [],
   "styles": [
     "system.css"
   ],
@@ -38,6 +33,29 @@
       "path": "languages/en.json"
     }
   ],
+  "documentTypes": {
+    "Actor": {
+      "kid": {
+        "htmlFields": ["notes"]
+      },
+      "npc": {
+        "htmlFields": ["notes"]
+      },
+      "animon": {
+        "htmlFields": ["notes"]
+      }
+    },
+    "Item": {
+      "gear": {},
+      "upgrade": {}
+    },
+    "ActiveEffect": {
+      "upgrade": {}
+    },
+    "ChatMessage": {
+      "basic_check": {}
+    }
+  },
   "url": "#{URL}#",
   "manifest": "#{MANIFEST}#",
   "download": "#{DOWNLOAD}#",

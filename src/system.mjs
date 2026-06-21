@@ -6,10 +6,6 @@ import { setupDocuments } from './documents/config';
 import { mount } from 'svelte';
 import RollerApp from "./components/rolls/Roller.svelte";
 import { CustomCombatTracker } from './overrides/CustomCombatTracker.svelte';
-import { SystemChatMessage } from './overrides/CustomChatMessage.svelte';
-import { SystemActor } from './documents/actor.svelte';
-import { SystemItem } from './documents/item.svelte';
-import { SystemTokenDocument } from './documents/token';
 import { setupSheets } from './sheets/config';
 import { injectAllCoreDocumentsReactivity, injectEmbeddedCollectionsReactivity } from './utils/reactor.svelte';
 import { initSockets } from './utils/socket.svelte';
@@ -29,12 +25,6 @@ Hooks.once('init', async function () {
   // Also setup a animon namespace for macros to use
   game.animon = {
     combat: {},
-    documents: {
-      actor: SystemActor,
-      item: SystemItem,
-      message: SystemChatMessage,
-      token: SystemTokenDocument
-    },
     apps: {
     }
   };

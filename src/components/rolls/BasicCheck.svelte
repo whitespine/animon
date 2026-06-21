@@ -4,12 +4,9 @@
     import { formulaFor } from "../../utils/roll";
     import { suspense, inSuspense } from "../../utils/suspense.svelte";
 
-    /** @import { CheckMessageData  } from "../../utils/roll" */
-
     let { message } = $props();
 
-    /** @type {CheckMessageData} */
-    let roll_data = $derived(message.flags[game.system.id]);
+    let roll_data = $derived(message.system);
 
     /** Reconstructed roll from the message
      * @type {Roll}
@@ -32,7 +29,7 @@
         let roll = await new Roll(formulaFor(roll_data.params)).roll();
         await game.messages.get(message.id).update({
             rolls: [roll],
-            [`flags.${game.system.id}`]: {
+            system: {
                 suspense: suspense(roll),
                 pushed: true,
             },

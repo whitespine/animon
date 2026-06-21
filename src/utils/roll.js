@@ -37,21 +37,15 @@ export async function rollCheck(check_details, speaker=null) {
     let roll = await new Roll(formula).roll();
 
     // Send to chat immediately. 
-    /**
-     * @type {CheckMessageData}
-     */
-    let flags = {
-        type: "roll_check",
-        params: check_details,
-        pushed: false,
-        suspense: suspense(roll)
-    };
     let message = await ChatMessage.create({
+        type: "basic_check",
         rolls: [roll],
         speaker: speaker ?? ChatMessage.getSpeaker(),
         author: check_details.author,
-        // Doomsong specific sauce
-        [`flags.${game.system.id}`]: flags
+        system: {
+            params: check_details,
+            suspense: suspense(roll)
+        }
     });
 
     return {
@@ -59,24 +53,3 @@ export async function rollCheck(check_details, speaker=null) {
         roll // technically embedded in message
     };
 }
-
-
-/** Our union type for all custom messages
- * @typedef {ShowGearMessageData | CheckMessageData} SystemMessageData
- */
-
-/** Our type for specifically a generic roll "check" message. 
- * You might be wondering, "no Roll property?" - by default, chat messages actually store a roll!
- * But you can definitely store more in here if you want
- * @typedef {object} CheckMessageData
- * @property {"roll_check"} type The text to show for the consequence
- * @property {CheckParams} params The params the check was instantiated with. Some of these are redundant, but its simple!
- * @property {boolean} pushed Whether you've rerolled this roll. Good example of mutating an existing message!
- * @property {string} [suspense] ID of the roll suspense (see suspense.svelte.js). Might be null
- */
-
-/** Our type for specifically message to show off an item in chat
- * @typedef {object} ShowGearMessageData
- * @property {"show_gear"} type The text to show for the consequence
- * @property {string} item uuid of the item
- */

@@ -13,7 +13,7 @@
 </script>
 
 <div class="anchor">
-    <aside bind:this={aside} class="sidebar row center {open ? 'open' : 'closed'}">
+    <aside class="sidebar row center {open ? 'open' : 'closed'}">
         <!--<div class="body" transition:slide={{ axis: "x" }}>-->
         <div class="body">
                 {@render children?.()}

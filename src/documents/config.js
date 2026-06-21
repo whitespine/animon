@@ -1,7 +1,7 @@
-import { SystemChatMessage } from "../overrides/CustomChatMessage.svelte";
 import { SystemActor } from "./actor.svelte";
 import { SystemCombat, SystemCombatant } from "./combat";
 import { SystemItem } from "./item.svelte";
+import { SystemChatMessage } from "./message.svelte";
 import { SystemToken, SystemTokenDocument } from "./token";
 
 export function setupDocuments() {
