@@ -1,5 +1,5 @@
 <script>
-    import BasicRoll from "./BasicCheck.svelte";
+    import BasicRoll from "./message/BasicCheck.svelte";
     let { message } = $props();
 </script>
 

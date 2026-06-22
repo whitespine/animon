@@ -1,26 +1,24 @@
 import { suspense } from "./suspense.svelte";
 import { targetedTokens } from "./target.svelte";
 
-/** An attempt at a skill or other basic check check. Customize to suite your system - all the parameters of a roll should be contained herein
- * @typedef {object} CheckParams
- * @property {"standard" | "disadvantage" | "advantage"} mode The mode for the roll
- * @property {number} difficulty The difficulty of the roll
- * @property {number} bonus The bonus to the roll
- * @property {string} [author] The author to override. 
- */
-
-/** Produce a formula for a roll with a given bonus. Customize this to suite your system
+/**
  * 
- * @param {CheckParams} params The roll params
+ * @param {number} boost The boost value, an integer between -2 and 2
+ * @returns The value which you must roll >=
  */
-export function formulaFor(params) {
-    if(params.mode == "advantage") {
-        return `2d6k1 + ${params.bonus}`;
-    } else if(params.mode == "disadvantage") {
-        return `2d6kl1 + ${params.bonus}`;
-    } else {
-        return `1d6 + ${params.bonus}`;
-    }
+export function boostedThreshold(boost) {
+    return 4 - boost;
+}
+
+/**
+ * 
+ * @param {number} pool The dice pool, an integer
+ * @param {number} boost The boost value, an integer between -2 and 2
+ * @returns {string} a dice formula
+ */
+export function boostedFormula(pool, boost) {
+    console.log(`${pool}d6cs>=${boostedThreshold(boost)}`);
+    return `${pool}d6cs>=${boostedThreshold(boost)}`
 }
 
 /**
@@ -33,7 +31,7 @@ export function formulaFor(params) {
  * }>}
  */
 export async function rollCheck(check_details, speaker=null) {
-    let formula = formulaFor(check_details);
+    let formula = boostedFormula(check_details.dice_pool, check_details.boost);
     let roll = await new Roll(formula).roll();
 
     // Send to chat immediately. 

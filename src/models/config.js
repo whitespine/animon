@@ -5,7 +5,7 @@ import { GearModel } from "./items/gear.svelte";
 import { UpgradeEffectModel } from "./effects/upgrade.svelte";
 import { UpgradeModel } from "./items/upgrade.svelte";
 import { AnimonModel } from "./actors/animon";
-import { BasicCheckModel } from "./messages/basic_check";
+import { BasicTestModel } from "./messages/basic_test";
 
 export function setupModels() {
     CONFIG.Actor.dataModels["kid"] = KidModel;
@@ -15,5 +15,5 @@ export function setupModels() {
     CONFIG.Item.dataModels["upgrade"] = UpgradeModel;
     CONFIG.Combatant.dataModels["base"] = CombatantModel;
     CONFIG.ActiveEffect.dataModels["upgrade"] = UpgradeEffectModel;
-    CONFIG.ChatMessage.dataModels["basic_check"] = BasicCheckModel;
+    CONFIG.ChatMessage.dataModels["basic_test"] = BasicTestModel;
 }

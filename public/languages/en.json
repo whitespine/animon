@@ -173,6 +173,13 @@
             "evolve": "EVOLVE",
             "devolve": "DEVOLVE",
             "revolve": "REVOLVE"
+        },
+        "boost": {
+            "-2": "Double Setback",
+            "-1": "Setback",
+            "0": "Standard",
+            "1": "Boost",
+            "2": "Double Boost"
         }
     }
 }

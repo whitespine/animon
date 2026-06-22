@@ -1,12 +1,9 @@
 <script>
-    import Die from "./Die.svelte";
-    import RollingDie from "./RollingDie.svelte";
-    import { formulaFor } from "../../utils/roll";
-    import { suspense, inSuspense } from "../../utils/suspense.svelte";
+    import Die from "../Die.svelte";
+    import RollingDie from "../RollingDie.svelte";
+    import { suspense, inSuspense } from "../../../utils/suspense.svelte";
 
     let { message } = $props();
-
-    let roll_data = $derived(message.system);
 
     /** Reconstructed roll from the message
      * @type {Roll}
@@ -18,15 +15,10 @@
      */
     let die_results = $derived(roll.dice[0].results);
 
-    /** The sum total of + or - to the roll
-     * @type {number}
-     */
-    let modifiers = $derived(roll.total - roll.dice[0].total); // Dumb hack, won't work in most cases
-
     // Modify this roll to have a flipped doomcoin. DSN integrated
     async function pushRoll() {
         // Just reroll it
-        let roll = await new Roll(formulaFor(roll_data.params)).roll();
+        let roll = await new Roll(roll.formula).roll();
         await game.messages.get(message.id).update({
             rolls: [roll],
             system: {
@@ -37,21 +29,18 @@
     }
 </script>
 
-<div class={{ animon: true, dice: true, row: true, pushed: roll_data.pushed }}>
+<div class={{ animon: true, dice: true, row: true, pushed: message.system.pushed }}>
     {#each die_results as die}
-        {#if inSuspense(roll_data.suspense)}
+        {#if inSuspense(message.system.suspense)}
             <RollingDie />
         {:else}
             <Die value={die.result} discarded={die.discarded} />
         {/if}
     {/each}
-    <span>+</span>
-    <span>{modifiers}</span>
-    <span>→</span>
-    <span class={["result", { rolling: inSuspense(roll_data.suspense) }]}>
+    <span class={["result", { rolling: inSuspense(message.system.suspense) }]}>
         {roll.total}
     </span>
-    {#if !roll_data.pushed}
+    {#if !message.system.pushed}
         <button
             data-tooltip="Pushing a roll rerolls it - but only once!"
             onclick={pushRoll}

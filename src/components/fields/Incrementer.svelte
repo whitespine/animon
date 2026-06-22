@@ -5,7 +5,7 @@
         max = undefined,
         name = undefined,
         width = "140px",
-        class: class_ = "row even",
+        class: class_ = "row even center center-text",
         ...restProps
     } = $props();
 
