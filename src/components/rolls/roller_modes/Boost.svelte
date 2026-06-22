@@ -36,7 +36,7 @@
         --inset: 10px;
         --close-inset: var(--inset);
         --far-inset: calc(100% - var(--inset));
-        --gap: 1px;
+        --gap: 2px;
         --red: 19;
         --green: 229;
         --beige: 110;
@@ -61,21 +61,18 @@
         }
 
         div {
-            padding: 2px;
-            background-color: black;
+            background-color: unset;
+            padding: var(--gap);
 
             &.active {
                 background-color: var(--color-warm-1);
+                opacity: 100%;
                 z-index: 10;
-            }
-
-            button {
-                // --inset: 0px;
             }
         }
 
         div:nth-child(1) {
-            margin-right: calc(-1 * var(--inset) + var(--gap));
+            margin-right: calc(-1 * var(--inset) - var(--gap));
             clip-path: var(--lchev);
 
             button {
@@ -85,7 +82,7 @@
         }
         div:nth-child(2) {
             clip-path: var(--lhalfchev);
-            margin-right: var(--gap);
+            margin-right: calc(-1*var(--gap));
             button {
                 clip-path: var(--lhalfchev);
                 background-color: hsl(var(--red), var(--halfsat), var(--brightness));
@@ -98,7 +95,7 @@
         }
         div:nth-child(4) {
             clip-path: var(--rhalfchev);
-            margin-right: var(--gap);
+            margin-left: calc(-1*var(--gap));
             button {
                 clip-path: var(--rhalfchev);
                 background-color: hsl(var(--green), var(--halfsat), var(--brightness));
@@ -106,7 +103,7 @@
         }
         div:nth-child(5) {
             clip-path: var(--rchev);
-            margin-left: calc(-1 * var(--inset) + var(--gap));
+            margin-left: calc(-1 * var(--inset) - var(--gap));
             button {
                 clip-path: var(--rchev);
                 background-color: hsl(var(--green), var(--fullsat), var(--brightness));
