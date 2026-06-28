@@ -120,7 +120,7 @@ export function rankedSort(array, ranker) {
       }
     }
     // Overflow case - pick whichever is shorter
-    return ar.length - br.length;
+    return a_rank.length - b_rank.length;
   });
 
   // Map back and return

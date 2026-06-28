@@ -15,7 +15,7 @@
 
 <div class="outer-box even">
     <div class="inner-box">
-        <h2>{loc("animon.sheet.tab.gear")}</h2>
+        <h2>{loc("animon.sheet.gear.gear")}</h2>
         {#each gear as i (i._id)}
             <div class="gear" transition:slide>
                 <ViewGear item={i} {edit}></ViewGear>

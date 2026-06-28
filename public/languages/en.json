@@ -6,7 +6,8 @@
             "npc": "NPC"
         },
         "Item": {
-            "gear": "Gear"
+            "gear": "Gear",
+            "upgrade": "Upgrade"
         }
     },
     "animon": {
@@ -17,21 +18,57 @@
         "upgrade": {
             "level": "Level acquired at",
             "score": {
-                "hp": "Increase the Animon's Maximum HP by 5",
-                "damage": "Increase the Animon's Damage score by 2",
-                "dodge": "Increase the Animon's Dodge score by 1",
-                "sig_init": "Increase the Animon's Inititiative score and Signature Attack uses by 1"
+                "title": "Score",
+                "hp": {
+                    "short": "+5 Max HP",
+                    "full": "Increase the Animon's Maximum HP by 5"
+                },
+                "damage": {
+                    "short": "+2 Damage",
+                    "full": "Increase the Animon's Damage score by 2"
+                },
+                "dodge": {
+                    "short": "+1 Dodge",
+                    "full": "Increase the Animon's Dodge score by 1"
+                },
+                "sig_init": {
+                    "short": "+1 Initiative & Signature Uses",
+                    "full": "Increase the Animon's Inititiative score and Signature Attack uses by 1"
+                }
             },
             "minor": {
-                "talent": "Increase the rank of a single talent by 1 (Up to a maximum of 3)",
-                "quality": "Increase the rank of a single quality by 1 (Up to a maximum of 3)"
+                "title": "Minor",
+                "talent": {
+                    "short": "Talent Rank+",
+                    "full": "Increase the rank of a single talent by 1 (Up to a maximum of 3)"
+                },
+                "quality": {
+                    "short": "Increase the rank of a single quality by 1 (Up to a maximum of 3)",
+                    "full": "Increase the rank of a single quality by 1 (Up to a maximum of 3)"
+                }
             },
             "major": {
-                "talent": "Gain a new Talent at Rank 1 (perhaps something the Kid might have learned in the story so far).",
-                "quality": "Gain a new Quality at Rank 1, at BASIC Stage or higher, as long as the Stage is available (each Animon Stage can have 2 Qualities, which apply at that Stage and all higher Stages).",
-                "effect": "Gain a new Effect on any Signature Attack (each Signature Attack can have up to 3 Effects).",
-                "signature": "Increase the Rank of a BASIC or SUPER Stage Signature Attack by 1 (up to a maximum Rank of 3).",
-                "minor": "Take a minor upgrade instead"
+                "title": "Major",
+                "talent": {
+                    "short": "New Talent",
+                    "full": "Gain a new Talent at Rank 1 (perhaps something the Kid might have learned in the story so far)."
+                },
+                "quality": {
+                    "short": "New Quality",
+                    "full": "Gain a new Quality at Rank 1, at BASIC Stage or higher, as long as the Stage is available (each Animon Stage can have 2 Qualities, which apply at that Stage and all higher Stages)."
+                },
+                "effect": {
+                    "short": "New Effect",
+                    "full": "Gain a new Effect on any Signature Attack (each Signature Attack can have up to 3 Effects)."
+                },
+                "signature": {
+                    "short": "Signature Rank Up",
+                    "full": "Increase the Rank of a BASIC or SUPER Stage Signature Attack by 1 (up to a maximum Rank of 3)."
+                },
+                "minor": {
+                    "short": "Minor Advance",
+                    "full": "Take a minor upgrade instead"
+                }
             }
         },
         "sheet": {
@@ -109,6 +146,10 @@
                     "title": "QUALITIES",
                     "add": "Add a new quality for this form"
                 }
+            },
+            "gear": {
+                "gear": "GEAR",
+                "anitool": "ANI-TOOL"
             },
             "kid": {
                 "name": "KID NAME",
