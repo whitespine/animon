@@ -1,5 +1,6 @@
 import { SvelteApplicationMixin } from "../overrides/svelte_mixin.svelte";
 import GearSheetComponent from "../components/sheets/items/GearSheet.svelte";
+import UpgradeSheetComponent from "../components/sheets/items/UpgradeSheet.svelte";
 
 export class CustomItemSheet extends foundry.applications.sheets.ItemSheetV2 {
     static DEFAULT_OPTIONS = {
@@ -45,6 +46,19 @@ export class GearSheet extends SvelteApplicationMixin(CustomItemSheet) {
         classes: ["gear"],
         svelte: {
             component: GearSheetComponent
+        },
+        position: {
+            width: 600,
+            height: "auto"
+        }
+    }
+}
+
+export class UpgradeSheet extends SvelteApplicationMixin(CustomItemSheet) {
+    static DEFAULT_OPTIONS = {
+        classes: ["upgrade"],
+        svelte: {
+            component: UpgradeSheetComponent
         },
         position: {
             width: 600,

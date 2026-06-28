@@ -1,5 +1,5 @@
 import { GenericComponentApp } from "./generic_app";
-import ProseMirrorField from "../components/fields/ProsemirrorField.svelte";
+import ProsemirrorField from "../components/fields/ProsemirrorField.svelte";
 
 export class PopoutEditor extends GenericComponentApp {
     static DEFAULT_OPTIONS = {
@@ -22,6 +22,6 @@ export class PopoutEditor extends GenericComponentApp {
         };
         options.window ??= {};
         options.window.title ??= title ?? undefined;
-        super(ProseMirrorField, props, options);
+        super(ProsemirrorField, props, options);
     }
 }

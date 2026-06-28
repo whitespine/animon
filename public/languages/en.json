@@ -16,7 +16,10 @@
             "stop": "Don't show this again"
         },
         "upgrade": {
+            "name": "Upgrade Name",
             "level": "Level acquired at",
+            "category": "Upgrade Category",
+            "key": "Upgrade Type",
             "score": {
                 "title": "Score",
                 "hp": {

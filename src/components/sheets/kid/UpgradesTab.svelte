@@ -5,8 +5,9 @@
     import DeleteButton from "../../fields/DeleteButton.svelte";
     import EditButton from "../../fields/EditButton.svelte";
     import ViewButton from "../../fields/ViewButton.svelte";
-    import {slide} from "svelte/transition";
+    import { slide } from "svelte/transition";
     import { stop } from "../../../utils/handlers";
+    import XP from "../bond/components/XP.svelte";
 
     let { actor, edit } = $props();
     let items = $derived(actor.system.sv_items);
@@ -29,18 +30,19 @@
             },
         ]);
     }
-
-    $inspect(upgrades);
-    $inspect(actor.items);
 </script>
 
-<div class="outer-box row even">
+<div class="outer-box col">
     {#snippet upgrade(doc)}
         <div transition:slide class="upgrade row">
             <div class="col grow">
-                <span class="description bold">{doc.system.localized_short}</span>
+                <span class="description bold">
+                    {doc.system.localized_short}
+                </span>
                 <span class="level">Level: {doc.system.level}</span>
-                <span class="grow clip-text">{doc.system.notes}</span>
+                <div class="grow notes">
+                    {@html doc.system.notes}
+                </div>
             </div>
             <div class="col">
                 {#if edit}
@@ -63,18 +65,30 @@
                 {@render upgrade(u)}
             {/each}
 
-            <button onclick={(e) => [stop(e), createUpgrade(category)]}>Create</button>
+            <button onclick={(e) => [stop(e), createUpgrade(category)]}
+                >Create</button
+            >
         </div>
     {/snippet}
 
-    {@render column("minor")}
-    {@render column("major")}
-    {@render column("score")}
+    <div class="inner-box">
+        <XP {actor} direction="row"></XP>
+    </div>
+
+    <div class="row even">
+        {@render column("minor")}
+        {@render column("major")}
+        {@render column("score")}
+    </div>
 </div>
 
 <style lang="scss" module>
     .notes {
-        padding: 8px;
+        overflow: hidden;
+
+        p {
+            margin: 0px;
+        }
     }
 
     .upgrade {
