@@ -9,13 +9,16 @@
     });
 </script>
 
-<span {...restProps} class={fullClasses} alt={value}> {value} </span>
+<div {...restProps} class={fullClasses} alt={value}> {value} </div>
 
 <style lang="scss">
-    span {
+    div {
+        --true-size: var(--size, 32px);
         border: 0px;
-        width: 32px;
-        height: 32px;
+        width: var(--true-size);
+        height: var(--true-size);
+        margin: var(--margin, 2px);
+        border-radius: calc(var(--true-size) / 6);
         background-color: gray;
         text-align: center;
         font-size: x-large;

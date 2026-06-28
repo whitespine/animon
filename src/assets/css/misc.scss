@@ -1,6 +1,10 @@
 @layer system {
     .animon,
     #dnd-action-dragged-el {
+        button:hover {
+            --button-hover-text-color: black;
+        }
+
         .invert {
             filter: invert(1)
         }

@@ -13,7 +13,7 @@
             type="number"
             name="difficulty"
             min="1"
-            bind:value={RollerState.params.difficulty}
+            bind:value={RollerState.difficulty}
         />
     </div>
     {#if RollerState.actor?.type === "kid"}
@@ -24,11 +24,11 @@
                 name="bond_points"
                 min="1"
                 max={RollerState.actor?.system}
-                bind:value={RollerState.params.difficulty}
+                bind:value={RollerState.difficulty}
             />
         </div>
     {/if}
-    <Boost bind:value={RollerState.params.boost}></Boost>
+    <Boost bind:value={RollerState.boost}></Boost>
     <button onclick={roll}>Roll</button>
 </div>
 

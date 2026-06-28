@@ -17,13 +17,23 @@ export function boostedThreshold(boost) {
  * @returns {string} a dice formula
  */
 export function boostedFormula(pool, boost) {
-    console.log(`${pool}d6cs>=${boostedThreshold(boost)}`);
     return `${pool}d6cs>=${boostedThreshold(boost)}`
 }
 
 /**
+ * A useful aggregate type for our from/to callbacks
+ * @typedef {object} BasicTestParams
+ * @property {number} dice_pool How many dice we're rolling
+ * @property {number} boost [-2, 2] How we're computing boost
+ * @property {number} difficulty Difficulty
+ * @property {number} human_friendly_roll Readable descriptor of roll
+ * @property {number} bond_points_spent For bookkeeping, how much was spent on this roll
+ */
+
+
+/**
  * 
- * @param {CheckParams} check_details 
+ * @param {BasicTestParams} check_details 
  * @param {Actor} speaker Possible other speaker to use 
  * @returns {Promise<{
  *   message: ChatMessage,
@@ -36,7 +46,7 @@ export async function rollCheck(check_details, speaker=null) {
 
     // Send to chat immediately. 
     let message = await ChatMessage.create({
-        type: "basic_check",
+        type: "basic_test",
         rolls: [roll],
         speaker: speaker ?? ChatMessage.getSpeaker(),
         author: check_details.author,

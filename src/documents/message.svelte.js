@@ -3,8 +3,6 @@ import SystemMessageComponent from '../components/rolls/SystemMessage.svelte'
 
 
 export class SystemChatMessage extends ChatMessage {
-    static TYPES = ["basic_check"]; // Not inferred from models
-
     // State
     _svelte_wrappers = {}; // For popout, popup, and 
     _svelte_components = {};

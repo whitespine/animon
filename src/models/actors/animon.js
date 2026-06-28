@@ -1,6 +1,6 @@
 import { SystemActor } from "../../documents/actor.svelte";
 import { ActorModel } from "./actor.svelte";
-import { rankedSort, SortField, titleCaseString } from "../base.svelte";
+import { rankedSort, sortedObjectToArray, SortField, titleCaseString } from "../base.svelte";
 
 const fields = foundry.data.fields;
 
@@ -197,7 +197,6 @@ export class AnimonModel extends ActorModel {
 
     // Compute our final bonuses
     prepareDerivedData() {
-        // For now, just stupidly build up qualities
         let prior_forms = [];
         for (let [_, form] of this.sorted_forms) {
             form.stats.hp = AnimonModel.maxHp(form.tier, form.stats.heart) + this.bonuses.hp;
@@ -212,6 +211,10 @@ export class AnimonModel extends ActorModel {
             });
 
             prior_forms.push(form);
+            Object.defineProperty(form, "all_qualities", {
+                value: [...prior_forms, form].flatMap(x => sortedObjectToArray(x.qualities)),
+                enumerable: false
+            });
         }
 
         // Bring our bar stuff to the top level

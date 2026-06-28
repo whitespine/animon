@@ -1,10 +1,10 @@
 <script>
-    import BasicRoll from "./message/BasicCheck.svelte";
+    import BasicTest from "./message/BasicTest.svelte";
     let { message } = $props();
 </script>
 
-{#if message.type == "basic_check"}
-    <BasicRoll {message} />
+{#if message.type == "basic_test"}
+    <BasicTest {message} />
 {:else}
     <div>
         Unsupported message type {message.type}

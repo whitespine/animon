@@ -8,12 +8,12 @@
 
     let { actor, edit } = $props();
 
-    let talents = $derived(sortedObjectToArray(actor.system.talent));
+    let talents = $derived(sortedObjectToArray(actor.system.talents));
 
     // Add a new talent
     function addTalent() {
         actor.update({
-            "system.talent": sortedArrayToObject([
+            "system.talents": sortedArrayToObject([
                 ...talents,
                 {
                     _id: foundry.utils.randomID(),
@@ -24,7 +24,7 @@
 
     // Remove the talent with _id
     function removeTalent(_id) {
-        actor.update({ [`system.talent.${_id}`]: _del });
+        actor.update({ [`system.talents.${_id}`]: _del });
     }
 </script>
 
@@ -46,7 +46,7 @@
                 <UpdateInput
                     doc={actor}
                     class="name prefix-input"
-                    path="system.talent.{talent._id}.name"
+                    path="system.talents.{talent._id}.name"
                     size="1"
                 ></UpdateInput>
             </div>
@@ -54,7 +54,7 @@
                 <UpdateInput
                     doc={actor}
                     class="rank prefix-input"
-                    path="system.talent.{talent._id}.rank"
+                    path="system.talents.{talent._id}.rank"
                     size="1"
                 ></UpdateInput>
             </div>

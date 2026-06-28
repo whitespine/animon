@@ -42,7 +42,7 @@ export class KidModel extends ActorModel {
                 reflex: statField(),
                 spirit: statField()
             }),
-            talent: new fields.TypedObjectField(new fields.SchemaField({
+            talents: new fields.TypedObjectField(new fields.SchemaField({
                 sort: new SortField(),
                 name: new fields.StringField({ required: true }),
                 rank: new fields.NumberField({ min: 1, max: 5, initial: 1 })

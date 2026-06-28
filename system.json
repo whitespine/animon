@@ -53,7 +53,7 @@
       "upgrade": {}
     },
     "ChatMessage": {
-      "basic_check": {}
+      "basic_test": {}
     }
   },
   "url": "#{URL}#",

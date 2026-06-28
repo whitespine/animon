@@ -23,7 +23,7 @@
     }
 </script>
 
-<div {...restProps} class={class_}> 
+<div {...restProps} class={class_ + " incrementer"}> 
     <button onclick={(e) => increment(e, -1)}>-</button>
     <input
         type="number"
@@ -39,21 +39,16 @@
 <style lang="scss">
     .incrementer {
         input {
-            margin: 5px;
+            margin: 1px 2px;
             text-align: center;
-            flex-grow: 1;
-            flex-basis: 1;
-            font-size: x-large;
+            font-size: large;
+            padding: 0px;
+            height: 100%;
         }
 
         button {
-            --button-size: 1.5em;
+            --button-size: 100%;
             font-size: x-large;
-            flex-basis: 0;
-            width: 1.5em;
-            padding: 15px;
-            min-height: none;
-            min-width: none;
         }
     }
 </style>

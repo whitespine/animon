@@ -1,21 +1,14 @@
 <script>
-    import { rollCheck } from "../../utils/roll";
     import { RollerState } from "./roller_modes/roller_state.svelte";
     import { stop } from "../../utils/handlers";
     import { slide } from "svelte/transition";
-    import BasicPrompt from "./roller_modes/KidPrompt.svelte";
+    import BasicPrompt from "./roller_modes/BasicPrompt.svelte";
     import ContestedPrompt from "./roller_modes/ContestedPrompt.svelte";
 
     /**
      * Runs when they press the button at the bottom
      */
-    // Roll handler
-    async function roll(mode) {
-        RollerState.params.mode = mode;
-        rollCheck(RollerState.params);
-    }
-
-    function toggle(e) {
+     function toggle(e) {
         stop(e);
         RollerState.visible = !RollerState.visible;
     }
@@ -30,8 +23,8 @@
             col: true,
             contracted: !RollerState.visible,
             expanded: RollerState.visible,
+            "inner-box": true
         }}
-        onclick={toggle}
     >
         <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
         <h1 class="header" onclick={toggle}>Roll</h1>
@@ -73,9 +66,7 @@
         pointer-events: all;
 
         // Coloring and styling of the background
-        background-color: var(--slot-color);
         border-radius: 10px 10px 0px 0px;
-        padding: 5px;
 
         transition: all;
         bottom: 1px;

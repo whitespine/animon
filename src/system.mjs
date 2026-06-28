@@ -10,6 +10,8 @@ import { setupSheets } from './sheets/config';
 import { injectAllCoreDocumentsReactivity, injectEmbeddedCollectionsReactivity } from './utils/reactor.svelte';
 import { initSockets } from './utils/socket.svelte';
 import { GenericComponentApp } from './apps/generic_app';
+import { ControlState } from './utils/control.svelte';
+import { RollerState } from './components/rolls/roller_modes/roller_state.svelte';
 
 Hooks.once('init', async function () {
   console.log("Initializing ANIMON RPG")
@@ -26,6 +28,10 @@ Hooks.once('init', async function () {
   game.animon = {
     combat: {},
     apps: {
+    },
+    state: {
+      control: ControlState,
+      roller: RollerState
     }
   };
 });

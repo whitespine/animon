@@ -13,7 +13,7 @@
                 new_value = (value % 6) + 1;
             }
             value = new_value;
-        }, 100);
+        }, 50);
     });
 
     onDestroy(() => {
