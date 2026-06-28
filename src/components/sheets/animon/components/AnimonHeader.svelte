@@ -7,6 +7,7 @@
     
     import Breaker from "../../../layout/Breaker.svelte";
     import { reactive } from "../../../../utils/attach.svelte";
+    import ViewButton from "../../../fields/ViewButton.svelte";
 
     let { actor, edit, activeTab = $bindable() } = $props();
 
@@ -71,6 +72,9 @@
                 <span class="readonly">
                     {actor.system.kid?.name ?? "No Kid"}
                 </span>
+                {#if actor.system.kid}
+                    <ViewButton doc={actor.system.kid}></ViewButton>
+                {/if}
             </div>
         </div>
 

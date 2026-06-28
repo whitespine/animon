@@ -7,7 +7,4 @@ export class ItemModel extends foundry.abstract.TypeDataModel {
             // Rarely are items universal... but if any field needs to go everywhere, put it here!
         };
     }
-
-    // Extend to yield effects 
-    *generatedEffects() { }
 }

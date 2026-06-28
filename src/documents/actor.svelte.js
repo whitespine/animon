@@ -116,16 +116,57 @@ export class SystemActor extends Actor {
     */
 
     // Extend allApplicableEffects to yield data model generated effects
-    *allApplicableEffects() {
-        for(let se of super.allApplicableEffects()) {
-            yield se;
+    _upgradeEffects() {
+        if(this.type != "kid") {
+            return [];
         }
-
-        // And get generated effects
-        for(let item of this.items) {
-            for(let ge of item.system.generatedEffects()) {
-                yield ge;
+        let result = [];
+        for(let i of this.items.contents) {
+            if(i.type == "upgrade" && i.system.category == "score") {
+                result.push(i.system.upgradeEffect());
             }
         }
+        return result;
+    }
+
+    /**
+     * Generate a comparable hash of our current upgrade effects
+     */
+    _upgradeEffectsHash() {
+        return JSON.stringify(this._upgradeEffects().map(ue => ue._source));
+    }
+
+    _oldUpgradeEffectsHash = this._upgradeEffectsHash();
+
+    /**
+     * Augment existing embedded document change logic to watch for
+     * changes to our upgrade effects hash, and push down effects when appropriate
+     */
+    _onEmbeddedDocumentChange() {
+        super._onEmbeddedDocumentChange();
+
+        let newPushdownCache = this._upgradeEffectsHash();
+        if(this.type == "kid" && newPushdownCache != this._upgradeEffectsHash) {
+            this.pushdownEffects();
+        }
+    }
+
+    /**
+     * For each of our linked mons, purge all existing "upgrade" effects, and create new ones
+     */
+    async pushdownEffects(target=null) {
+        let targets = target ? [target] : this.system.mons;
+        let effects = this._upgradeEffects();
+        let promises = [];
+        for(let target of targets) {
+            let old_effects = target.effects.filter(x => x.type === "upgrade");
+            let target_promise = target.deleteEmbeddedDocuments("ActiveEffect", old_effects.map(e => e._id));
+            target_promise.then(() => {
+                return target.createEmbeddedDocuments("ActiveEffect", effects.map(e => e._source));
+            });
+            promises.push(target_promise);
+        }
+        await Promise.all(promises);
+        this._oldUpgradeEffectsHash = this._upgradeEffectsHash();
     }
 }

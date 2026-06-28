@@ -91,12 +91,6 @@ export class KidModel extends ActorModel {
     // Put in the basics
     // this.updateSource(mods);
     // }
-    _onUpdate(changed, options, userId) {
-        if (userId == game.user.id && !this.parent.isToken) {
-            console.log("TODO: update all linked animon");
-            // Determine when this is run - after prepareBaseData? on item changes?
-        }
-    }
 
 
     // More complicated derivation logic might fit in better here than a $derived attribute (as seen in actor.svelte.js)
@@ -115,7 +109,7 @@ export class KidModel extends ActorModel {
         // Gather a list of active mons from game.actors
         let uuid = this.uuid;
         this.mons = game.actors.contents.filter(a => {
-            return a.type == "animon" && a._source.system.kid == this.id;
+            return a.type == "animon" && a._source.system.kid == this.parent._id;
         });
 
         // Sort our upgrades by level and then rank

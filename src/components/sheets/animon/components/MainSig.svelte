@@ -9,6 +9,7 @@
 <div class="col main-signature-box">
     <h2 class="title">
         {loc("animon.sheet.animon.signature.title")}
+        ({actor.system.signature_uses.value} / {actor.system.signature_uses.max})
     </h2>
     <div class="row even">
         <div class="prefix-input">

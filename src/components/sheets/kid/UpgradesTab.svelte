@@ -39,7 +39,7 @@
                 <span class="description bold">
                     {doc.system.localized_short}
                 </span>
-                <span class="level">Level: {doc.system.level}</span>
+                <span class="level">At Level: {doc.system.level}</span>
                 <div class="grow notes">
                     {@html doc.system.notes}
                 </div>

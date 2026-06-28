@@ -7,10 +7,6 @@ export class UpgradeEffectModel extends foundry.data.ActiveEffectTypeDataModel {
         let base = super.defineSchema();
         return {
             ...base,
-            
-            // Is this an effect on a kid that should be passed down to their mons?
-            // If its on a kid the answer is yes, if its on a mon then I guess it doesn't matter
-            passdown: new fields.BooleanField({initial: true})
         };
     }
 }

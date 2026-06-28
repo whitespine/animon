@@ -32,61 +32,62 @@ export class UpgradeModel extends ItemModel {
         }[category] ?? [];
     }
 
-    *generatedEffects() {
+    upgradeEffect() {
         // TODO: Yield generated upgrade effects
         if (this.category == "score") {
             const base = {
                 type: "upgrade",
-                name: this.name
+                // Can't just use localized_short, its not yet populated
+                name: loc(`animon.upgrade.${this.category}.${this.key}.short`) ?? "UNKNOWN"
             };
 
             if (this.key == "hp") {
-                yield {
+                return new ActiveEffect.implementation({
                     ...base,
                     changes: [{
                         key: "system.bonuses.hp",
                         type: "add",
                         value: 5
                     }],
-                };
+                });
             } else if (this.key == "damage") {
-                yield {
+                return new ActiveEffect.implementation({
                     ...base,
                     changes: [{
                         key: "system.bonuses.damage",
                         type: "add",
                         value: 2
                     }],
-                };
+                });
             } else if (this.key == "dodge") {
-                yield {
+                return new ActiveEffect.implementation({
                     ...base,
                     changes: [{
                         key: "system.bonuses.dodge",
                         type: "add",
                         value: 1
                     }],
-                };
+                });
             } else if (this.key == "sig_init") {
-                yield {
+                return new ActiveEffect.implementation({
                     ...base,
                     changes: [{
                         key: "system.bonuses.initiative",
                         type: "add",
                         value: 1
                     }, {
-                        key: "system.bonuses.signature",
+                        key: "system.bonuses.signature_uses",
                         type: "add",
                         value: 1
                     }],
-                };
+                });
             }
-
         }
         // No other types of effects actually require active effects
+        return new ActiveEffect.implementation({ name: "ERROR", type: "upgrade" });
     }
 
-    prepareDerivedData() {
+    prepareBaseData() {
         this.localized_short = loc(`animon.upgrade.${this.category}.${this.key}.short`) ?? "UNKNOWN";
         this.localized_description = loc(`animon.upgrade.${this.category}.${this.key}.full`) ?? "UNKNOWN";
     }
