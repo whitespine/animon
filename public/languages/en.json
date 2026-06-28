@@ -25,7 +25,7 @@
             "minor": {
                 "talent": "Increase the rank of a single talent by 1 (Up to a maximum of 3)",
                 "quality": "Increase the rank of a single quality by 1 (Up to a maximum of 3)"
-            }, 
+            },
             "major": {
                 "talent": "Gain a new Talent at Rank 1 (perhaps something the Kid might have learned in the story so far).",
                 "quality": "Gain a new Quality at Rank 1, at BASIC Stage or higher, as long as the Stage is available (each Animon Stage can have 2 Qualities, which apply at that Stage and all higher Stages).",
@@ -83,7 +83,7 @@
                         "name": "BRAINS",
                         "description": "",
                         "usage": ""
-                    }, 
+                    },
                     "initiative": {
                         "name": "INIT.",
                         "description": "",
@@ -174,6 +174,18 @@
             "evolve": "EVOLVE",
             "devolve": "DEVOLVE",
             "revolve": "REVOLVE"
+        },
+        "elements": {
+            "neutral": "NEUTRAL",
+            "fire": "FIRE",
+            "water": "WATER",
+            "nature": "NATURE",
+            "electric": "ELECTRIC",
+            "earth": "EARTH",
+            "wind": "WIND",
+            "light": "LIGHT",
+            "dark": "DARK",
+            "mirage": "MIRAGE"
         },
         "boost": {
             "-2": "Double Setback",

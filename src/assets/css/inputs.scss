@@ -51,7 +51,7 @@
             }
         }
 
-        input.nude {
+        input.nude, select.nude {
             @include nude_input();
         }
 

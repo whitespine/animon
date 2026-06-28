@@ -29,7 +29,7 @@ export function buildListenerAttacher(listeners) {
                 if (k == "off") {
                     v(elt);
                 } else {
-                    elt.addEventListener(k, v);
+                    elt.removeEventListener(k, v);
                 }
             }
         };
@@ -96,6 +96,7 @@ export function reactive(doc, path, preprocesser = null) {
             }
         };
 
+        console.log("Update:", doc, path, new_value);
         // Set or immediately invoke timeout
         if (delay > 0) {
             elt._animon_change_timeout = setTimeout(update, delay);
