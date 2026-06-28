@@ -70,18 +70,11 @@ export function rollScrambler(delay, max) {
 }
 
 export function reactive(doc, path, preprocesser = null) {
-    // let persisted_value = resolveDotpath(doc, path); // Initiall unset
-    let elt = null;
-    let persisted_value = $derived(resolveDotpath(doc, path)); // = resolveDotpath(doc, path); // Initiall unset
-    $effect(() => {
-        // Only allow desync if not focused
-        if(elt && !elt.matches(':focus')) {
-            elt.value = persisted_value;
-        }
-    });
-
-    let change_timeout = null;
-    function commit(new_value, delay) {
+    function commit(evt, delay) {
+        stop(evt);
+        let elt = evt.target;
+        let new_value = elt.value;
+        let persisted_value = resolveDotpath(doc, path);
         // Preprocess value if necessary
         if (preprocesser) {
             new_value = preprocesser(new_value);
@@ -89,9 +82,9 @@ export function reactive(doc, path, preprocesser = null) {
         elt.value = new_value;
 
         // Clear existing timeouts
-        if (change_timeout) {
-            clearTimeout(change_timeout);
-            change_timeout = null;
+        if (elt._animon_change_timeout) {
+            clearTimeout(elt._animon_change_timeout);
+            elt._animon_change_timeout = undefined;
         }
 
         // Create our timeout callback
@@ -105,30 +98,23 @@ export function reactive(doc, path, preprocesser = null) {
 
         // Set or immediately invoke timeout
         if (delay > 0) {
-            change_timeout = setTimeout(update, delay);
+            elt._animon_change_timeout = setTimeout(update, delay);
         } else {
             update();
         }
     }
 
     return buildListenerAttacher({
-        on: (e) => {
-            if(elt) {
-                if(e == elt) {
-                    return; 
+        on: (elt) => {
+            $effect(() => {
+                // Only allow desync if not focused
+                if(!(elt.matches(':focus') && elt._animon_change_timeout)) {
+                    elt.value = resolveDotpath(doc, path);
                 }
-                console.error("reactive is not meant to be reusable. Old, new", elt, e);
-                return;
-            }
-            elt = e;
-            elt.name ??= path;
-            elt.value = persisted_value;
+            });
         },
-        change: (e) => commit(stop(e).target.value, 0),
-        input: (e) => commit(stop(e).target.value, 1000),
-        focusout: (e) => {
-            stop(e);
-            commit(stop(e).target.value, 0);
-        }
+        change: (evt) => commit(evt, 0),
+        input: (evt) => commit(evt, 1000),
+        focusout: (evt) => commit(evt, 0)
     });
 }
