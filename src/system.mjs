@@ -11,7 +11,7 @@ import { injectAllCoreDocumentsReactivity, injectEmbeddedCollectionsReactivity }
 import { initSockets } from './utils/socket.svelte';
 import { GenericComponentApp } from './apps/generic_app';
 import { ControlState } from './utils/control.svelte';
-import { RollerState } from './components/rolls/roller_modes/roller_state.svelte';
+import { GlobalRollerState } from './components/rolls/prompt/roller_state.svelte';
 
 Hooks.once('init', async function () {
   console.log("Initializing ANIMON RPG")
@@ -31,7 +31,7 @@ Hooks.once('init', async function () {
     },
     state: {
       control: ControlState,
-      roller: RollerState
+      roller: GlobalRollerState
     }
   };
 });

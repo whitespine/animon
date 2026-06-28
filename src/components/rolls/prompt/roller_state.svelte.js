@@ -4,20 +4,16 @@ import { onlineOwners } from "../../../utils/ownership";
 import { rollCheck } from "../../../utils/roll";
 
 /**
- * Utility singleton for managing the current configuration of our roller
+ * Utility class singleton for managing the current configuration of our roller
  */
-class _RollerState {
-
-    /** visible Is the roller currently visible?
-     * @type {boolean} 
-     */
-    visible = $state(false);
-
-    /** @type {Actor | null} 
-     * Who would we be rolling as? null = use anon roll behavior
-     */
-    actor = $derived(ControlState.speakerActor ?? null);
-
+export class RollerState {
+    speaker = $state({
+        scene: null,
+        token: null,
+        actor: null,
+        alias: null
+    });
+    actor = $derived(ChatMessage.getSpeakerActor(this.speaker));
     kid = $derived.by(() => {
         if(!this.actor) return null;
         if(this.actor.type == "kid") return this.actor;
@@ -25,8 +21,6 @@ class _RollerState {
         return null;
     })
 
-    // Current display mode
-    mode = $state("basic");
     // For basic tests, the manually set difficulty
     difficulty = $state(2);
     // Our boost mode
@@ -117,5 +111,13 @@ class _RollerState {
     }
 }
 
-/** @type {_RollerState} */
-export const RollerState = new _RollerState();
+class _GlobalRollerState extends RollerState {
+    /** Is the roller currently visible?
+     * 
+     * @type {boolean} 
+     */
+    visible = $state(false);
+}
+
+/** @type {RollerState} */
+export const GlobalRollerState = new _GlobalRollerState();

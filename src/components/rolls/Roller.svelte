@@ -1,17 +1,21 @@
 <script>
-    import { RollerState } from "./roller_modes/roller_state.svelte";
+    import { GlobalRollerState } from "./prompt/roller_state.svelte";
     import { stop } from "../../utils/handlers";
     import { slide } from "svelte/transition";
-    import BasicPrompt from "./roller_modes/BasicPrompt.svelte";
-    import ContestedPrompt from "./roller_modes/ContestedPrompt.svelte";
+    import TestPrompt from "./prompt/TestPrompt.svelte";
+    import { ControlState } from "../../utils/control.svelte";
 
     /**
      * Runs when they press the button at the bottom
      */
      function toggle(e) {
         stop(e);
-        RollerState.visible = !RollerState.visible;
+        GlobalRollerState.visible = !GlobalRollerState.visible;
     }
+
+    $effect(() => {
+        GlobalRollerState.speaker = ControlState.speaker;
+    });
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -21,22 +25,16 @@
         class={{
             root: true,
             col: true,
-            contracted: !RollerState.visible,
-            expanded: RollerState.visible,
+            contracted: !GlobalRollerState.visible,
+            expanded: GlobalRollerState.visible,
             "inner-box": true
         }}
     >
         <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
         <h1 class="header" onclick={toggle}>Roll</h1>
-        {#if RollerState.visible}
+        {#if GlobalRollerState.visible}
             <div transition:slide>
-                {#if RollerState.mode == "basic"}
-                    <BasicPrompt></BasicPrompt>
-                {:else if RollerState.mode == "contested"}
-                    <ContestedPrompt></ContestedPrompt>
-                {:else}
-                    <BasicPrompt></BasicPrompt>
-                {/if}
+                <TestPrompt state={GlobalRollerState}></TestPrompt>
             </div>
         {/if}
     </div>
