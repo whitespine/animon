@@ -96,7 +96,6 @@ export function reactive(doc, path, preprocesser = null) {
             }
         };
 
-        console.log("Update:", doc, path, new_value);
         // Set or immediately invoke timeout
         if (delay > 0) {
             elt._animon_change_timeout = setTimeout(update, delay);
@@ -107,6 +106,9 @@ export function reactive(doc, path, preprocesser = null) {
 
     return buildListenerAttacher({
         on: (elt) => {
+            $effect(() => {
+                elt.name = path;
+            });
             $effect(() => {
                 // Only allow desync if not focused
                 if(!(elt.matches(':focus') && elt._animon_change_timeout)) {
