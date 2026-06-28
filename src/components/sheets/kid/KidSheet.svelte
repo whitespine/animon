@@ -3,6 +3,7 @@
     import loc from "../../../utils/localize";
     import Tabs from "../../layout/Tabs.svelte";
     import GearTab from "./GearTab.svelte";
+    import UpgradesTab from "./UpgradesTab.svelte";
     import MainTab from "./MainTab.svelte";
     import MonTab from "./MonTab.svelte";
     import NotesTab from "./NotesTab.svelte";
@@ -20,6 +21,7 @@
         kid: MainTab,
         animon: MonTab,
         gear: GearTab,
+        upgrades: UpgradesTab,
         notes: NotesTab,
     };
     let ActiveTab = $derived(TAB_COMPONENTS[tab])

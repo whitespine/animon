@@ -40,6 +40,7 @@
                 "kid": "KID",
                 "animon": "ANIMON",
                 "gear": "GEAR",
+                "upgrades": "UPGRADES",
                 "notes": "NOTES"
             },
             "bond": {

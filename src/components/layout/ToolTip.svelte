@@ -1,6 +1,6 @@
 <script>
     import { fixClasses } from "../../utils/classes";
-    import { buildListenerAttacher, portalTo } from "../../utils/attach";
+    import { buildListenerAttacher } from "../../utils/attach.svelte";
 
     let {
         on,

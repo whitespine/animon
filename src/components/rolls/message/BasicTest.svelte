@@ -3,7 +3,7 @@
     import RollingDie from "../RollingDie.svelte";
     import { suspense, inSuspense } from "../../../utils/suspense.svelte";
     import { fixClasses } from "../../../utils/classes";
-    import { rollScrambler } from "../../../utils/attach";
+    import { rollScrambler } from "../../../utils/attach.svelte";
 
     let { message } = $props();
 
