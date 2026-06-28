@@ -1,10 +1,11 @@
 <script>
     import loc from "../../../utils/localize";
-    import UpdateInput from "../../fields/UpdateInput.svelte";
+
     import XofX from "../../fields/XofX.svelte";
     import XP from "./components/XP.svelte";
     import { stop } from "../../../utils/handlers";
     import { slide } from "svelte/transition";
+    import { reactive } from "../../../utils/attach.svelte";
 
     let { mon, kid, edit } = $props();
 </script>
@@ -13,13 +14,12 @@
     <div class="outer-box bond-box col">
         <div class="inner-box row even">
             <label for="system">{loc("animon.sheet.bond.level")}</label>
-            <UpdateInput
+            <input
                 class="nude"
-                doc={kid}
-                path="system.bond_level"
+                {@attach reactive(kid, "system.bond_level")}
                 style="text-align: center"
-                size=1
-            ></UpdateInput>
+                size="1"
+            />
         </div>
 
         <div class="row">

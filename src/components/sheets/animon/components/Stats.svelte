@@ -1,6 +1,7 @@
 <script>
+    import { reactive } from "../../../../utils/attach.svelte";
     import loc from "../../../../utils/localize";
-    import UpdateInput from "../../../fields/UpdateInput.svelte";
+    
 
     let { actor, form_id, edit } = $props();
     let form = $derived(actor.system.forms[form_id]);
@@ -13,13 +14,8 @@
             <label for="system.stats.{stat}">
                 {loc(`animon.sheet.animon.stats.${stat}.name`)}:
             </label>
-            <UpdateInput
-                doc={actor}
-                path="system.forms.{form_id}.stats.{stat}"
-                class="center nude"
-                fallback="2"
-                size="1"
-            ></UpdateInput>
+            <input {@attach reactive(actor, `system.forms.${form_id}.stats.${stat}`)} class="center nude" fallback="2" size="1"
+            >
         </div>
     {/each}
 </div>

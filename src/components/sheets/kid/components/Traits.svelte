@@ -1,6 +1,7 @@
 <script>
+    import { reactive } from "../../../../utils/attach.svelte";
     import loc from "../../../../utils/localize";
-    import UpdateInput from "../../../fields/UpdateInput.svelte";
+    
 
     let { actor, edit } = $props();
 </script>
@@ -13,12 +14,8 @@
                 <label for="system.traits.{trait}">
                     {loc(`animon.sheet.kid.traits.${trait}.name`)}:
                 </label>
-                <UpdateInput
-                    doc={actor}
-                    path="system.trait.{trait}"
-                    style="text-align: center"
-                    size="1"
-                ></UpdateInput>
+                <input {@attach reactive(actor, `system.trait.${trait}`)} style="text-align: center" size="1"
+                >
             </div>
         {/each}
     </div>

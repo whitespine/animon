@@ -1,10 +1,11 @@
 <script>
     import loc from "../../../../utils/localize";
     import { sortedObjectToArray } from "../../../../models/base.svelte";
-    import UpdateInput from "../../../fields/UpdateInput.svelte";
+
     import { sortedArrayToObject } from "../../../../models/base.svelte";
     import { stop } from "../../../../utils/handlers";
     import { slide } from "svelte/transition";
+    import { reactive } from "../../../../utils/attach.svelte";
 
     let { actor, edit, form_id } = $props();
 
@@ -67,33 +68,33 @@
         {#each combined_qualities as q (q.quality._id)}
             <div class="prefix-input name" transition:slide>
                 {#if q.editable}
-                    <UpdateInput
-                        doc={actor}
-                        path="system.forms.{form_id}.qualities.{q.quality
-                            ._id}.name"
+                    <input
+                        {@attach reactive(
+                            actor,
+                            `system.forms.${form_id}.qualities.${q.quality._id}.name`,
+                        )}
                         size="1"
-                    ></UpdateInput>
+                    />
                 {:else}
                     <span>{q.quality.name}</span>
                 {/if}
             </div>
             <div class="prefix-input rank" transition:slide>
                 {#if q.editable}
-                    <UpdateInput
-                        doc={actor}
-                        path="system.forms.{form_id}.qualities.{q.quality
-                            ._id}.rank"
+                    <input
+                        {@attach reactive(
+                            actor,
+                            `system.forms.${form_id}.qualities.${q.quality._id}.rank`,
+                        )}
                         size="1"
-                    ></UpdateInput>
+                    />
                 {:else}
                     <span>{q.quality.rank}</span>
                 {/if}
             </div>
             <div transition:slide>
                 {#if q.editable}
-                    <a
-                        onclick={(e) => [stop(e), removeQuality(q.quality._id)]}
-                    >
+                    <a onclick={(e) => [stop(e), removeQuality(q.quality._id)]}>
                         <i class="fas fa-trash"></i>
                     </a>
                 {/if}

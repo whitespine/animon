@@ -2,7 +2,7 @@
     import { stop } from "../../utils/handlers";
     import { resolveDotpath } from "../../utils/paths";
     import Breaker from "../layout/Breaker.svelte";
-    import UpdateInput from "./UpdateInput.svelte";
+    
     let { doc, label, path } = $props();
     let value = $derived(resolveDotpath(doc, path, 0));
 </script>

@@ -1,6 +1,7 @@
 <script>
+    import { reactive } from "../../../utils/attach.svelte";
     import Portrait from "../../fields/Portrait.svelte";
-    import UpdateInput from "../../fields/UpdateInput.svelte";
+    
     let { context, app } = $props();
     let gear = $derived(context.item);
     let edit = $derived(app.isEditable);
@@ -16,7 +17,7 @@
         />
     </div>
     <div>
-        <UpdateInput doc={gear} path="name" />
+        <input {@attach reactive(gear, "name")} >
     </div>
 </div>
 

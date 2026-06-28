@@ -1,7 +1,7 @@
 <script>
     import loc from "../../../../utils/localize";
     import { sortedObjectToArray } from "../../../../models/base.svelte";
-    import UpdateInput from "../../../fields/UpdateInput.svelte";
+    
     import { sortedArrayToObject } from "../../../../models/base.svelte";
     import { stop } from "../../../../utils/handlers";
     import { slide } from "svelte/transition";
@@ -45,11 +45,8 @@
     <div class="col">
         {#each relationships as relationship, i (relationship._id)}
             <div class="prefix-input" transition:slide>
-                <UpdateInput
-                    doc={actor}
-                    path="system.relationship.{relationship._id}.name"
-                    size="1"
-                ></UpdateInput>
+                <input {@attach reactive(actor, "system.relationship.{relationship._id}.name")} size="1"
+                >
                 <a
                     onclick={(e) => [
                         stop(e),

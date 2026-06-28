@@ -4,8 +4,9 @@
     import loc from "../../../../utils/localize";
     import { fixClasses } from "../../../../utils/classes";
     import Portrait from "../../../fields/Portrait.svelte";
-    import UpdateInput from "../../../fields/UpdateInput.svelte";
+    
     import Breaker from "../../../layout/Breaker.svelte";
+    import { reactive } from "../../../../utils/attach.svelte";
 
     let { actor, edit, activeTab = $bindable() } = $props();
 
@@ -60,7 +61,7 @@
                     ></Breaker>-->
                     {loc("animon.sheet.animon.name")}:
                 </label>
-                <UpdateInput doc={actor} path="name" size="1"></UpdateInput>
+                <input {@attach reactive(actor, "name")} size="1">
             </div>
             <div class="prefix-input">
                 <label for="name">

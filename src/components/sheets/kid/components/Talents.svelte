@@ -1,10 +1,11 @@
 <script>
     import loc from "../../../../utils/localize";
     import { sortedObjectToArray } from "../../../../models/base.svelte";
-    import UpdateInput from "../../../fields/UpdateInput.svelte";
+
     import { sortedArrayToObject } from "../../../../models/base.svelte";
     import { stop } from "../../../../utils/handlers";
     import { slide } from "svelte/transition";
+    import { reactive } from "../../../../utils/attach.svelte";
 
     let { actor, edit } = $props();
 
@@ -32,7 +33,7 @@
     <div class="grid">
         <h2 class="title row">
             <span class="grow">{loc("animon.sheet.kid.talent.title")}:</span>
-            <a onclick={(e) => [stop(e), addTalent()]} >
+            <a onclick={(e) => [stop(e), addTalent()]}>
                 <i
                     class="fas fa-plus"
                     data-tooltip={loc("animon.sheet.kid.talent.add")}
@@ -43,20 +44,24 @@
         <div></div>
         {#each talents as talent, i (talent._id)}
             <div transition:slide>
-                <UpdateInput
-                    doc={actor}
+                <input
+                    {@attach reactive(
+                        actor,
+                        `system.talents.${talent._id}.name`,
+                    )}
                     class="name prefix-input"
-                    path="system.talents.{talent._id}.name"
                     size="1"
-                ></UpdateInput>
+                />
             </div>
             <div transition:slide>
-                <UpdateInput
-                    doc={actor}
+                <input
+                    {@attach reactive(
+                        actor,
+                        `system.talents.${talent._id}.rank`,
+                    )}
                     class="rank prefix-input"
-                    path="system.talents.{talent._id}.rank"
                     size="1"
-                ></UpdateInput>
+                />
             </div>
             <a
                 onclick={(e) => [stop(e), removeTalent(talent._id)]}

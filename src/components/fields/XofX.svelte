@@ -1,8 +1,8 @@
 <script>
-    import { stop } from "../../utils/handlers";
+    import { reactive } from "../../utils/attach.svelte";
     import { resolveDotpath } from "../../utils/paths";
     import Breaker from "../layout/Breaker.svelte";
-    import UpdateInput from "./UpdateInput.svelte";
+
     let { doc, label, value_path, max_path } = $props();
     let max = $derived(resolveDotpath(doc, max_path, 0));
 </script>
@@ -10,12 +10,14 @@
 <div class="xofx inner-box center col">
     <label for={value_path}><Breaker text={label}></Breaker></label>
     <div class="body">
-        <div class="numerator"><UpdateInput class="nude" {doc} path={value_path} size=1></UpdateInput></div>
+        <div class="numerator">
+            <input {@attach reactive(doc, value_path)} class="nude" size="1" />
+        </div>
         <div class="denominator">{max}</div>
     </div>
 </div>
 
-<style lang="scss" module>
+<style lang="scss">
     .xofx {
         --cell: 1.5rem;
         --slash-width: 2px;
@@ -31,15 +33,18 @@
             grid-template-columns: var(--cell) var(--cell);
             grid-template-rows: var(--cell) var(--cell);
 
-            background: 
-                linear-gradient(to top left,
-                    rgba(0,0,0,0) 0%,
-                    rgba(0,0,0,0) calc(50% - var(--slash-width)),
-                    rgba(0,0,0,1) calc(50% - var(--slash-width) + var(--slash-fade)),
-                    rgba(0,0,0,1) 50%,
-                    rgba(0,0,0,1) calc(50% + var(--slash-width) - var(--slash-fade)),
-                    rgba(0,0,0,0) calc(50% + var(--slash-width)),
-                    rgba(0,0,0,0) 100%),
+            background: linear-gradient(
+                to top left,
+                rgba(0, 0, 0, 0) 0%,
+                rgba(0, 0, 0, 0) calc(50% - var(--slash-width)),
+                rgba(0, 0, 0, 1)
+                    calc(50% - var(--slash-width) + var(--slash-fade)),
+                rgba(0, 0, 0, 1) 50%,
+                rgba(0, 0, 0, 1)
+                    calc(50% + var(--slash-width) - var(--slash-fade)),
+                rgba(0, 0, 0, 0) calc(50% + var(--slash-width)),
+                rgba(0, 0, 0, 0) 100%
+            );
         }
 
         .denominator {
@@ -52,7 +57,8 @@
             grid-row: 1;
         }
 
-        input, span {
+        input,
+        span {
             justify-self: center;
             align-self: center;
             text-align: center;

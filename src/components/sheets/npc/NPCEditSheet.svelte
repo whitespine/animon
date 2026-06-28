@@ -1,5 +1,7 @@
 <script>
-    import UpdateInput from "../../fields/UpdateInput.svelte";
+    import { reactive } from "../../../utils/attach.svelte";
+
+    
     import { stop } from "../../../utils/handlers";
     import Portrait from "../../fields/Portrait.svelte";
 
@@ -23,7 +25,7 @@
     </div>
     <div>
         <label for="name">Name: </label>
-        <UpdateInput name="name" doc={actor} path="name" />
+        <input {@attach reactive(actor, "name")} >
     </div>
     <button onclick={() => app.props.edit = false}> Done Editing </button> 
     <!-- ^Snake eater means we don't need to stop propagation of this event -->

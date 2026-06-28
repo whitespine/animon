@@ -1,6 +1,7 @@
 <script>
+    import { reactive } from "../../../utils/attach.svelte";
     import Portrait from "../../fields/Portrait.svelte";
-    import UpdateInput from "../../fields/UpdateInput.svelte";
+    
     let { context, app } = $props();
     let upgrade = $derived(context.item);
     let edit = $derived(app.isEditable);
@@ -19,11 +20,11 @@
         <div class="col">
             <div class="prefix-input">
                 <label for="name"> {loc("animon.sheet.upgrade.name")}: </label>
-                <UpdateInput doc={upgrade} path="name" size="1"></UpdateInput>
+                <input {@attach reactive(upgrade, "name")} size="1">
             </div>
             <div class="prefix-input">
                 <label for="system.type"> {loc("animon.sheet.upgrade.type")}: </label>
-                <UpdateSelect doc={upgrade} path="system.type" size="1"></UpdateInput>
+                <UpdateSelect doc={upgrade} path="system.type" size="1">
             </div>
         </div>
     </div>

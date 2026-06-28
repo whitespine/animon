@@ -1,10 +1,11 @@
 <script>
     import loc from "../../../../utils/localize";
     import { sortedObjectToArray } from "../../../../models/base.svelte";
-    import UpdateInput from "../../../fields/UpdateInput.svelte";
+    
     import { sortedArrayToObject } from "../../../../models/base.svelte";
     import { stop } from "../../../../utils/handlers";
     import { slide } from "svelte/transition";
+    import { reactive } from "../../../../utils/attach.svelte";
 
     let { actor, edit } = $props();
 
@@ -78,11 +79,8 @@
                 <label for="system.harm.{harm._id}.name">
                     Lv.{harm.severity}:
                 </label>
-                <UpdateInput
-                    doc={actor}
-                    path="system.harm.{harm._id}.name"
-                    size="1"
-                ></UpdateInput>
+                <input {@attach reactive(actor, "system.harm.{harm._id}.name")} size="1"
+                >
                 <!--class={{ disabled: total_harm >= 3, foo: true }}-->
                 <a
                     onclick={(e) => [stop(e), incrementHarm(harm._id)]}

@@ -1,13 +1,14 @@
 <script>
-    import loc from "../../../../utils/localize";
-    import UpdateInput from "../../../fields/UpdateInput.svelte";
+    import { reactive } from "../../../../utils/attach.svelte";
+import loc from "../../../../utils/localize";
+    
 
     let { actor, edit } = $props();
 </script>
 
 <div class="inner-box row center">
     <h2>{loc("animon.sheet.kid.stamina")}</h2>
-    <UpdateInput class="center nude" doc={actor} path="system.stamina.value" size="1"></UpdateInput>
+    <input class="center nude" {@attach reactive(actor, "system.stamina.value")} size="1">
 
     <span class="slash">/</span>
 

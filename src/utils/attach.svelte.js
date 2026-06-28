@@ -114,10 +114,14 @@ export function reactive(doc, path, preprocesser = null) {
     return buildListenerAttacher({
         on: (e) => {
             if(elt) {
-                console.error("reactive is not meant to be reusable");
+                if(e == elt) {
+                    return; 
+                }
+                console.error("reactive is not meant to be reusable. Old, new", elt, e);
                 return;
             }
             elt = e;
+            elt.name ??= path;
             elt.value = persisted_value;
         },
         change: (e) => commit(stop(e).target.value, 0),

@@ -1,7 +1,7 @@
 <script>
     import loc from "../../../../utils/localize";
     import StatBox from "../../../fields/StatBox.svelte";
-    import UpdateInput from "../../../fields/UpdateInput.svelte";
+    
     import XofX from "../../../fields/XofX.svelte";
 
     let { actor, form_id, edit } = $props();

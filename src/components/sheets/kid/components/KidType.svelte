@@ -1,8 +1,9 @@
 <script>
     import loc from "../../../../utils/localize";
     import { stop } from "../../../../utils/handlers";
-    import UpdateInput from "../../../fields/UpdateInput.svelte";
+    
     import { PopoutEditor } from "../../../../apps/popout_editor";
+    import { reactive } from "../../../../utils/attach.svelte";
 
     let { actor, edit } = $props();
 
@@ -16,7 +17,7 @@
 <div class="inner-box kid-type-box col">
     <div class="header prefix-input">
         <label for="system.stamina">{loc("animon.sheet.kid.type.title")}:</label>
-        <UpdateInput doc={actor} path="system.kid_type" size="1"></UpdateInput>
+        <input {@attach reactive(actor, "system.kid_type")} size="1">
     </div>
     <div class="body row center">
         <div class="content">
