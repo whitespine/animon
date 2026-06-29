@@ -25,4 +25,15 @@ export class SystemCombatant extends Combatant {
         }
         return canvas.ping(token.center);
     }
+
+    // Get the formula
+    _getInitiativeFormula() {
+        if(this.actor.type == "animon") {
+            return "(@form.stats.initiative)d6cs>=4 + 0.5"; // TODO - prompt setback, perhaps
+        } else if(this.actor.type == "npc") {
+            return "(@stats.initiative)d6cs4"; // TODO - prompt setback, perhaps
+        } else {
+            return "0";
+        }
+    }
 }
