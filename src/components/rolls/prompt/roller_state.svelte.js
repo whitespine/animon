@@ -47,6 +47,9 @@ export class RollerState {
         return null;
     });
     quality_bonus = $derived(this.quality?.rank ?? 0);
+    signature_id = $state(""); // Technically the id of the form
+    signature = $derived(this.actor?.system.forms?.[this.signature_id]?.signature);
+    signature_bonus = $derived(this.signature?.rank);
 
     // Kid/mon but not npc
     bond_points_spent = $state(0);
@@ -58,9 +61,19 @@ export class RollerState {
     // We derive this. Don't try to override, use final_mod
     dice_pool = $derived(this.trait_bonus + this.talent_bonus + this.stat_bonus + this.quality_bonus + this.bond_points_bonus_dice + this.final_mod);
 
-    // Summon it without an actor!
-    show() {
-        this.visible = true;
+    /**
+     * Reset all attributes to default
+     */
+    reset() {
+        this.difficulty = 2;
+        this.boost = 0;
+        this.trait = "logic"
+        this.talent_id = "";
+        this.stat = "heart"
+        this.quality_id = "";
+        this.signature_id = "";
+        this.bond_points_spent = 0;
+        this.final_mod = 0;
     }
 
     async roll() {
@@ -94,9 +107,16 @@ export class RollerState {
         }
 
         // Deduct bond points
-        if(this.actor?.system.bond_points?.value && this.bond_points_spent) {
+        if(this.kid && this.bond_points_spent) {
+            this.kid.update({
+                "system.bond_points.value": this.kid.system.bond_points.value - this.bond_points_spent
+            });
+        }
+
+        // Deduct signature_uses
+        else if(this.actor?.type == "animon" && this.signature) {
             this.actor.update({
-                "system.bond_points.value": this.actor.system.bond_points.value - this.bond_points_spent
+                "system.signature_uses.value": this.actor.system.signature_uses.value - 1
             });
         }
 
@@ -107,7 +127,6 @@ export class RollerState {
             human_friendly_roll: message,
             bond_points_spent: this.bond_points_spent
         }, ControlState.speaker);
-        this.bond_points_spent = 0;
     }
 }
 
@@ -117,6 +136,11 @@ class _GlobalRollerState extends RollerState {
      * @type {boolean} 
      */
     visible = $state(false);
+
+    // Summon it without an actor!
+    show() {
+        this.visible = true;
+    }
 }
 
 /** @type {RollerState} */

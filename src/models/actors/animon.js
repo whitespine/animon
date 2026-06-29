@@ -200,7 +200,6 @@ export class AnimonModel extends ActorModel {
         let prior_forms = [];
         for (let [_, form] of this.sorted_forms) {
             form.stats.hp = AnimonModel.maxHp(form.tier, form.stats.heart) + this.bonuses.hp;
-            console.warn("Bonus");
             form.stats.signature_uses = form.stats.brains + this.bonuses.signature_uses;
             form.stats.damage = AnimonModel.damage(form.tier, form.stats.power) + this.bonuses.damage;
             form.stats.dodge = form.stats.agility + this.bonuses.dodge;

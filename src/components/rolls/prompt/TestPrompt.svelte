@@ -10,7 +10,7 @@
 
     /**
      * @type {{
-     *  state: RollerState 
+     *  state: RollerState
      * }}
      */
     let { state } = $props();
@@ -32,10 +32,8 @@
             label: t.name,
         })),
     );
-    let talent_options = $derived([
-        { id: "", label: "NONE" },
-        ...talent_definite_options,
-    ]);
+    let none = { id: "", label: "NONE" };
+    let talent_options = $derived([none, ...talent_definite_options]);
     let stat_options = $derived(
         ["heart", "power", "agility", "brains"].map((id) => ({
             id,
@@ -48,10 +46,20 @@
             label: q.name,
         })),
     );
-    let quality_options = $derived([
-        { id: "", label: "NONE" },
-        ...quality_definite_options,
-    ]);
+    let quality_options = $derived([none, ...quality_definite_options]);
+    let signature_definite_options = $derived.by(() => {
+        if(!state.actor?.system.form) return [];
+        let result = state.actor.system.form.prior_forms.map(f => ({
+            id: f._id,
+            label: f.signature.name
+        }));
+        result.push({
+            id: state.actor.system.active_form_id,
+            label: state.actor.system.form.signature.name
+        })
+        return result;
+    });
+    let signature_options = $derived([none, ...signature_definite_options]);
 </script>
 
 <div class="prompt col">
@@ -98,6 +106,14 @@
                 name="quality"
                 bind:selected={state.quality_id}
                 options={quality_options}
+            ></Select>
+        </div>
+        <div class="row center even">
+            <label for="signature">Signature [{state.signature_bonus}]:</label>
+            <Select
+                name="signature"
+                bind:selected={state.signature_id}
+                options={signature_options}
             ></Select>
         </div>
     {/if}

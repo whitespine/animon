@@ -56,7 +56,7 @@
     {/snippet}
 
     {#snippet column(category)}
-        {@const sub_upgrades = upgrades.filter(
+        {const sub_upgrades = upgrades.filter(
             (u) => u.system.category == category,
         )}
         <div class="inner-box col">

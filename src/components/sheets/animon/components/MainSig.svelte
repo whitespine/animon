@@ -69,6 +69,4 @@
 </div>
 
 <style lang="scss" module>
-    .main-signature-box {
-    }
 </style>
