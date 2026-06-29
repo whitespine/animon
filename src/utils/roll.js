@@ -26,7 +26,6 @@ export function boostedFormula(pool, boost) {
  * @property {number} dice_pool How many dice we're rolling
  * @property {number} boost [-2, 2] How we're computing boost
  * @property {number} difficulty Difficulty
- * @property {number} human_friendly_roll Readable descriptor of roll
  * @property {number} bond_points_spent For bookkeeping, how much was spent on this roll
  */
 

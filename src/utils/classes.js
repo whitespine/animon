@@ -1,19 +1,20 @@
 
 // Converts any format of style into a svelte style hash
 export function fixStyle(...styles) {
-    all_styles = {};
+    let all_styles = "";
     for(let s of styles) {
         if (typeof s == "string") {
-            let segments = s.split(";");
-            let result = {};
-            for (let seg of segments) {
-                let [key, value] = seg.split(":");
-                result[key] = value;
+            s = s.trim();
+            if(!s.endsWith(";")) {
+                s += ";";
             }
+            all_styles += s;
         } else if (typeof s == "object" && Array.isArray(s)) {
             throw new TypeError("Style cannot be an array");
         } else if (typeof s == "object") {
-            Object.assign(all_styles, s);
+            for(let [k, v] of Object.entries(s)) {
+                all_styles += `${k}: ${v}`;
+            }
         } else {
             continue;
         }

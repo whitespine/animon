@@ -1,6 +1,8 @@
 <script>
-    import { fixClasses } from "../../utils/classes";
-    import { buildListenerAttacher } from "../../utils/attach.svelte";
+    import {tick} from "svelte";
+    import { fixClasses, fixStyle } from "../../utils/classes";
+    import { buildListenerAttacher, portalTo } from "../../utils/attach.svelte";
+    import { ElementRect } from "runed";
 
     let {
         on,
@@ -8,14 +10,9 @@
         showDelay = 200,
         showFadeTime = 200,
         hideFadeTime = 200,
+        spacing = "10px",
+        side = "left"
     } = $props();
-
-    // In maybe two years, make this use popovers so we don't need to use portals
-
-    const id = foundry.utils.randomID();
-    const anchorID = `--anchor-${id}`;
-
-    let tooltip;
 
     /** @type {ReturnType<typeof setTimeout> | null} */
     let hover_timeout = null;
@@ -28,9 +25,47 @@
     // This is whether the popover is actually currently visible or not
     let visible = $state(false);
 
+    // Our anchor ref. We only support one anchor at a time
+    let anchor = $state();
+    let tooltip = $state();
+    const default_siding = {
+        left: undefined,
+        right: undefined,
+        top: undefined,
+        bottom: undefined
+    };
+    let siding = $state({...default_siding});
+
+    function fixSiding() {
+        let anchor_rect = anchor.getBoundingClientRect();
+        let tt_rect = tooltip.getBoundingClientRect();
+        let avg = (...args) => args.reduce((a, b) => a + b, 0) / args.length;
+        if(side == "right") {
+            siding = {
+                ...default_siding,
+                top: `${avg(anchor_rect.bottom, anchor_rect.top) + tt_rect.height / 2}px`,
+                left: `calc(${anchor_rect.right}px + ${spacing})`
+            };
+        } else if(side == "left") {
+            siding = {
+                ...default_siding,
+                top: `${avg(anchor_rect.bottom, anchor_rect.top) - tt_rect.height / 2}px`,
+                right: `calc(100% - ${anchor_rect.left}px + ${spacing})`
+            };
+        } else if(side == "top") {
+            siding = {
+                ...default_siding
+            };
+        } else if(side == "bottom") {
+            siding = {
+                ...default_siding
+            };
+        }
+    }
+
     const mountListeners = buildListenerAttacher({
         on: (elt) => {
-            elt.style.anchorName = anchorID;
+            anchor = elt;
         },
         mouseenter: () => {
             is_hovered = true;
@@ -45,7 +80,8 @@
                     hover_timeout = null;
                     if (is_hovered && !visible) {
                         visible = true;
-                        tooltip.showPopover();
+                        // Also set a tiemout to fix siding once 
+                        tick().then(fixSiding);
                     }
                 }, showDelay);
             }
@@ -56,51 +92,40 @@
                 unhover_timeout = null;
                 if (visible) {
                     visible = false;
-                    tooltip.hidePopover();
                 }
             }, hideFadeTime);
         },
     });
 </script>
 
-<div
-    bind:this={tooltip}
-    popover="manual"
-    class={fixClasses("animon tooltip", {
-        "fade-in": is_hovered,
-        "fade-out": !is_hovered,
-    })}
-    // {@attach portalTo(document.body)}
-    style="--fade-in-time: {showFadeTime}ms; --fade-out-time: {hideFadeTime}ms; position-anchor: {anchorID}"
->
-    {@render tip?.()}
-</div>
+{#if visible}
+    <div
+        bind:this={tooltip}
+        class={fixClasses("animon tooltip", {
+            "fade-in": is_hovered,
+            "fade-out": !is_hovered,
+        })}
+        {@attach portalTo(document.body)}
+        style:--fade-in-time="{showFadeTime}ms"
+        style:--fade-out-time="{hideFadeTime}ms"
+        style:left={siding.left}
+        style:right={siding.right}
+        style:top={siding.top}
+        style:bottom={siding.bottom}
+    >
+        {@render tip?.()}
+    </div>
+{/if}
 
-<div>
-    {@render on?.(mountListeners)}
-</div>
+{@render on?.(mountListeners)}
 
 <style lang="scss">
-    @use "../../assets/css/anchor.scss";
     .tooltip {
-        --anchor-dist: 5px;
         position: fixed;
-        // position-area: right;
-        left: anchor(right);
-        align-self: anchor-center;
-        // position-try: bottom, bottom right, top, top left;
-        // position-try: most-width --left, --bottom, --right, --top;
-        // position-try: most-width --left;
-
-        // align-self: anchor-center;
-        margin: var(--anchor-dist);
-
         background: transparent;
         border: none;
         pointer-events: none;
 
-        // position-anchor: --foo;
-        // left: anchor(right);
-        // margin-left: 20px;
+        z-index: 999999;
     }
 </style>
