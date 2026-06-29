@@ -7,15 +7,20 @@
 </script>
 
 <div class="col main-signature-box">
-    <h2 class="title">
-        {loc("animon.sheet.animon.signature.title")}
-        ({actor.system.signature_uses.value} / {actor.system.signature_uses.max})
+    <h2 class="title row center">
+        <label for="system.signature_uses.value">
+            {loc("animon.sheet.animon.signature.title")}:
+        </label>
+        <input {@attach reactive(actor, "system.signature_uses.value")} size="1" class="nude center">
+        <span>
+            / {actor.system.signature_uses.max} 
+        </span>
     </h2>
     <div class="row even">
         <div class="prefix-input">
-            <label for="system.forms.{form_id}.signature.name"
-                >{loc("animon.sheet.animon.signature.name")}</label
-            >
+            <label for="system.forms.{form_id}.signature.name">
+                {loc("animon.sheet.animon.signature.name")}
+            </label>
             <input
                 {@attach reactive(
                     actor,
@@ -43,7 +48,10 @@
                 >{loc("animon.sheet.animon.element")}</label
             >
             <ElementalSelect
-                {@attach reactive(actor, `system.forms.${form_id}.signature.element`)}
+                {@attach reactive(
+                    actor,
+                    `system.forms.${form_id}.signature.element`,
+                )}
                 class="nude"
             ></ElementalSelect>
         </div>
