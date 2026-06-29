@@ -59,7 +59,7 @@ export class RollerState {
     final_mod = $state(0);
 
     // We derive this. Don't try to override, use final_mod
-    dice_pool = $derived(this.trait_bonus + this.talent_bonus + this.stat_bonus + this.quality_bonus + this.bond_points_bonus_dice + this.final_mod);
+    dice_pool = $derived(this.trait_bonus + this.talent_bonus + this.stat_bonus + this.quality_bonus + this.bond_points_bonus_dice + this.signature_bonus + this.final_mod);
 
     /**
      * Reset all attributes to default
@@ -129,12 +129,16 @@ export class RollerState {
 
         // Add boost modifier
         if (this.boost) {
-            message += {
+            let label = {
                 1: " BOOST",
                 2: " BOOST+",
                 [-1]: " SETBACK",
                 [-2]: " SETBACK+",
             }[this.boost] ?? "";
+            contributors.push({
+                key: "boost",
+                label,
+            });
         }
 
         // Deduct bond points

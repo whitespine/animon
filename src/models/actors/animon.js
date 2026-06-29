@@ -166,6 +166,11 @@ export class AnimonModel extends ActorModel {
     }
 
     prepareBaseData() {
+        // For convenience, enrich each form with its id
+        for(let [k, v] of Object.entries(this.forms)) {
+            v._id = k;
+        }
+
         // Flatten and sort our forms
         this.sorted_forms = rankedSort(Object.entries(this.forms), ([k, f]) => [AnimonModel.tierAsInt(f.tier), f.sort, k]);
 
@@ -212,7 +217,7 @@ export class AnimonModel extends ActorModel {
 
             prior_forms.push(form);
             Object.defineProperty(form, "all_qualities", {
-                value: [...prior_forms, form].flatMap(x => sortedObjectToArray(x.qualities)),
+                value: prior_forms.flatMap(f => sortedObjectToArray(f.qualities)),
                 enumerable: false
             });
         }

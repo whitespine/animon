@@ -1,6 +1,7 @@
 <script>
     import Die from "../Die.svelte";
     import RollingDie from "../RollingDie.svelte";
+    import ToolTip from "../../layout/ToolTip.svelte";
     import { suspense, inSuspense } from "../../../utils/suspense.svelte";
     import { fixClasses } from "../../../utils/classes";
     import { rollScrambler } from "../../../utils/attach.svelte";
@@ -34,20 +35,42 @@
 <div class="animon">
     <div class="col">
         <div class="row results center">
-            <div
-                class={fixClasses(
-                    { animon: true, pushed: message.system.pushed },
-                    "dice row wrap grow",
-                )}
-            >
-                {#each die_results as die}
-                    {#if inSuspense(message.system.suspense)}
-                        <RollingDie />
-                    {:else}
-                        <Die value={die.result} discarded={!die.success} />
-                    {/if}
-                {/each}
-            </div>
+            <ToolTip side="left">
+                {#snippet on(attacher)}
+                    <div
+                        class={fixClasses(
+                            { animon: true, pushed: message.system.pushed },
+                            "dice row wrap grow",
+                        )}
+                        {@attach attacher}
+                    >
+                        {#each die_results as die}
+                            {#if inSuspense(message.system.suspense)}
+                                <RollingDie />
+                            {:else}
+                                <Die
+                                    value={die.result}
+                                    discarded={!die.success}
+                                />
+                            {/if}
+                        {/each}
+                    </div>
+                {/snippet}
+                {#snippet tip()}
+                    <div class="inner-box col">
+                        {#each message.system.params.contributors as contrib}
+                            <div class="prefix-input even">
+                                {#if !contrib.value}
+                                    <span class="pseudo-label" style:text-align="center">{contrib.label}</span>
+                                {:else}
+                                    <span class="pseudo-label">{contrib.label}: </span>
+                                    <span style:text-align="right">{contrib.value}</span>
+                                {/if}
+                            </div>
+                        {/each}
+                    </div>
+                {/snippet}
+            </ToolTip>
             <p class="result nowrap">
                 <span
                     {@attach inSuspense(message.system.suspense)
