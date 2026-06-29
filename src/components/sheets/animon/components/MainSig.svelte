@@ -13,7 +13,7 @@
         </label>
         <input {@attach reactive(actor, "system.signature_uses.value")} size="1" class="nude center">
         <span>
-            / {actor.system.signature_uses.max} 
+            / {actor.system.forms[form_id]?.stats.signature_uses} 
         </span>
     </h2>
     <div class="row even">
