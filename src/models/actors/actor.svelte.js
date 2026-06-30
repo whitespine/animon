@@ -1,5 +1,20 @@
 const fields = foundry.data.fields;
 
+export const ELEMENTS = [
+    "neutral", "fire", "water", "nature", "electric", "earth", "wind", "light", "dark", "mirage"
+];
+export const elementField = () => new fields.StringField({
+    required: true, choices: ELEMENTS, initial: ELEMENTS[0]
+});// TODO, choices or options?
+export const TIERS = ["fledgling", "basic", "super", "ultra", "giga"];
+export const tierField = () => new fields.StringField({
+    required: true, choices: TIERS, initial: TIERS[0]
+})
+
+export const effectField = () => new fields.SchemaField({
+    name: new fields.StringField({ required: true })
+});
+
 export class ActorModel extends foundry.abstract.TypeDataModel {
     // Some schema elements are consistent across all actor types. Define them here
     static defineSchema() {
@@ -26,9 +41,54 @@ export class ActorModel extends foundry.abstract.TypeDataModel {
     // Keep it simple, and consider doing a more permanent migration as an update hook instead
     static migrateData(sourceData) {
         // Fix traits to be schema instead of + prefixed data
-        if(sourceData.old_power && sourceData.power == null) {
+        if (sourceData.old_power && sourceData.power == null) {
             sourceData.power = sourceData.old_power;
         }
         return sourceData;
+    }
+
+    // Get the most current system
+    get _csys() {
+        return this.parent.system;
+    }
+}
+
+/** Converts an animon tier to an arbitrary sortable integer
+ * 
+ * @param {string | numer} tier The tier key
+ * @returns {number}
+ */
+export function tierAsInt(tier) {
+    if (typeof tier == "string") {
+        let r = TIERS.indexOf(tier)
+        return r == -1 ? 0 : r;
+    } else {
+        if (tier > 5) return 5;
+        if (tier < 0) return 0;
+        if (!Number.isInteger(tier)) return 0;
+        return tier;
+    }
+}
+
+/** Convert a numeric tier into a key
+ * 
+ * @param {string | number} tier Tier result from tierAsInt. out of bounds is capped to the bounds. Strings are sterilized
+ * @returns {"fledgling" | "basic" | "super" | "ultra" | "giga"} a tier key
+ */
+export function tierAsString(tier) {
+    if (typeof tier == "string") {
+        if (TIERS.includes(tier)) return tier;
+        return TIERS[0];
+    } else {
+        if (tier >= 5) { // Super case
+            return "giga"; // Error correction
+        }
+        return [
+            "fledgling",
+            "basic",
+            "super",
+            "ultra",
+            "giga",
+        ][tier] ?? "fledgling";
     }
 }

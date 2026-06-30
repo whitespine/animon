@@ -1,5 +1,5 @@
 <script>
-    import { ELEMENTS } from "../../models/actors/animon";
+    import { ELEMENTS } from "../../models/actors/actor.svelte";
     import loc from "../../utils/localize";
     import Select from "./Select.svelte";
     let { ...restProps } = $props();

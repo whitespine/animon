@@ -1,20 +1,11 @@
 import { SystemActor } from "../../documents/actor.svelte";
-import { ActorModel } from "./actor.svelte";
+import { ActorModel, elementField, tierAsString, tierAsInt, tierField, effectField } from "./actor.svelte";
 import { rankedSort, sortedObjectToArray, SortField, titleCaseString } from "../base.svelte";
 
 const fields = foundry.data.fields;
 
-const statField = () => new fields.NumberField({ initial: 1, min: 1, integer: true });
-export const ELEMENTS = [
-    "neutral", "fire", "water", "nature", "electric", "earth", "wind", "light", "dark", "mirage"
-];
-const elementField = () => new fields.StringField({
-    required: true, choices: ELEMENTS, initial: ELEMENTS[0]
-});// TODO, choices or options?
 
-const effectField = () => new fields.SchemaField({
-    name: new fields.StringField({ required: true })
-});
+const statField = () => new fields.NumberField({ initial: 1, min: 1, integer: true });
 
 export class AnimonModel extends ActorModel {
     static defineSchema() {
@@ -37,7 +28,7 @@ export class AnimonModel extends ActorModel {
                 element: elementField(),
 
                 // Even if you're doing branched evolution, we need these tiers for stat calculation
-                tier: new fields.StringField({ choices: ["fledgling", "basic", "super", "ultra", "giga"] }),
+                tier: tierField(),
 
                 // But if you are doing branched evolution, you probably want special names for it
                 name: new fields.StringField({ required: true }),
@@ -88,48 +79,6 @@ export class AnimonModel extends ActorModel {
     // However, I don't really love that - svelte is nice and all but there comes a point of
     // deviance from foundry standard that might complicate later work
 
-    /** Converts an animon tier to an arbitrary sortable integer
-     * 
-     * @param {string | numer} tier The tier key
-     * @returns {number}
-     */
-    static tierAsInt(tier) {
-        if (typeof tier == "string") {
-            let r = this.TIERS.indexOf(tier)
-            return r == -1 ? 0 : r;
-        } else {
-            if (tier > 5) return 5;
-            if (tier < 0) return 0;
-            if (!Number.isInteger(tier)) return 0;
-            return tier;
-        }
-    }
-
-    // We use these often enough...
-    static TIERS = ["fledgling", "basic", "super", "ultra", "giga"];
-
-    /** Convert a numeric tier into a key
-     * 
-     * @param {string | number} tier Tier result from tierAsInt. out of bounds is capped to the bounds. Strings are sterilized
-     * @returns {"fledgling" | "basic" | "super" | "ultra" | "giga"} a tier key
-     */
-    static tierAsString(tier) {
-        if (typeof tier == "string") {
-            if (this.TIERS.includes(tier)) return tier;
-            return this.TIERS[0];
-        } else {
-            if (tier >= 5) { // Super case
-                return "giga"; // Error correction
-            }
-            return [
-                "fledgling",
-                "basic",
-                "super",
-                "ultra",
-                "giga",
-            ][tier] ?? "fledgling";
-        }
-    }
 
     // Compute max hp with the given tier and bonuses
     /**
@@ -146,7 +95,7 @@ export class AnimonModel extends ActorModel {
             super: 2 * power,
             ultra: 3 * power,
             giga: 4 * power,
-        }[AnimonModel.tierAsString(tier)] ?? 0;
+        }[tierAsString(tier)] ?? 0;
     }
     /**
      * 
@@ -162,24 +111,24 @@ export class AnimonModel extends ActorModel {
             super: 4 * heart + 10,
             ultra: 5 * heart + 15,
             giga: 6 * heart + 20,
-        }[AnimonModel.tierAsString(tier)] ?? 0;
+        }[tierAsString(tier)] ?? 0;
     }
 
     prepareBaseData() {
         // For convenience, enrich each form with its id
-        for(let [k, v] of Object.entries(this.forms)) {
+        for (let [k, v] of Object.entries(this.forms)) {
             v._id = k;
         }
 
         // Flatten and sort our forms
-        this.sorted_forms = rankedSort(Object.entries(this.forms), ([k, f]) => [AnimonModel.tierAsInt(f.tier), f.sort, k]);
+        this.sorted_forms = rankedSort(Object.entries(this.forms), ([k, f]) => [tierAsInt(f.tier), f.sort, k]);
 
         // For each form, establish their evolves_from and devolves_to
         // For the time being, assume all basics can become supers, etc
         /*
         for (let form of Object.values(this.forms)) {
-            let next_level = AnimonModel.tierAsString(AnimonModel.tierAsInt(form.tier) + 1);
-            let prev_level = AnimonModel.tierAsString(AnimonModel.tierAsInt(form.tier) - 1);
+            let next_level = tierAsString(tierAsInt(form.tier) + 1);
+            let prev_level = tierAsString(tierAsInt(form.tier) - 1);
             form.evolves_to = Object.entries(this.forms).filter((k, v) => v.tier == next_level).map((k, v) => k);
             form.evolves_from = Object.entries(this.forms).filter((k, v) => v.tier == prev_level).map((k, v) => k);
             // Also give it a name if it lacks one
@@ -233,21 +182,16 @@ export class AnimonModel extends ActorModel {
         await this.getOrCreateForm("fledgling", true);
     }
 
-    // Get the most current system
-    get #csys() {
-        return this.parent.system;
-    }
-
     async volveTo(id, full_restore = false) {
         if (!this.forms[id]) {
             let form = this.formForTier(id);
             if (!form) return;
             id = form._id;
         }
-        await this.#csys.ensureInitialized();
-        // let current_form = AnimonModel.tierAsInt(this.#csys.form.tier);
-        // let new_form = AnimonModel.tierAsInt(this.forms[id].tier);
-        let base_changes = this.#csys.shiftChanges(id);
+        await this._csys.ensureInitialized();
+        // let current_form = tierAsInt(this._csys.form.tier);
+        // let new_form = tierAsInt(this.forms[id].tier);
+        let base_changes = this._csys.shiftChanges(id);
         await this.parent.update(base_changes);
         if (full_restore) {
             ui.notifications.warn("Make sure to heal yourself to full!");
@@ -315,7 +259,7 @@ export class AnimonModel extends ActorModel {
 
     // Get a form for the given tier
     formForTier(tier) {
-        tier = AnimonModel.tierAsString(tier);
+        tier = tierAsString(tier);
         return this.sorted_forms.find(([k, f]) => f.tier == tier);
     }
 
@@ -347,7 +291,7 @@ export class AnimonModel extends ActorModel {
         if (userId == game.user.id && changed.system?.kid) {
             // Find the kid and force a pushdown
             let kid = game.actors.get(changed.system.kid);
-            if(kid) {
+            if (kid) {
                 kid.pushdownEffects(this.parent);
             }
         }

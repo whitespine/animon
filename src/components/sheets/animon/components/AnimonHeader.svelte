@@ -1,5 +1,4 @@
 <script>
-    import { AnimonModel } from "../../../../models/actors/animon";
     import { stop } from "../../../../utils/handlers";
     import loc from "../../../../utils/localize";
     import { fixClasses } from "../../../../utils/classes";
@@ -8,6 +7,7 @@
     import Breaker from "../../../layout/Breaker.svelte";
     import { reactive } from "../../../../utils/attach.svelte";
     import ViewButton from "../../../fields/ViewButton.svelte";
+    import { tierAsInt, TIERS } from "../../../../models/actors/actor.svelte";
 
     let { actor, edit, activeTab = $bindable() } = $props();
 
@@ -18,8 +18,8 @@
         if (!current_form) return "animon.forms.init"; // Don't have a form - jump to one.
         if (!viewed_form || viewed_form == current_form) return "animon.forms.active"; // Nothing to volve
 
-        let cft = AnimonModel.tierAsInt(current_form.tier);
-        let nft = AnimonModel.tierAsInt(viewed_form.tier);
+        let cft = tierAsInt(current_form.tier);
+        let nft = tierAsInt(viewed_form.tier);
         if (cft < nft) {
             return "animon.forms.evolve";
         } else if (cft > nft) {
@@ -79,7 +79,7 @@
         </div>
 
         <div class="forms row even">
-            {#each AnimonModel.TIERS as tier}
+            {#each TIERS as tier}
                 <button
                     class={{
                         active: active_tier == tier,
