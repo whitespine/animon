@@ -28,6 +28,7 @@ export class ActorModel extends foundry.abstract.TypeDataModel {
     // or in the more traditional prepareData workflows
     // attack_bonus = $derived(Math.min(this.power, 5));
     // Having this here makes some greedily reactive components happier that its not initially null
+    #parent = $state(null);
     sv_items = $derived.by(() => {
         if(!this.#parent) return [];
         let items = Array.from(this.#parent.items.svelte.values());

@@ -7,7 +7,7 @@
     import loc from "../../../utils/localize";
 
     let { context, app } = $props();
-    let upgrade = $derived(context.item);
+    let upgrade = $derived(context.effect);
     let edit = $derived(app.isEditable);
 
     let category_options = ["minor", "major", "score"].map((id) => ({
