@@ -67,6 +67,9 @@ const CORE_INJECTS = [
         target: Item,
         keys: ["name", "img", "system"]
     }, {
+        target: ActiveEffect,
+        keys: ["name", "img", "system"]
+    }, {
         target: Combat,
         keys: ["system"]
     }, {

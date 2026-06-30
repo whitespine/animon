@@ -47,12 +47,12 @@
     },
     "Item": {
       "gear": {},
-      "upgrade": {
-        "htmlFields": ["notes"]
-      }
     },
     "ActiveEffect": {
-      "upgrade": {}
+      "upgrade": {
+        "htmlFields": ["notes"]
+      },
+      "npc_upgrade": {}
     },
     "ChatMessage": {
       "basic_test": {}

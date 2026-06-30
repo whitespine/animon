@@ -1,6 +1,6 @@
 <script>
     import { reactive } from "../../../utils/attach.svelte";
-    import { UpgradeModel } from "../../../models/items/upgrade.svelte";
+    import { UpgradeEffectModel } from "../../../models/effects/upgrade.svelte";
     import Portrait from "../../fields/Portrait.svelte";
     import Select from "../../fields/Select.svelte";
     import ProsemirrorField from "../../fields/ProsemirrorField.svelte";
@@ -15,7 +15,7 @@
         label: loc(`animon.upgrade.${id}.title`),
     }));
     let key_options = $derived(
-        UpgradeModel.keysFor(upgrade.system.category).map((id) => ({
+        UpgradeEffectModel.keysFor(upgrade.system.category).map((id) => ({
             id,
             label: loc(`animon.upgrade.${upgrade.system.category}.${id}.short`),
         })),

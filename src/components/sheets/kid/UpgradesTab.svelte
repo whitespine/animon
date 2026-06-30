@@ -1,7 +1,7 @@
 <script>
     import loc from "../../../utils/localize";
     import { rankedSort } from "../../../models/base.svelte";
-    import { UpgradeModel } from "../../../models/items/upgrade.svelte";
+    import { UpgradeEffectModel } from "../../../models/effects/upgrade.svelte";
     import DeleteButton from "../../fields/DeleteButton.svelte";
     import EditButton from "../../fields/EditButton.svelte";
     import ViewButton from "../../fields/ViewButton.svelte";
@@ -10,20 +10,20 @@
     import XP from "../bond/components/XP.svelte";
 
     let { actor, edit } = $props();
-    let items = $derived(actor.system.sv_items);
+    let effects = $derived(actor.system.sv_effects);
     let upgrades = $derived.by(() => {
-        let unsorted = items.filter((i) => i.type == "upgrade");
+        let unsorted = effects.filter((i) => i.type == "upgrade");
         return rankedSort(unsorted, (u) => [u.system.level, u.sort]);
     });
 
     async function createUpgrade(category) {
-        await actor.createEmbeddedDocuments("Item", [
+        await actor.createEmbeddedDocuments("ActiveEffect", [
             {
                 name: "New Upgrade",
                 type: "upgrade",
                 system: {
                     category,
-                    key: UpgradeModel.keysFor(category)[0],
+                    key: UpgradeEffectModel.keysFor(category)[0],
                     level: actor.system.bond_level,
                     notes: `Manually created`,
                 },
@@ -56,9 +56,9 @@
     {/snippet}
 
     {#snippet column(category)}
-        {const sub_upgrades = upgrades.filter(
+        {const sub_upgrades = $derived(upgrades.filter(
             (u) => u.system.category == category,
-        )}
+        ))}
         <div class="inner-box col">
             <h2>{loc(`animon.upgrade.${category}.title`)}</h2>
             {#each sub_upgrades as u (u._id)}

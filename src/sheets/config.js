@@ -1,12 +1,23 @@
 import { NPCSheet, KidSheet, AnimonSheet } from "./ActorSheet";
-import { GearSheet, UpgradeSheet } from "./ItemSheet";
+import { GearSheet } from "./ItemSheet";
+import { UpgradeSheet } from "./EffectSheet";
 
 export function setupSheets() {
-    foundry.documents.collections.Actors.unregisterSheet("core", foundry.applications.sheets.ActorSheetV2);
-    foundry.documents.collections.Actors.registerSheet(game.system.id, NPCSheet, { types: ["npc"], makeDefault: true });
-    foundry.documents.collections.Actors.registerSheet(game.system.id, AnimonSheet, { types: ["animon"], makeDefault: true });
-    foundry.documents.collections.Actors.registerSheet(game.system.id, KidSheet, { types: ["kid"], makeDefault: true });
-    foundry.documents.collections.Items.unregisterSheet("core", foundry.applications.sheets.ItemSheetV2);
-    foundry.documents.collections.Items.registerSheet(game.system.id, GearSheet, { types: ["gear"], makeDefault: true });
-    foundry.documents.collections.Items.registerSheet(game.system.id, UpgradeSheet, { types: ["upgrade"], makeDefault: true });
+    const configs = [
+        [Actor, NPCSheet, { types: ["npc"] }],
+        [Actor, AnimonSheet, { types: ["animon"] }],
+        [Actor, KidSheet, { types: ["kid"] }],
+        [Item, GearSheet, { types: ["gear"] }],
+        [ActiveEffect, UpgradeSheet, { types: ["upgrade"] }],
+    ];
+
+    for (let [doc, sheet, options] of configs) {
+        foundry.applications.apps.DocumentSheetConfig.registerSheet(doc, game.system.id, sheet, {
+            makeDefault: true,
+            label: () => _loc("SHEETS.DefaultDocumentSheet", {
+                document: _loc(`DOCUMENT.${doc.name}`)
+            }),
+            ...options,
+        });
+    }
 }

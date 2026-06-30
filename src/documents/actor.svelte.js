@@ -12,7 +12,7 @@ export class SystemActor extends Actor {
      */
     async _preCreate(...[data, options, user]) {
         let spc = await super._preCreate(data, options, user);
-        if(spc===false) return spc;
+        if (spc === false) return spc;
 
         let mods = {}
 
@@ -98,35 +98,9 @@ export class SystemActor extends Actor {
         }
     }
 
-    // Can be removed in v14, replaced with a flag <-- what does this mean?
-    /**
-     * Return all effects on an actor that don't have any flags that would make them invisible.
-     * invisible flags include:
-     * - effect.flags[game.system.id].passthrough
-     */
-    /*
-    get visibleEffects() {
-        const effects = [];
-        for (const effect of this.allApplicableEffects()) {
-            if (effect.active && effect.isTemporary) effects.push(effect);
-            else if (effect.flags[game.system.id]?.show) effects.push(effect);
-        }
-        return effects;
-    }
-    */
-
     // Extend allApplicableEffects to yield data model generated effects
     _upgradeEffects() {
-        if(this.type != "kid") {
-            return [];
-        }
-        let result = [];
-        for(let i of this.items.contents) {
-            if(i.type == "upgrade" && i.system.category == "score") {
-                result.push(i.system.upgradeEffect());
-            }
-        }
-        return result;
+        return this.effects.contents.filter(e => e.type == "upgrade" && e.system.category == "score");
     }
 
     /**
@@ -146,7 +120,7 @@ export class SystemActor extends Actor {
         super._onEmbeddedDocumentChange();
 
         let newPushdownCache = this._upgradeEffectsHash();
-        if(this.type == "kid" && newPushdownCache != this._upgradeEffectsHash) {
+        if (this.type == "kid" && newPushdownCache != this._upgradeEffectsHash) {
             this.pushdownEffects();
         }
     }
@@ -154,15 +128,15 @@ export class SystemActor extends Actor {
     /**
      * For each of our linked mons, purge all existing "upgrade" effects, and create new ones
      */
-    async pushdownEffects(target=null) {
+    async pushdownEffects(target = null) {
         let targets = target ? [target] : this.system.mons;
         let effects = this._upgradeEffects();
         let promises = [];
-        for(let target of targets) {
+        for (let target of targets) {
             let old_effects = target.effects.filter(x => x.type === "upgrade");
             let target_promise = target.deleteEmbeddedDocuments("ActiveEffect", old_effects.map(e => e._id));
             target_promise.then(() => {
-                return target.createEmbeddedDocuments("ActiveEffect", effects.map(e => e._source));
+                return target.createEmbeddedDocuments("ActiveEffect", effects.map(e => e.toObject(true)));
             });
             promises.push(target_promise);
         }

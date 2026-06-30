@@ -28,13 +28,20 @@ export class ActorModel extends foundry.abstract.TypeDataModel {
     // or in the more traditional prepareData workflows
     // attack_bonus = $derived(Math.min(this.power, 5));
     // Having this here makes some greedily reactive components happier that its not initially null
-    sv_items = $state([]);
+    sv_items = $derived.by(() => {
+        if(!this.#parent) return [];
+        let items = Array.from(this.#parent.items.svelte.values());
+        return items.sort((a, b) => a.sort - b.sort);
+    });
+    sv_effects = $derived.by(() => {
+        if(!this.#parent) return [];
+        let effects = Array.from(this.#parent.effects.svelte.values());
+        return effects.sort((a, b) => a.sort - b.sort);
+    });
 
     // For all actors we at least prepare a sorted reactive array in the form of sv_items
     prepareBaseData() {
-        let items = Array.from(this.parent.items.svelte.values());
-        items.sort((a, b) => a.sort - b.sort);
-        this.sv_items = items;
+        this.#parent = this.parent;
     }
 
     // Migrations - always a pain! This is run every time the document is updated. 
