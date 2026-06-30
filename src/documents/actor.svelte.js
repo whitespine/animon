@@ -130,17 +130,21 @@ export class SystemActor extends Actor {
      */
     async pushdownEffects(target = null) {
         let targets = target ? [target] : this.system.mons;
-        let effects = this._upgradeEffects();
+        let new_effects = this._upgradeEffects();
         let promises = [];
-        for (let target of targets) {
-            let old_effects = target.effects.filter(x => x.type === "upgrade");
-            let target_promise = target.deleteEmbeddedDocuments("ActiveEffect", old_effects.map(e => e._id));
-            target_promise.then(() => {
-                return target.createEmbeddedDocuments("ActiveEffect", effects.map(e => e.toObject(true)));
-            });
-            promises.push(target_promise);
-        }
-        await Promise.all(promises);
+
+        const push = async (t) => {
+            // console.log(`-------------`);
+            // console.log(`Pushing to ${t.name}`);
+            let old_effects = t.effects.filter(x => x.type === "upgrade");
+            // console.log(`${old_effects.length} old effects`);
+            await t.deleteEmbeddedDocuments("ActiveEffect", old_effects.map(e => e._id));
+            // console.log(`${new_effects.length} new effects`);
+            await t.createEmbeddedDocuments("ActiveEffect", new_effects.map(e => e.toObject(true)));
+            // console.log(`Pushed to ${t.name}`);
+        };
+
+        await Promise.all(targets.map(push));
         this._oldUpgradeEffectsHash = this._upgradeEffectsHash();
     }
 }

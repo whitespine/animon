@@ -7,7 +7,10 @@
         },
         "Item": {
             "gear": "Gear",
-            "upgrade": "Upgrade"
+        },
+        "ActiveEffect": {
+            "upgrade": "Upgrade",
+            "npc_upgrade": "NPC Upgrade"
         }
     },
     "animon": {
@@ -46,7 +49,7 @@
                     "full": "Increase the rank of a single talent by 1 (Up to a maximum of 3)"
                 },
                 "quality": {
-                    "short": "Increase the rank of a single quality by 1 (Up to a maximum of 3)",
+                    "short": "Quality Rank+",
                     "full": "Increase the rank of a single quality by 1 (Up to a maximum of 3)"
                 }
             },

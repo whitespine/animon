@@ -70,6 +70,13 @@ export class UpgradeEffectModel extends foundry.data.ActiveEffectTypeDataModel {
 
     prepareBaseData() {
         this.changes = this.#changes;
+
+        // Correct out of bounds key
+        let kf = UpgradeEffectModel.keysFor(this.category);
+        if(!kf.includes(this.key)) {
+            this.key = kf[0];
+        }
+
         this.localized_short = loc(`animon.upgrade.${this.category}.${this.key}.short`) ?? "UNKNOWN";
         this.localized_description = loc(`animon.upgrade.${this.category}.${this.key}.full`) ?? "UNKNOWN";
     }
