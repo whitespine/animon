@@ -20,8 +20,7 @@
         const defaultArtwork =
             doc.constructor.getDefaultArtwork?.(doc._source) ?? {};
         const defaultImage = foundry.utils.getProperty(defaultArtwork, path);
-        // const fp = new FilePicker.implementation({ // v13
-        const fp = new FilePicker({
+        const fp = new foundry.applications.apps.FilePicker.implementation({
             current,
             type: "image",
             redirectToRoot: defaultImage ? [defaultImage] : [],
