@@ -1,5 +1,6 @@
 import { resolveDotpath } from "./paths";
-import {stop} from "./handlers";
+import { stop } from "./handlers";
+import { TextareaAutosize } from "runed";
 
 /** Creates an @attach suitable function
  * For each listener in the provided hash (where keys are events),
@@ -89,7 +90,7 @@ export function reactive(doc, path, preprocesser = null) {
 
         // Create our timeout callback
         let update = () => {
-            if(persisted_value != new_value) {
+            if (persisted_value != new_value) {
                 doc.update({
                     [path]: new_value,
                 });
@@ -111,7 +112,7 @@ export function reactive(doc, path, preprocesser = null) {
             });
             $effect(() => {
                 // Only allow desync if not focused
-                if(!(elt.matches(':focus') && elt._animon_change_timeout)) {
+                if (!(elt.matches(':focus') && elt._animon_change_timeout)) {
                     elt.value = resolveDotpath(doc, path);
                 }
             });
@@ -120,4 +121,13 @@ export function reactive(doc, path, preprocesser = null) {
         input: (evt) => commit(evt, 1000),
         focusout: (evt) => commit(evt, 0)
     });
+}
+
+export function resizing(input_getter) {
+    return (elt) => {
+        new TextareaAutosize({
+            element: () => elt,
+            input: input_getter
+        });
+    }
 }

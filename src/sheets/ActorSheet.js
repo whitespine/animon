@@ -59,26 +59,9 @@ export class NPCSheet extends SvelteApplicationMixin(SystemActorSheet) {
             }
         },
         position: {
-            width: 400,
+            width: 600,
             height: "auto"
         },
-        actions: {
-            toggleEdit: NPCSheet.actionToggleEdit
-        },
-        window: {
-            controls: [
-                {
-                    // font awesome icon
-                    icon: 'fa-solid fa-edit',
-                    // string that will be run through localization
-                    label: "Toggle Edit",
-                    // string that MUST match one of your `actions`
-                    // action: "toggleEdit",
-                    action: "toggleEdit",
-                    visible: true
-                }
-            ]
-        }
     }
 
     static actionToggleEdit(_evt, _target) {

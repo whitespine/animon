@@ -13,12 +13,14 @@
             border: 1px solid black;
         }
 
-        img.inner-portrait {
+        img.inner-portrait, img.top-inner-portrait {
             margin-left: var(--unpad);
             margin-top: var(--unpad);
-            margin-bottom: var(--unpad);
             margin-right: 5px;
             background-color: black;
+        }
+        img.inner-portrait {
+            margin-bottom: var(--unpad);
         }
     }
 }

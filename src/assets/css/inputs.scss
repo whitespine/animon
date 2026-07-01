@@ -5,6 +5,7 @@
 }
 
 @layer system {
+
     .animon,
     #dnd-action-dragged-el {
         .checkbox-round {
@@ -35,23 +36,27 @@
             border-bottom: var(--dash-line);
             margin-bottom: 2px;
 
-            label, .psuedo-label {
+            label,
+            .psuedo-label {
                 // flex: 0 1;
                 font-weight: bolder;
             }
 
-            input, .readonly {
+            input,
+            .readonly {
                 flex: 1 0;
                 min-width: 0px;
                 @include nude_input();
             }
 
-            span, label, input {
+            span,
+            label,
+            input {
                 padding: 2px 5px;
             }
         }
 
-        input.nude, select.nude {
+        .nude {
             @include nude_input();
         }
 
@@ -66,5 +71,16 @@
             cursor: not-allowed;
             pointer-events: none;
         }
+
+        textarea {
+            resize: none;
+            min-height: 0px;
+        }
     }
+
+}
+
+// Override text areas for our 
+body>textarea {
+    min-height: 0px;
 }
