@@ -2,6 +2,8 @@
     import { reactive, resizing } from "../../../utils/attach.svelte";
     import Portrait from "../../fields/Portrait.svelte";
     import Select from "../../fields/Select.svelte";
+    import ProsemirrorField from "../../fields/ProsemirrorField.svelte";
+    import ElementalSelect from "../../fields/ElementalSelect.svelte";
     let { edit = true, context, app } = $props();
 
     let actor = $derived(app.actor);
@@ -40,7 +42,6 @@
                 {@attach reactive(actor, "system.vibes")}
                 style:resize="none"
                 placeholder="A brief description"
-                size="1"
                 class="nude grow"
             ></textarea>
             <div class="divider"></div>
@@ -104,6 +105,49 @@
             </div>
         {/if}
     </div>
+
+    <div class="row even">
+        <div class="col grow-3 br">
+            <span class="bold">Strengths:</span>
+        </div>
+
+        <div class="col br">
+            <span class="bold">Weaknesses:</span>
+            <textarea
+                {@attach reactive(actor, "system.weaknesses")}
+                {@attach resizing(() => actor.system.weaknesses)}
+                style:resize="none"
+                class="nude grow"
+            ></textarea>
+        </div>
+
+        <div class="col grow-2">
+            <span class="bold">Signature Attack:</span>
+            <input
+                {@attach reactive(actor, "system.signature.name")}
+                placeholder="Unnamed"
+                class="italic nude"
+                size="1"
+            />
+            <div class="row center">
+                <ElementalSelect
+                    class="grow nude"
+                    {@attach reactive(actor, "system.signature.element")}
+                ></ElementalSelect>
+                <span>Rank</span>
+                <input
+                    {@attach reactive(actor, "system.signature.rank")}
+                    size="1"
+                    class="nude"
+                />
+            </div>
+        </div>
+    </div>
+    <div class="divider"></div>
+
+    <h2>Special:</h2>
+    <ProsemirrorField doc={actor} path="system.notes" style="height: 200px"
+    ></ProsemirrorField>
 </div>
 
 <style lang="scss">

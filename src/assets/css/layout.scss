@@ -45,14 +45,19 @@
 
         // Make sure that styling persists even for our dragged element
         // For evenly distributed children
-        .even>* {
-            // align-items: center;
-            flex-basis: 0;
-            flex-grow: 1;
-            min-width: 0;
+        .even {
+            &>* {
+                // align-items: center;
+                flex-basis: 0;
+                flex-grow: 1;
+                min-width: 0;
+            }
 
             .grow-2 {
                 flex-grow: 2;
+            }
+            .grow-3 {
+                flex-grow: 3;
             }
         }
     }

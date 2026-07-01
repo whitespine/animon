@@ -28,8 +28,8 @@
 
             div.divider {
                 border-bottom: 1px solid black;
-                margin-left: calc(var(--inner-box-margin) * -1);
-                margin-right: calc(var(--inner-box-margin) * -1);
+                margin-left: calc(var(--inner-box-padding) * -1);
+                margin-right: calc(var(--inner-box-padding) * -1);
             }
         }
 

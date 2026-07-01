@@ -24,10 +24,7 @@ export class NpcModel extends ActorModel {
                 rank: new fields.NumberField({ min: 1, max: 3, initial: 1 })
             })),
 
-            weaknesses: new fields.TypedObjectField(new fields.SchemaField({
-                sort: new SortField(),
-                name: new fields.StringField({ required: true })
-            })),
+            weaknesses: new fields.StringField({required: true}),
 
             tier: tierField(),
             element: elementField(),
