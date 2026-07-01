@@ -26,13 +26,14 @@ export class SystemActor extends Actor {
         if (!data.prototypeToken?.bar1?.attribute) {
             mods["prototypeToken.bar1.attribute"] = {
                 "kid": "stamina",
-                "animon": "hp"
+                "animon": "hp",
+                "npc": "hp"
             }[data.type];
         }
         if (!data.prototypeToken?.bar2?.attribute) {
             mods["prototypeToken.bar2.attribute"] = {
                 "kid": "bond_points",
-                "animon": "signature_uses"
+                "animon": "signature_uses",
             }[data.type];
         }
 
