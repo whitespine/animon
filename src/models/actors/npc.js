@@ -44,6 +44,7 @@ export class NpcModel extends ActorModel {
     }
 
     prepareBaseData() {
+        super.prepareBaseData();
         this.skill_score = 1 + Math.floor(this.level / 2);
         if(this.type === "human") {
             this.hp.max = 5 * this.level

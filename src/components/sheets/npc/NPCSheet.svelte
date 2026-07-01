@@ -2,8 +2,13 @@
     import { reactive, resizing } from "../../../utils/attach.svelte";
     import Portrait from "../../fields/Portrait.svelte";
     import Select from "../../fields/Select.svelte";
+    import DeleteButton from "../../fields/DeleteButton.svelte";
     import ProsemirrorField from "../../fields/ProsemirrorField.svelte";
     import ElementalSelect from "../../fields/ElementalSelect.svelte";
+    import { TIERS } from "../../../models/actors/actor.svelte";
+    import { NPC_UPGRADES } from "../../../models/effects/npc_upgrade.svelte";
+    import { stop } from "../../../utils/handlers";
+    import { slide } from "svelte/transition";
     let { edit = true, context, app } = $props();
 
     let actor = $derived(app.actor);
@@ -12,6 +17,42 @@
         id,
         label: id,
     }));
+    let stage_options = TIERS.map((id) => ({
+        id,
+        label: id,
+    }));
+    let upgrade_options = NPC_UPGRADES.map((u) => ({
+        letter: u[0].toLocaleUpperCase(),
+        category: u,
+        tooltip: u,
+    }));
+    let upgrades = $derived(
+        actor.system.sv_effects.filter((e) => e.type == "npc_upgrade"),
+    );
+
+    // Make or increment an upgrade
+    function makeUpgrade(category) {
+        let existing = actor.effects.find(
+            (e) => e.type == "npc_upgrade" && e.system.category == category,
+        );
+        if (existing) {
+            existing.update({
+                "system.rank": existing.system.rank + 1,
+            });
+            return;
+        }
+        // Otherwise make a new one
+        actor.createEmbeddedDocuments("ActiveEffect", [
+            {
+                name: "New Upgrade",
+                type: "npc_upgrade",
+                system: {
+                    rank: 1,
+                    category,
+                },
+            },
+        ]);
+    }
 </script>
 
 <div class="col inner-box contain">
@@ -106,6 +147,59 @@
         {/if}
     </div>
 
+    {#if actor.system.type != "human"}
+        <div class="row even">
+            <div class="br">
+                <label for="system.tier">Stage:</label>
+                <Select
+                    class="nude"
+                    options={stage_options}
+                    {@attach reactive(actor, "system.tier")}
+                ></Select>
+            </div>
+            <div class="grow-2 br">
+                <div class="row center">
+                    <span class="pseudo-label">Upgrades:</span>
+                    {#each upgrade_options as uo}
+                        <button
+                            class="upgrade-button"
+                            data-tooltip={uo.tooltip}
+                            onclick={(e) => [stop(e), makeUpgrade(uo.category)]}
+                        >
+                            {uo.letter}
+                        </button>
+                    {/each}
+                </div>
+                <div class="upgrid">
+                    {#each upgrades as upgrade (upgrade._id)}
+                        <div transition:slide class="row center">
+                            <span class="grow">
+                                {upgrade.system.category}
+                                {upgrade.system.rank}
+                            </span>
+                            <DeleteButton doc={upgrade}></DeleteButton>
+                        </div>
+                    {/each}
+                </div>
+            </div>
+            <div class="grow-2 br col">
+                <label for="system.classification">Classification:</label>
+                <input
+                    class="nude grow"
+                    size="1"
+                    {@attach reactive(actor, "system.classification")}
+                />
+            </div>
+            <div>
+                <label for="system.element">Element:</label>
+                <ElementalSelect
+                    class="grow nude"
+                    {@attach reactive(actor, "system.element")}
+                ></ElementalSelect>
+            </div>
+        </div>
+    {/if}
+    <div class="divider"></div>
     <div class="row even">
         <div class="col grow-3 br">
             <span class="bold">Strengths:</span>
@@ -153,5 +247,19 @@
 <style lang="scss">
     .br {
         border-right: 1px solid black;
+    }
+
+    .upgrade-button {
+        font-size: small;
+        padding: 2px;
+    }
+
+    .upgrid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    textarea {
+        width: 100%;
     }
 </style>

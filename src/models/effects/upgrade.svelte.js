@@ -38,29 +38,34 @@ export class UpgradeEffectModel extends foundry.data.ActiveEffectTypeDataModel {
                 return [{
                     key: "system.bonuses.hp",
                     type: "add",
-                    value: 5
+                    value: 5,
+                    phase: "initial"
                 }];
             } else if (this.key == "damage") {
                 return [{
                     key: "system.bonuses.damage",
                     type: "add",
-                    value: 2
+                    value: 2,
+                    phase: "initial"
                 }];
             } else if (this.key == "dodge") {
                 return [{
                     key: "system.bonuses.dodge",
                     type: "add",
-                    value: 1
+                    value: 1,
+                    phase: "initial"
                 }];
             } else if (this.key == "sig_init") {
                 return [{
                     key: "system.bonuses.initiative",
                     type: "add",
-                    value: 1
+                    value: 1,
+                    phase: "initial"
                 }, {
                     key: "system.bonuses.signature_uses",
                     type: "add",
-                    value: 1
+                    value: 1,
+                    phase: "initial"
                 }];
             }
         }
@@ -70,10 +75,11 @@ export class UpgradeEffectModel extends foundry.data.ActiveEffectTypeDataModel {
 
     prepareBaseData() {
         this.changes = this.#changes;
+        this.phase = "initial";
 
         // Correct out of bounds key
         let kf = UpgradeEffectModel.keysFor(this.category);
-        if(!kf.includes(this.key)) {
+        if (!kf.includes(this.key)) {
             this.key = kf[0];
         }
 
