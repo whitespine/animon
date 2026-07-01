@@ -130,7 +130,7 @@
                 type="number"
             />
         </div>
-        <div class="prefix-input br">
+        <div class="prefix-input {actor.system.type != 'human' ? 'br' : ''}">
             <span class="pseudo-label">Init.:</span>
             <span>{actor.system.initiative}</span>
         </div>
@@ -198,8 +198,8 @@
                 ></ElementalSelect>
             </div>
         </div>
+        <div class="divider"></div>
     {/if}
-    <div class="divider"></div>
     <div class="row even">
         <div class="col grow-3 br">
             <span class="bold">Strengths:</span>

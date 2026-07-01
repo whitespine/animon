@@ -9,7 +9,7 @@ export class NpcModel extends ActorModel {
         return {
             ...super.defineSchema(),
 
-            type: new fields.StringField({choices: ["human", "animon", "other"]}),
+            type: new fields.StringField({choices: ["human", "animon", "other"], initial: "human"}),
             level: new fields.NumberField({initial: 1, min: 1, max: 10, integer: true}),
 
             // Aka stamina
