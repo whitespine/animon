@@ -3,7 +3,7 @@
     import Portrait from "../../fields/Portrait.svelte";
     
     let { context, app } = $props();
-    let gear = $derived(context.item);
+    let gear = $derived(context.document);
     let edit = $derived(app.isEditable);
 </script>
 

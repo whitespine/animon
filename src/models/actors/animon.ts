@@ -1,0 +1,382 @@
+import { ActorModel, elementField, tierAsString, tierAsInt, tierField, effectField, Tier, Element } from "./actor.svelte";
+import { rankedSort, sortedObjectToArray, SortField, titleCaseString } from "../base.svelte";
+import type { AnimonActor, KidActor, SystemActor } from "../../documents/actor.svelte.ts";
+
+const fields = foundry.data.fields;
+
+
+const statField = () => new fields.NumberField({ initial: 1, min: 1, integer: true });
+
+const defineAnimonSchema = () => ({
+    // -- Link to its kid
+    // kid: new fields.ForeignDocumentField(Actor),
+
+    // -- Nature tends to not change per form
+    nature: new fields.StringField({ required: true }),
+
+    // -- Forms
+    active_form_id: new fields.StringField({ required: true }), // used to derive `form`, which can be null
+    forms: new fields.TypedObjectField(new fields.SchemaField({
+        // -- Classification
+        sort: new SortField(), // Purely for display, doesn't affect evolution
+        classification: new fields.StringField({ required: true }),
+        // elements: new fields.ArrayField(elementField()),
+        element: elementField(),
+
+        // Even if you're doing branched evolution, we need these tiers for stat calculation
+        tier: tierField(),
+
+        // But if you are doing branched evolution, you probably want special names for it
+        name: new fields.StringField({ required: true }),
+
+        // -- Form specific stats
+        stats: new fields.SchemaField({
+            heart: statField(),
+            power: statField(),
+            agility: statField(),
+            brains: statField(),
+        }),
+
+        // -- Signature ability
+        signature: new fields.SchemaField({
+            name: new fields.StringField({ required: true }),
+            element: elementField(),
+            rank: new fields.NumberField({ min: 1, initial: 1, integer: true }),
+            effects: new fields.SchemaField({
+                1: effectField(),
+                2: effectField(),
+                3: effectField(),
+            })
+        }),
+
+        // -- Capabilities
+        qualities: new fields.TypedObjectField(new fields.SchemaField({
+            sort: new SortField(),
+            name: new fields.StringField({ required: true }),
+            rank: new fields.NumberField({ min: 1, max: 3, initial: 1, integer: true })
+        })),
+    })),
+
+    // -- HP / Signature Uses
+    hp: new fields.SchemaField({
+        value: new fields.NumberField({ initial: 5, min: 0, integer: true }),
+        max: new fields.NumberField({}) // Dummy field to trick foundry. 
+    }),
+    signature_uses: new fields.SchemaField({
+        value: new fields.NumberField({ initial: 0, min: 0, integer: true }),
+        max: new fields.NumberField({}) // Dummy field to trick foundry. 
+    }),
+});
+
+interface BaseForm {
+    sort: number;
+    classification: string;
+    element: Element;
+    tier: Tier;
+    name: string;
+    stats: {
+        heart: number;
+        power: number;
+        agility: number;
+        brains: number;
+    }
+    signature: {
+        name: string;
+        element: Element;
+        rank: number;
+        effects: {
+            1: string; // todo
+            2: string;
+            3: string;
+        }
+    },
+    qualities: Record<string, {
+        sort: number,
+        name: string,
+        rank: number
+    }>;
+}
+
+interface BaseData {
+    kid: KidActor | null;
+    nature: string;
+    active_form_id: string;
+    forms: Record<string, BaseForm>,
+    hp: {
+        value: number,
+        max: number
+    },
+    signature_uses: {
+        value: number,
+        max: number
+    }
+}
+
+interface DerivedForm extends BaseForm {
+    _id: string,
+    prior_forms: DerivedForm[]
+    stats: BaseForm["stats"] & {
+        hp: number,
+        dodge: number,
+        damage: number,
+        initiative: number,
+        signature_uses: number
+    }
+}
+
+interface DerivedData {
+    form: DerivedForm,
+    sorted_forms: DerivedForm[],
+    forms: Record<string, DerivedForm>,
+    bonuses: {
+        hp: number,
+        dodge: number,
+        damage: number,
+        initiative: number,
+        signature_uses: number
+    }
+}
+
+type AnimonSchema = ReturnType<typeof defineAnimonSchema>;
+export class AnimonModel extends ActorModel<AnimonSchema, AnimonActor, BaseData, DerivedData> {
+    static defineSchema() {
+        let schema = defineAnimonSchema();
+        //@ts-ignore
+        schema["kid"] = new ForeignDocumentField(Actor);  // We do this here to prevent circularity
+        return schema;
+    }
+
+    // Note to later self:  
+    // we could theoretically do some tricky bullshit with $derived on a $state from a kid
+    // to _theoretically_ make our derived attributes sidestep active effect procedures.
+    // However, I don't really love that - svelte is nice and all but there comes a point of
+    // deviance from foundry standard that might complicate later work
+
+
+    /**
+     * Damage given a tier and power
+     * @param tier 
+     * @param power 
+     * @returns 
+     */
+    static damage(tier: Tier, power: number) {
+        return {
+            fledgling: power,
+            basic: 2 * power,
+            super: 2 * power,
+            ultra: 3 * power,
+            giga: 4 * power,
+        }[tier] ?? 0;
+    }
+
+    /**
+     * Max hp given a tier and heart
+     * @param tier 
+     * @param heart 
+     * @returns 
+     */
+    static maxHp(tier: Tier, heart: number) {
+        return {
+            fledgling: 3 * heart,
+            basic: 3 * heart + 5,
+            super: 4 * heart + 10,
+            ultra: 5 * heart + 15,
+            giga: 6 * heart + 20,
+        }[tier] ?? 0;
+    }
+
+    prepareBaseData() {
+        // For convenience, enrich each form with its id
+        for (let [k, v] of Object.entries(this.forms)) {
+            v._id = k;
+        }
+
+        // Flatten and sort our forms
+        this.sorted_forms = rankedSort(Object.values(this.forms), (f) => [tierAsInt(f.tier), f.sort, f._id]);
+
+        // For each form, establish their evolves_from and devolves_to
+        // For the time being, assume all basics can become supers, etc
+        /*
+        for (let form of Object.values(this.forms)) {
+            let next_level = tierAsString(tierAsInt(form.tier) + 1);
+            let prev_level = tierAsString(tierAsInt(form.tier) - 1);
+            form.evolves_to = Object.entries(this.forms).filter((k, v) => v.tier == next_level).map((k, v) => k);
+            form.evolves_from = Object.entries(this.forms).filter((k, v) => v.tier == prev_level).map((k, v) => k);
+            // Also give it a name if it lacks one
+        }
+        */
+
+        // Get our active form
+        this.form = this.forms[this.active_form_id] ?? null;
+
+        // Initialize values for bonuses. These are applied to every form
+        this.bonuses = {
+            hp: 0,
+            dodge: 0,
+            damage: 0,
+            initiative: 0,
+            signature_uses: 0
+        }
+        // These attributes will be further modified by effects, maybe?
+    }
+
+    // Compute our final bonuses
+    prepareDerivedData() {
+        let prior_forms = [];
+        for (let form of this.sorted_forms) {
+            form.stats.hp = AnimonModel.maxHp(form.tier, form.stats.heart) + this.bonuses.hp;
+            form.stats.signature_uses = form.stats.brains + this.bonuses.signature_uses;
+            form.stats.damage = AnimonModel.damage(form.tier, form.stats.power) + this.bonuses.damage;
+            form.stats.dodge = form.stats.agility + this.bonuses.dodge;
+            form.stats.initiative = form.stats.agility + this.bonuses.initiative;
+
+            Object.defineProperty(form, "prior_forms", {
+                value: [...prior_forms],
+                enumerable: false
+            });
+
+            prior_forms.push(form);
+            Object.defineProperty(form, "all_qualities", {
+                value: prior_forms.flatMap(f => sortedObjectToArray(f.qualities)),
+                enumerable: false
+            });
+        }
+
+        // Bring our bar stuff to the top level
+        this.hp.max ||= this.form?.stats.hp;
+        this.signature_uses.max ||= this.form?.stats.signature_uses;
+    }
+
+    // Forces us to fledgling stage if we aren't in a valid form
+    async ensureInitialized() {
+        if (this.form) return; // We're fine
+        await this.getOrCreateForm(Tier.Fledgling, true);
+    }
+
+    async volveTo(id: string, full_restore = false) {
+        if (!this.forms[id]) {
+            let form = this.formForTier(tierAsString(id));
+            if (!form) return;
+            id = form._id;
+        }
+        await this._csys.ensureInitialized();
+        // let current_form = tierAsInt(this._csys.form.tier);
+        // let new_form = tierAsInt(this.forms[id].tier);
+        let base_changes = this._csys.shiftChanges(id);
+        await this.parent.update(base_changes);
+        if (full_restore) {
+            ui.notifications.warn("Make sure to heal yourself to full!");
+        }
+    }
+
+    /** A more aggressive form of formForTier that will update the document to have a
+     * form of the given tier.
+     * 
+     * @param {string} tier The tier that we want
+     * @param {boolean} set_current If we should set it as active
+     * @returns {string} The appropriate tier id
+     */
+    async getOrCreateForm(tier: Tier, set_current: boolean = false) {
+        let existing = this.formForTier(tier);
+        if (existing) {
+            if (set_current && this.active_form_id != existing._id) {
+                await this.parent.update({
+                    system: {
+                        active_form_id: existing._id
+                    }
+                })
+            }
+            return existing._id;
+        } else {
+            // Make a new one
+            let new_id = foundry.utils.randomID();
+            let patch = {
+                system: {
+                    forms: {
+                        [new_id]: {
+                            name: `New ${tier} form`,
+                            tier
+                        }
+                    },
+                    active_form_id: set_current ? new_id : undefined
+                }
+            };
+            await this.parent.update(patch);
+            return new_id;
+        }
+    }
+
+    // Get the update block to shift to a form 
+    shiftChanges(form_id: string): Actor.UpdateInput {
+        if (!this.form) throw new Error("Cannot evolve from null form");
+        if (!this.forms[form_id]) throw new Error("Form id does not exist");
+        let new_form = this.forms[form_id];
+
+        // HP delta. Kid bonuses are the same so ignored
+        let delta_hp = AnimonModel.maxHp(new_form.tier, new_form.stats.heart) - AnimonModel.maxHp(this.form.tier, this.form.stats.heart);
+        let new_hp = this.hp.value + delta_hp;
+        if (this.hp.value > 0 && new_hp <= 0) {
+            new_hp = 1;
+        }
+
+        // Sig Uses delta - keep "missing" amount
+        let delta_sig = new_form.stats.brains - this.form.stats.brains;
+        let new_sig = this.signature_uses.value + delta_sig;
+        if (this.signature_uses.value > 0 && new_sig <= 0) {
+            new_sig = 1;
+        }
+
+        // Nothing else needs to change
+        return {
+            system: {
+                active_form_id: form_id,
+                hp: {
+                    value: new_hp
+                },
+                signature_uses: {
+                    value: new_sig
+                }
+            }
+        };
+    }
+
+    // Get a form for the given tier
+    formForTier(tier: Tier | number) {
+        tier = tierAsString(tier);
+        return this.sorted_forms.find(f => f.tier == tier);
+    }
+
+    /** 
+     * Model pre-create rules allow for setting initial values that go beyond the scope of
+     * just what is allowed via the fields logic
+     */
+    async _preCreate(data: any, options: Actor.Database.PreCreateOperation, user: User.Stored) {
+        await super._preCreate(data, options, user);
+        // Put in the basics
+        let mods: Parameters<AnimonModel["updateSource"]>[0] = {};
+        let active_form = data.active_form_id;
+        if (!active_form) {
+            active_form = foundry.utils.randomID();
+            mods.active_form_id = active_form;
+        }
+        if (!data.forms?.[active_form]) {
+            mods.forms = {};
+            mods.forms[active_form] = {
+                tier: Tier.Fledgling,
+                name: "Just a baby <name it!>"
+            }
+        }
+        this.updateSource(mods);
+    }
+
+    // Make our new kid push down if we've changed kids
+    _onUpdate(changed: any, _options: never, userId: string) {
+        if (userId == game.user.id && changed.system?.kid) {
+            // Find the kid and force a pushdown
+            let kid = game.actors.get(changed.system.kid) as SystemActor;
+            if (kid?.isKid()) {
+                kid.pushdownEffects(this.parent);
+            }
+        }
+    }
+}

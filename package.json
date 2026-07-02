@@ -19,10 +19,20 @@
   "homepage": "https://github.com/whitespine/animon#readme",
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^7.1.2",
+    "@tsconfig/svelte": "^5.0.4",
+    "@types/node": "^24.0.1",
+    "fvtt-types": "github:League-of-Foundry-Developers/foundry-vtt-types#main",
     "sass-embedded": "^1.99.0",
+    "svelte-check": "^4.7.1",
     "svelte-dnd-action": "^0.9.69",
+    "svelte-language-server": "^0.18.3",
+    "svelte-preprocess": "^6.0.5",
     "svelte-preprocess-cssmodules": "^3.0.1",
-    "vite": "^8.0.13"
+    "tslib": "^2.8.1",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.13",
+    "vite-plugin-checker": "^0.14.4",
+    "vite-plugin-foundryvtt": "^3.0.0"
   },
   "dependencies": {
     "runed": "^0.37.1"

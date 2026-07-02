@@ -8,9 +8,9 @@
     import MonTab from "./MonTab.svelte";
     import NotesTab from "./NotesTab.svelte";
 
-    let { app, context } = $props();
+    let { context } = $props();
 
-    let actor = $derived(app.actor);
+    let actor = $derived(context.document);
     let edit = $state(true);
 
     // Our active tab

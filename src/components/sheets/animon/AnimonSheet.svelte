@@ -6,9 +6,9 @@
     import AnimonHeader from "./components/AnimonHeader.svelte";
     import Sidebar from "../../layout/Sidebar.svelte";
 
-    let { app, context } = $props();
+    let { context } = $props();
 
-    let mon = $derived(app.actor);
+    let mon = $derived(context.document);
     let kid = $derived(mon.system.kid);
 
     // Human readable

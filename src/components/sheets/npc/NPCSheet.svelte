@@ -6,12 +6,12 @@
     import ProsemirrorField from "../../fields/ProsemirrorField.svelte";
     import ElementalSelect from "../../fields/ElementalSelect.svelte";
     import { TIERS } from "../../../models/actors/actor.svelte";
-    import { NPC_UPGRADES } from "../../../models/effects/npc_upgrade.svelte";
+    import { NPC_UPGRADE_CATEGORIES } from "../../../models/effects/npc_upgrade.svelte";
     import { stop } from "../../../utils/handlers";
     import { slide } from "svelte/transition";
-    let { edit = true, context, app } = $props();
+    let { edit = true, context } = $props();
 
-    let actor = $derived(app.actor);
+    let actor = $derived(context.document);
 
     let type_options = ["human", "animon", "other"].map((id) => ({
         id,
@@ -21,7 +21,7 @@
         id,
         label: id,
     }));
-    let upgrade_options = NPC_UPGRADES.map((u) => ({
+    let upgrade_options = NPC_UPGRADE_CATEGORIES.map((u) => ({
         letter: u[0].toLocaleUpperCase(),
         category: u,
         tooltip: u,

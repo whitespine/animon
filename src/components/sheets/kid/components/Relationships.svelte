@@ -9,13 +9,13 @@
     let { actor, edit } = $props();
 
     let relationships = $derived(
-        sortedObjectToArray(actor.system.relationship),
+        sortedObjectToArray(actor.system.relationships),
     );
 
     // Add a new relationship
     function addRelationship() {
         actor.update({
-            "system.relationship": sortedArrayToObject([
+            "system.relationships": sortedArrayToObject([
                 ...relationships,
                 {
                     _id: foundry.utils.randomID(),
@@ -26,7 +26,7 @@
 
     // Increment the relationship with _id
     function removeRelationship(_id) {
-        actor.update({ [`system.relationship.${_id}`]: _del });
+        actor.update({ [`system.relationships.${_id}`]: _del });
     }
 </script>
 
@@ -45,7 +45,7 @@
     <div class="col">
         {#each relationships as relationship, i (relationship._id)}
             <div class="prefix-input" transition:slide>
-                <input {@attach reactive(actor, "system.relationship.{relationship._id}.name")} size="1"
+                <input {@attach reactive(actor, "system.relationships.{relationship._id}.name")} size="1"
                 >
                 <a
                     onclick={(e) => [
