@@ -3,6 +3,7 @@ import { GearSheet } from "./ItemSheet";
 import { UpgradeSheet } from "./EffectSheet";
 import loc from "../utils/localize";
 
+type ADSC = typeof foundry.applications.api.DocumentSheetV2.AnyDocumentSheetConfig;
 export function setupSheets() {
     const configs: Array<[
         any, 
