@@ -51,7 +51,7 @@ export class SystemActorSheet extends foundry.applications.sheets.ActorSheetV2 {
 }
 
 export class NPCSheet extends SvelteApplicationMixin(SystemActorSheet) {
-    static DEFAULT_OPTIONS = {
+    static DEFAULT_OPTIONS = foundry.utils.mergeObject({
         classes: ["npc"],
         svelte: {
             component: NPCSheetComponent,
@@ -61,28 +61,28 @@ export class NPCSheet extends SvelteApplicationMixin(SystemActorSheet) {
         },
         position: {
             width: 600,
-            height: "auto"
+            height: "auto" as const
         },
-    }
+    }, super.DEFAULT_OPTIONS)
 }
 
 export class KidSheet extends SvelteApplicationMixin(SystemActorSheet) {
-    static DEFAULT_OPTIONS = {
+    static DEFAULT_OPTIONS = foundry.utils.mergeObject({
         classes: ["player"],
         svelte: {
             component: KidSheetComponent
         },
         position: {
             width: 600,
-            height: 700
+            height: "auto" as const
         },
         actions: {
         }
-    }
+    }, super.DEFAULT_OPTIONS);
 }
 
 export class AnimonSheet extends SvelteApplicationMixin(SystemActorSheet) {
-    static DEFAULT_OPTIONS = {
+    static DEFAULT_OPTIONS = foundry.utils.mergeObject({
         classes: ["mon"],
         svelte: {
             component: AnimonSheetComponent
@@ -93,13 +93,14 @@ export class AnimonSheet extends SvelteApplicationMixin(SystemActorSheet) {
         },
         actions: {
         }
-    }
+    }, super.DEFAULT_OPTIONS);
 
     // Set kid
-    _onDropActor(_event: Event, document: Actor) {
+    async _onDropActor(_event: Event, document: Actor) {
         if (document.type == "kid") {
             //@ts-ignore
             this.actor.update({ "system.kid": document._id });
         }
+        return null;
     }
 }

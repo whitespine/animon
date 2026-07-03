@@ -36,27 +36,27 @@ export class CustomItemSheet extends foundry.applications.sheets.ItemSheetV2 {
 }
 
 export class GearSheet extends SvelteApplicationMixin(CustomItemSheet) {
-    static DEFAULT_OPTIONS = {
+    static DEFAULT_OPTIONS = foundry.utils.mergeObject({
         classes: ["gear"],
         svelte: {
             component: GearSheetComponent
         },
         position: {
             width: 600,
-            height: "auto"
+            height: "auto" as const
         }
-    }
+    }, super.DEFAULT_OPTIONS);
 }
 
 export class UpgradeSheet extends SvelteApplicationMixin(CustomItemSheet) {
-    static DEFAULT_OPTIONS = {
+    static DEFAULT_OPTIONS = foundry.utils.mergeObject({
         classes: ["upgrade"],
         svelte: {
             component: UpgradeSheetComponent
         },
         position: {
             width: 600,
-            height: "auto"
+            height: "auto" as const
         }
-    }
+    }, super.DEFAULT_OPTIONS);
 }

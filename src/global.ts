@@ -88,6 +88,7 @@ declare module "fvtt-types/configuration" {
   }
 
   interface SettingConfig {
+    "animon.welcome": boolean,
     /*
     "lancer.actionManager": boolean;
     "lancer.actionManagerPlayersUse": boolean;

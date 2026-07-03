@@ -6,9 +6,8 @@ export const ANIMON = {
     settings: {
         // Useful for tracking initialization
         init: {
-            welcome: "WELCOME_PAGE"
+            welcome: "welcome" as const
         },
-        example: "EXAMPLE_SETTING"
     },
 
     // Keys for socket actions

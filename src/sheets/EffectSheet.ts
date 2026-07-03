@@ -20,8 +20,7 @@ export class UpgradeSheet extends SvelteApplicationMixin<
     RenderContextFor<CustomEffectSheet<UpgradeEffect>>, 
     typeof CustomEffectSheet<UpgradeEffect>
 >(CustomEffectSheet<UpgradeEffect>) {
-    static DEFAULT_OPTIONS = {
-        ...super.DEFAULT_OPTIONS,
+    static DEFAULT_OPTIONS = foundry.utils.mergeObject({
         classes: ["upgrade"],
         svelte: {
             component: UpgradeSheetComponent
@@ -30,5 +29,5 @@ export class UpgradeSheet extends SvelteApplicationMixin<
             width: 600,
             height: "auto" as const
         }
-    }
+    }, super.DEFAULT_OPTIONS);
 }

@@ -30,16 +30,7 @@ export function boostedFormula(pool: number, boost: number): string {
  */
 
 
-/**
- * 
- * @param {BasicTestParams} check_details 
- * @param {Actor} speaker Possible other speaker to use 
- * @returns {Promise<{
- *   message: ChatMessage,
- *   roll: Roll
- * }>}
- */
-export async function rollBasicTest(check_details: BasicTestParams, speaker=null) {
+export async function rollBasicTest(check_details: BasicTestParams, speaker?: ReturnType<typeof ChatMessage.getSpeaker>) {
     let formula = boostedFormula(check_details.dice_pool, check_details.boost);
     let roll = await new Roll(formula).roll();
 

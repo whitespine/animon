@@ -142,7 +142,7 @@ export class AnimonModel extends ActorModel<AnimonSchema, AnimonActor, BaseData,
     static defineSchema() {
         let schema = defineAnimonSchema();
         //@ts-ignore
-        schema["kid"] = new ForeignDocumentField(Actor);  // We do this here to prevent circularity
+        schema["kid"] = new fields.ForeignDocumentField(Actor);  // We do this here to prevent circularity
         return schema;
     }
 

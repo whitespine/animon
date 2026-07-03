@@ -32,7 +32,7 @@ export class RollerState {
     talent = $derived(this.actor?.system.talents?.[this.talent_id] ?? null);
     talent_bonus = $derived(this.talent?.rank ?? 0);
     trait: "spirit" | "logic" | "reflex" = $state("spirit"); // logic, reflex, or spirit
-    trait_bonus = $derived((this.actor as KidActor | null)?.isKid() ? this.actor!.system.trait[this.trait] : 0);
+    trait_bonus = $derived((this.actor as KidActor | null)?.isKid() ? this.actor!.system.trait![this.trait] : 0);
 
     // Mon specific
     stat: "heart" | "power" | "agility" | "brains" = $state("heart"); // heart / power / agility brains

@@ -1,15 +1,23 @@
 import { SvelteApplicationMixin } from "../overrides/svelte_mixin.svelte";
 import type {Component} from "svelte";
 
-export class GenericComponentApp extends SvelteApplicationMixin(foundry.applications.api.ApplicationV2) {
+class ConcreteV2 extends foundry.applications.api.ApplicationV2 {}
+
+export class GenericComponentApp<T extends object> extends SvelteApplicationMixin<any, typeof foundry.applications.api.ApplicationV2>(foundry.applications.api.ApplicationV2) {
     static DEFAULT_OPTIONS = {
         classes: ["animon"],
     }
 
-    constructor(component: Component, context, options = {}) {
-        options.svelte ??= {};
+    fixed_context: T;
+
+    constructor(component: Component, context: T, options = {}) {
+        // @ts-ignore
         options.svelte.component = component;
-        options.svelte.props = props;
         super(options);
+        this.fixed_context = context;
+    }
+
+    async _prepareContext() {
+        return this.fixed_context;
     }
 }
