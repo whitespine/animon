@@ -1,4 +1,5 @@
 import { ANIMON } from "../consts";
+import { onReceiveContest, onReceiveContestResponse, type RespondContestBroadcast, type StartContestBroadcast } from "./roll";
 import { onReceiveSuspense, type SuspenseBroadcast } from "./suspense.svelte";
 
 interface ExampleBroadcast {
@@ -25,11 +26,14 @@ export function initSockets() {
     game.socket.on(`system.${game.system.id}`, (data) => {
         let { type, payload } = data;
         switch (type) {
-            case ANIMON.socket.example:
-                onReceiveExample(payload)
+            case ANIMON.socket.contest_start:
+                onReceiveContestStart(payload);
+                break;
+            case ANIMON.socket.contest_response:
+                onReceiveContestResponse(payload);
                 break;
             case ANIMON.socket.suspense:
-                onReceiveSuspense(payload)
+                onReceiveSuspense(payload);
                 break;
             default:
                 ui.notifications.warn(`Unhandled animon event type ${type}`);
@@ -38,7 +42,7 @@ export function initSockets() {
 }
 
 // Todo we probably want to correlate string and payload
-export function sendSocket(type: string, payload: ExampleBroadcast | SuspenseBroadcast) {
+export function sendSocket(type: string, payload: ExampleBroadcast | SuspenseBroadcast | StartContestBroadcast | RespondContestBroadcast) {
     return game.socket.emit(`system.${game.system.id}`, {
         type,
         payload

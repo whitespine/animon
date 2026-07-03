@@ -39,6 +39,7 @@ export class SystemChatMessage<SubType extends ChatMessage.SubType = ChatMessage
 }
 
 export type BasicTestChatMessage = ChatMessage<"basic_test">;
+export type ContestChatMessage = ChatMessage<"contested_test">;
 // Disable inbuilt DSN roll display for animon messages. We do these manually
 // TODO: Should this be default behavior for quicksilver?
 /*

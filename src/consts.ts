@@ -12,7 +12,8 @@ export const ANIMON = {
 
     // Keys for socket actions
     socket: {
-        example: "EXAMPLE_SOCKET_ACTION",
+        contest_start: "ROLL_CONTEST",
+        contest_response: "CONTEST_RESPONSE",
         suspense: "DICE_SUSPENSE_SYNC"
     },
 

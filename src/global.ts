@@ -15,6 +15,7 @@ import type { NpcUpgradeEffectModel } from "./models/effects/npc_upgrade.svelte"
 import type { UpgradeEffectModel } from "./models/effects/upgrade.svelte";
 import type { GearModel } from "./models/items/gear.svelte";
 import type { BasicTestModel } from "./models/messages/basic_test";
+import type { ContestedTestModel } from "./models/messages/contested_test";
 
 declare module "fvtt-types" {
 
@@ -62,7 +63,8 @@ declare module "fvtt-types/configuration" {
       npc_upgrade: typeof NpcUpgradeEffectModel
     },
     ChatMessage: {
-      basic_test: typeof BasicTestModel
+      basic_test: typeof BasicTestModel,
+      contested_test: typeof ContestedTestModel
     },
     Combatant: {
       //base: typeof LancerCombatantModel;

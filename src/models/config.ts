@@ -5,6 +5,7 @@ import { UpgradeEffectModel } from "./effects/upgrade.svelte";
 import { NpcUpgradeEffectModel } from "./effects/npc_upgrade.svelte";
 import { AnimonModel } from "./actors/animon";
 import { BasicTestModel } from "./messages/basic_test";
+import { ContestedTestModel } from "./messages/contested_test";
 
 export function setupModels() {
     // @ts-ignore Why?
@@ -17,4 +18,5 @@ export function setupModels() {
     CONFIG.ActiveEffect.dataModels["upgrade"] = UpgradeEffectModel;
     CONFIG.ActiveEffect.dataModels["npc_upgrade"] = NpcUpgradeEffectModel;
     CONFIG.ChatMessage.dataModels["basic_test"] = BasicTestModel;
+    CONFIG.ChatMessage.dataModels["contested_test"] = ContestedTestModel;
 }
