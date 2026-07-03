@@ -22,13 +22,13 @@ type RenderOptionsFor<T extends foundry.applications.api.ApplicationV2<any, any,
 type SvelteMixin<RenderContext extends object> = Constructable<{
   props: RenderContext,
 }> & {
-  PARTS: never,
-  getSheetClassesForSubType: never,
-  getSheetThemeForDocument: never,
-  initializeSheets: never,
-  registerSheet: never,
-  unregisterSheet: never,
-  updateDefaultSheets: never
+  //PARTS: never,
+  //getSheetClassesForSubType: never,
+  //getSheetThemeForDocument: never,
+  //initializeSheets: never,
+  //registerSheet: never,
+  //unregisterSheet: never,
+  //updateDefaultSheets: never
 };
 
 type AppBaseClass = Constructable<foundry.applications.api.ApplicationV2>; 
@@ -51,7 +51,7 @@ declare class FilePicker<
   type Mix<BaseClass extends HandlebarsApplicationMixin.BaseClass> = Mixin<typeof HandlebarsApplication, BaseClass>;
   type BaseClass = ApplicationV2.Internal.Constructor;
  */
-foundry.applications.apps.FilePicker
+// foundry.applications.apps.FilePicker
 
 function SvelteApplicationMixin<
   RenderContext extends object,

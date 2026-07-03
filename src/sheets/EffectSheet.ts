@@ -16,7 +16,6 @@ export class CustomEffectSheet<T extends ActiveEffect> extends foundry.applicati
     }
 }
 
-
 export class UpgradeSheet extends SvelteApplicationMixin<
     RenderContextFor<CustomEffectSheet<UpgradeEffect>>, 
     typeof CustomEffectSheet<UpgradeEffect>
