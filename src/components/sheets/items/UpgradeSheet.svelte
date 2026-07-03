@@ -6,8 +6,7 @@
     import ProsemirrorField from "../../fields/ProsemirrorField.svelte";
     import loc from "../../../utils/localize";
 
-    let { context, app } = $props();
-    let upgrade = $derived(context.effect);
+    let { document: upgrade } = $props();
     let edit = $derived(app.isEditable);
 
     let category_options = ["minor", "major", "score"].map((id) => ({

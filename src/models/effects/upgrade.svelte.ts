@@ -1,5 +1,6 @@
 import type { InterfaceToObject } from "fvtt-types/utils";
 import loc from "../../utils/localize";
+import { baseEffectChanges } from "./base";
 
 const fields = foundry.data.fields;
 
@@ -10,7 +11,7 @@ export enum Category {
 }
 
 const defineUpgradeEffectSchema = () => ({
-    changes: new fields.ArrayField(new fields.ObjectField()),// who cares
+    ...baseEffectChanges(),
 
     // We strictly limit category
     category: new fields.StringField({ choices: Object.values(Category) }),

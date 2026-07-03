@@ -9,9 +9,7 @@
     import { NPC_UPGRADE_CATEGORIES } from "../../../models/effects/npc_upgrade.svelte";
     import { stop } from "../../../utils/handlers";
     import { slide } from "svelte/transition";
-    let { edit = true, context } = $props();
-
-    let actor = $derived(context.document);
+    let { edit = true, document: actor } = $props();
 
     let type_options = ["human", "animon", "other"].map((id) => ({
         id,

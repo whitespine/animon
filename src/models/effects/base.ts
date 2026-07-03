@@ -6,6 +6,7 @@ export function baseEffectChanges() {
         changes: new fields.ArrayField(new fields.SchemaField({
             type: new fields.StringField(),
             phase: new fields.StringField(),
+            priority: new fields.NumberField(),
         }))
     };
 }

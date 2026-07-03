@@ -2,8 +2,7 @@
     import { reactive } from "../../../utils/attach.svelte";
     import Portrait from "../../fields/Portrait.svelte";
     
-    let { context, app } = $props();
-    let gear = $derived(context.document);
+    let { document: gear } = $props();
     let edit = $derived(app.isEditable);
 </script>
 

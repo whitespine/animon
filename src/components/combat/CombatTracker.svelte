@@ -1,6 +1,5 @@
 <script>
-    let { context } = $props();
-    let combat = $derived(context.combat);
+    let { document: combat } = $props();
 </script>
 
 <div class="combat-tracker col">

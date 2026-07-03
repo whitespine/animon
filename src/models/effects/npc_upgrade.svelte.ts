@@ -1,4 +1,5 @@
 import type { InterfaceToObject } from "fvtt-types/utils";
+import { baseEffectChanges } from "./base";
 
 const fields = foundry.data.fields;
 
@@ -11,7 +12,7 @@ export enum NpcUpgradeCategory {
 export const NPC_UPGRADE_CATEGORIES = Object.values(NpcUpgradeCategory);
 
 const defineNpcUpgradeEffectSchema = () => ({
-    changes: new fields.ArrayField(new fields.ObjectField()),
+    ...baseEffectChanges(),
     // We strictly limit category
     category: new fields.StringField({ choices: NPC_UPGRADE_CATEGORIES, initital: NpcUpgradeCategory.Aggressive }),
     rank: new fields.NumberField({integer: true, min: 1, max: 4, initial: 1})
