@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { DragArea } from "./dnd.svelte";
     import SortableDocumentList from "./SortableDocumentList.svelte";
 

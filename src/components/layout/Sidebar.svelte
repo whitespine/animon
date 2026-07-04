@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { stop } from "../../utils/handlers";
     import { fixClasses } from "../../utils/classes";
     import { slide } from "svelte/transition";

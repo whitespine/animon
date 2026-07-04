@@ -1,5 +1,5 @@
 
-<script>
+<script lang="ts">
     import {stop} from "../../utils/handlers";
 
     function disableWelcome(e) {

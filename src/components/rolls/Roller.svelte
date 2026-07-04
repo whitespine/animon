@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { GlobalRollerState } from "./prompt/roller_state.svelte";
     import { stop } from "../../utils/handlers";
     import { slide } from "svelte/transition";

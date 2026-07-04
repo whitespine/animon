@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import AnimonFormHeader from "./components/AnimonFormHeader.svelte";
     import AnimonHeader from "./components/AnimonHeader.svelte";
     import Qualities from "./components/Qualities.svelte";

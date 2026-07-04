@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import GearDisplay from "./ViewGear.svelte";
 
     let { message } = $props();

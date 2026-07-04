@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { reactive } from "../../../../utils/attach.svelte";
     import { stop } from "../../../../utils/handlers";
     import loc from "../../../../utils/localize";

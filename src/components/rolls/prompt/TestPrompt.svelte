@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import Boost from "./Boost.svelte";
     import Incrementer from "../../fields/Incrementer.svelte";
     import { stop } from "../../../utils/handlers";
@@ -8,11 +8,7 @@
     import { RollerState } from "./roller_state.svelte";
     import RollingAs from "./RollingAs.svelte";
 
-    /**
-     * @type {{
-     *  state: RollerState
-     * }}
-     */
+
     let { state } = $props();
 
     function roll(e) {

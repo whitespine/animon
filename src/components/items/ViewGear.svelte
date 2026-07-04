@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     let { item, edit = false } = $props();
     import DeleteButton from "../fields/DeleteButton.svelte";
     import EditButton from "../fields/EditButton.svelte";

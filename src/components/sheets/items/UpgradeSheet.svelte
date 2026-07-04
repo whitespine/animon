@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { reactive } from "../../../utils/attach.svelte";
     import { UpgradeEffectModel } from "../../../models/effects/upgrade.svelte";
     import Portrait from "../../fields/Portrait.svelte";

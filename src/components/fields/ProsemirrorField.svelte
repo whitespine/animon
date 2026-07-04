@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { resolveDotpath } from "../../utils/paths";
 
     // This thing is WIP and not actually functional yet

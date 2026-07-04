@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { resolveDotpath } from "../../utils/paths";
     import { stop } from "../../utils/handlers";
     let { doc, path, class: className, ...restProps } = $props();

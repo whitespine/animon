@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import Harm from "./components/Harm.svelte";
     import Header from "./components/Header.svelte";
     import KidType from "./components/KidType.svelte";

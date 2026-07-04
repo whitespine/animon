@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { stop } from "../../utils/handlers";
 
     let {
@@ -12,14 +12,14 @@
         ...restArgs
     } = $props();
 
-    let current = $derived(foundry.utils.getProperty(doc, path));
+    let current = $derived(foundry.utils.getProperty(doc, path) as string | undefined);
 
     // Stolen from foundry, modified
-    async function editImage(e) {
+    async function editImage(e: Event) {
         stop(e);
         const defaultArtwork =
             doc.constructor.getDefaultArtwork?.(doc._source) ?? {};
-        const defaultImage = foundry.utils.getProperty(defaultArtwork, path);
+        const defaultImage = foundry.utils.getProperty(defaultArtwork, path) as string;
         const fp = new foundry.applications.apps.FilePicker.implementation({
             current,
             type: "image",

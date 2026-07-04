@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     let { text } = $props();
     let words = $derived(text.split(/\s+/));
 </script>

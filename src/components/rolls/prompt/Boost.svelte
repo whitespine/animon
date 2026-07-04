@@ -1,5 +1,5 @@
 
-<script>
+<script lang="ts">
     import { stop } from "../../../utils/handlers";
     import loc from "../../../utils/localize";
     import { RollerState } from "./roller_state.svelte";

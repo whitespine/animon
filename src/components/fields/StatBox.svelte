@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { stop } from "../../utils/handlers";
     import { resolveDotpath } from "../../utils/paths";
     import Breaker from "../layout/Breaker.svelte";

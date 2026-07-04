@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     let { document: combat } = $props();
 </script>
 

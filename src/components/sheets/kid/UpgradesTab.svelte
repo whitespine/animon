@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import loc from "../../../utils/localize";
     import { rankedSort } from "../../../models/base.svelte";
     import { UpgradeEffectModel } from "../../../models/effects/upgrade.svelte";

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { flip } from "svelte/animate";
     import { dndzone, TRIGGERS } from "svelte-dnd-action";
     import { DRAG_STATE, DragArea } from "./dnd.svelte";

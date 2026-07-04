@@ -4,11 +4,13 @@ import { ControlState } from "../../../utils/control.svelte";
 import { onlineOwners } from "../../../utils/ownership";
 import { rollBasicTest } from "../../../utils/roll";
 
+export type Speaker = ReturnType<typeof ChatMessage.getSpeaker>;
+
 /**
  * Utility class singleton for managing the current configuration of our roller
  */
 export class RollerState {
-    speaker: ReturnType<typeof ChatMessage.getSpeaker> = $state({
+    speaker: Speaker = $state({
         scene: null,
         token: null,
         actor: null,

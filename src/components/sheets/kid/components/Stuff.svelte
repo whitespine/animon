@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import loc from "../../../../utils/localize";
 
     let { actor, edit } = $props();

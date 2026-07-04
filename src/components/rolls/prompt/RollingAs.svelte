@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { RollerState } from "./roller_state.svelte";
     import { ControlState } from "../../../utils/control.svelte";
 

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { fixClasses } from "../../utils/classes";
     let { value, discarded, class: className, ...restProps } = $props();
     let fullClasses = $derived.by(() => {

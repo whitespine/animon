@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import Die from "../Die.svelte";
     import RollingDie from "../RollingDie.svelte";
     import ToolTip from "../../layout/ToolTip.svelte";

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { fixClasses } from "../../utils/classes";
     import { buildListenerAttacher } from "../../utils/attach.svelte";
 

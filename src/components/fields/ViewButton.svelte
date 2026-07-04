@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { stop } from "../../utils/handlers";
     let { doc = null, callback = null, label = null } = $props();
     let fallback_label = $derived(label ?? `View ${doc?.name || ""}`)

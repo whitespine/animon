@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import BasicTest from "./message/BasicTest.svelte";
     let { message } = $props();
 </script>

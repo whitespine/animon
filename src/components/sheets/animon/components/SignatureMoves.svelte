@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import MainSig from "./MainSig.svelte";
     import ToolTip from "../../../layout/ToolTip.svelte";
     import loc from "../../../../utils/localize";

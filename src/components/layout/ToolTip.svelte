@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import {tick} from "svelte";
     import { fixClasses, fixStyle } from "../../utils/classes";
     import { buildListenerAttacher, portalTo } from "../../utils/attach.svelte";

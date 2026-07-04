@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { reactive } from "../../utils/attach.svelte";
     import { resolveDotpath } from "../../utils/paths";
     import Breaker from "../layout/Breaker.svelte";

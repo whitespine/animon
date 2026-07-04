@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import loc from "../../../../utils/localize";
     import StatBox from "../../../fields/StatBox.svelte";
     

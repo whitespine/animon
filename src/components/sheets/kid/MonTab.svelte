@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import BondBox from "../bond/BondBox.svelte"
     let { actor, edit } = $props();
 </script>

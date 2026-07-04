@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { stop } from "../../utils/handlers";
     // Tabs should map from a key (which will be emitted) to a
     let { tabs = {}, active = "", onselect = (_key) => {} } = $props();

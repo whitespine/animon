@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import Die from "./Die.svelte";
     import { onMount, onDestroy } from "svelte";
 

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import loc from "../../../utils/localize";
 
     import XofX from "../../fields/XofX.svelte";

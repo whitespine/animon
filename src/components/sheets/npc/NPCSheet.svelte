@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { reactive, resizing } from "../../../utils/attach.svelte";
     import Portrait from "../../fields/Portrait.svelte";
     import Select from "../../fields/Select.svelte";

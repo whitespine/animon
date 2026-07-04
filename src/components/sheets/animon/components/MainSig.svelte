@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import loc from "../../../../utils/localize";
     import { reactive } from "../../../../utils/attach.svelte";
     import ElementalSelect from "../../../fields/ElementalSelect.svelte";

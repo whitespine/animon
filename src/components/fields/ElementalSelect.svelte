@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { ELEMENTS } from "../../models/actors/actor.svelte";
     import loc from "../../utils/localize";
     import Select from "./Select.svelte";
