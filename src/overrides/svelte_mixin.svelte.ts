@@ -20,7 +20,7 @@ type RenderOptionsFor<T extends foundry.applications.api.ApplicationV2<any, any,
 
 // The types our svelte application mixin provides
 type SvelteMixin<RenderContext extends object> = Constructable<{
-  props: RenderContext,
+  props: RenderContext
 }> & {
   //PARTS: never,
   //getSheetClassesForSubType: never,
@@ -31,8 +31,8 @@ type SvelteMixin<RenderContext extends object> = Constructable<{
   //updateDefaultSheets: never
 };
 
-type AppBaseClass = Constructable<foundry.applications.api.ApplicationV2>; 
-type Mix<BaseClass extends AppBaseClass, RenderContext extends object > = Mixin<
+type AppBaseClass = Constructable<foundry.applications.api.ApplicationV2<any, any, any>>; 
+type Mix<RenderContext extends object, BaseClass extends AppBaseClass> = Mixin<
   SvelteMixin<RenderContext>,
   BaseClass
 >;
@@ -60,7 +60,7 @@ function SvelteApplicationMixin<
   // BaseApp extends MixableApp<RenderContext> = typeof foundry.applications.api.ApplicationV2<RenderContext>
   // BaseApp extends AppBaseClass = typeof foundry.applications.api.ApplicationV2<RenderContext>
   BaseApp extends AppBaseClass
->(BaseApplication: BaseApp): Mix<BaseApp, RenderContext> {
+>(BaseApplication: BaseApp): Mix<RenderContext, BaseApp> {
   class SvelteApplication extends BaseApplication {
     #componentInstance: ReturnType<typeof mount> | null = null;
     props!: RenderContext
