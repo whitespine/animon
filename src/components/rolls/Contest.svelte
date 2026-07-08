@@ -10,7 +10,9 @@
     let prompt = $derived(ctx.prompt);
 
     let state = $state(new RollerState());
-    $effect(() => state.actor = actor);
+    $effect(() => {
+        state.speaker = ChatMessage.getSpeaker({actor: actor as Actor.Stored})
+    });
 </script>
 
 
