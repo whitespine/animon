@@ -4,9 +4,9 @@ import type { SystemToken } from "../documents/token";
 class _ControlState {
     user_actor: Actor | null = $state(null);
     selected_tokens: foundry.canvas.placeables.Token[] = $state([]);
-    selected_actors = $derived(this.selected_tokens.map(x => x.actor).filter(y => y));
+    selected_actors = $derived(this.selected_tokens.map(x => x.actor).filter(y => y) as Actor[]);
     targeted_tokens: foundry.canvas.placeables.Token[] = $state([]);
-    targeted_actors = $derived(this.targeted_tokens.map(x => x.actor).filter(y => y));
+    targeted_actors = $derived(this.targeted_tokens.map(x => x.actor).filter(y => y) as Actor[]);
 
     speaker = $derived.by(() => {
         if(this.selected_tokens.length) {
@@ -39,9 +39,9 @@ class _ControlState {
 
 export const ControlState = new _ControlState();
 
-Hooks.once("ready", () => {
-    ControlState.user_actor = game.user.character as Actor;
-});
+const setUserCharacter = () => ControlState.user_actor = game.user.character as Actor;
+Hooks.once("ready", setUserCharacter);
+Hooks.once("updateUser", setUserCharacter);
 
 Hooks.on("controlToken", (token, new_state) => {
     if(new_state) {

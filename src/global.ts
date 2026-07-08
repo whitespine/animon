@@ -8,6 +8,8 @@ import type {
 import type { TerrainHeightToolsAPI } from "./types/terrain-height-tools";
 */
 
+import type { SystemActor } from "./documents/actor.svelte";
+import type { SystemItem } from "./documents/item.svelte";
 import type { AnimonModel } from "./models/actors/animon";
 import type { KidModel } from "./models/actors/kid";
 import type { NpcModel } from "./models/actors/npc";
@@ -20,6 +22,15 @@ import type { ContestedTestModel } from "./models/messages/contested_test";
 declare module "fvtt-types" {
 
 }
+
+/*
+class CustomActiveEffect<
+  SubType extends ActiveEffect.SubType
+> extends ActiveEffect<SubType> {
+  ...
+}
+
+  */
 
 declare module "fvtt-types/configuration" {
   interface SystemNameConfig {
@@ -69,6 +80,22 @@ declare module "fvtt-types/configuration" {
     Combatant: {
       //base: typeof LancerCombatantModel;
     };
+  }
+
+  interface ConfiguredActor<SubType extends Actor.SubType> {
+    document: SystemActor<SubType>;
+  }
+
+  interface ConfiguredItem<SubType extends Item.SubType> {
+    document: SystemItem<SubType>;
+  }
+
+  // interface ConfiguredActiveEffect<SubType extends ActiveEffect.SubType> {
+    // document: SystemActi<SubType>
+  // }
+
+  interface ConfiguredChatMessage<SubType extends ChatMessage.SubType> {
+    document: ChatMessage<SubType>;
   }
 
   interface FlagConfig {
