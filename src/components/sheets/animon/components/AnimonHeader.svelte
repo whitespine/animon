@@ -7,7 +7,7 @@
     import Breaker from "../../../layout/Breaker.svelte";
     import { reactive } from "../../../../utils/attach.svelte";
     import ViewButton from "../../../fields/ViewButton.svelte";
-    import { tierAsInt, TIERS } from "../../../../models/actors/actor.svelte";
+    import { Tier, tierAsInt, TIERS } from "../../../../models/actors/actor.svelte";
 
     let { actor, edit, activeTab = $bindable() } = $props();
 
@@ -40,7 +40,7 @@
         actor.system.volveTo(activeTab);
     }
 
-    async function viewTier(tier) {
+    async function viewTier(tier: Tier) {
         let form_id = await actor.system.getOrCreateForm(tier);
         activeTab = form_id;
     }

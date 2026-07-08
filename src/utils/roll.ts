@@ -1,3 +1,5 @@
+import { ContestedApp } from "../apps/contest_app";
+import type { Speaker } from "../components/rolls/prompt/roller_state.svelte";
 import { ANIMON } from "../consts";
 import type { ContestChatMessage } from "../documents/message.svelte";
 import type { BasicTestModel, BasicTestParams } from "../models/messages/basic_test";
@@ -34,7 +36,7 @@ export function boostedFormula(pool: number, boost: number): string {
  */
 
 
-export async function rollBasicTest(check_details: BasicTestParams, speaker?: ReturnType<typeof ChatMessage.getSpeaker>) {
+export async function rollBasicTest(check_details: BasicTestParams, speaker?: Speaker) {
     let formula = boostedFormula(check_details.dice_pool, check_details.boost);
     let roll = await new Roll(formula).roll();
 
@@ -55,7 +57,7 @@ export async function rollBasicTest(check_details: BasicTestParams, speaker?: Re
     };
 }
 
-export async function startContestedTest(check_details: ContestedTestParams, speaker: ReturnType<typeof ChatMessage.getSpeaker>, other_actors: Actor[]) {
+export async function startContestedTest(check_details: ContestedTestParams, speaker: Speaker, other_actors: Actor[]) {
     let formula = boostedFormula(check_details.dice_pool, check_details.boost);
     let roll = await new Roll(formula).roll();
 
@@ -72,12 +74,12 @@ export async function startContestedTest(check_details: ContestedTestParams, spe
         speaker: speaker,
         system: {
             contestants: {
-                [actor.uuid]: {
+                [actor.uuid as string]: {
                     params: check_details,
                     alias: actor.name,
                     suspense: suspense(roll),
                     sort: 0,
-                    roll: roll.toJSON()
+                    roll: JSON.stringify(roll.toJSON())
                 }
             }
         }
@@ -87,8 +89,9 @@ export async function startContestedTest(check_details: ContestedTestParams, spe
     let broadcast: StartContestBroadcast = {
         message_id: message!.id,
         contestant_uuids: other_actors.map(x => x.uuid).filter(x => x) as string[],
+        prompt: `${actor.name} attacks!`
     };
-    await sendSocket(ANIMON.socket.contest, broadcast);
+    sendSocket(ANIMON.socket.contest_start, broadcast);
 
     return {
         message,
@@ -98,7 +101,8 @@ export async function startContestedTest(check_details: ContestedTestParams, spe
 
 export interface StartContestBroadcast {
     message_id: string, 
-    contestant_uuids: string[]
+    contestant_uuids: string[],
+    prompt: string,
 }
 
 export interface RespondContestBroadcast {
@@ -106,15 +110,31 @@ export interface RespondContestBroadcast {
     message_id: string, 
     contestant_uuid: string,
     roll_params: ContestedTestParams,
-    roll_data: Roll.Data,
+    roll_data: string,
     suspense: string | null
+}
+
+
+export async function onReceiveContestStart(broadcast: StartContestBroadcast) {
+    for(let uuid of broadcast.contestant_uuids) {
+        let actor = await foundry.utils.fromUuid(uuid) as Actor | undefined;
+        if(actor && actor.isOwner) {
+            let app = new ContestedApp({
+                ...broadcast,
+                actor,
+                contestant_uuid: uuid
+            });
+            app.render({force: true})
+        }
+    }
 }
 
 
 // Someone responded to our contest. We update the message
 export function onReceiveContestResponse(broadcast: RespondContestBroadcast) {
     // Before updating message, close all ux that is obviated by this roll. EX: if multiple owners own an actor, only one needs to respond
-    // TODO
+    ContestedApp.closeAll(broadcast);
+
     let message = game.messages.get(broadcast.message_id);
     // Does the message exist as right type?
     if(!message || message.type != "contested_test") return;
@@ -132,7 +152,7 @@ export function onReceiveContestResponse(broadcast: RespondContestBroadcast) {
                     suspense: broadcast.suspense,
                     params: broadcast.roll_params,
                     pushed: false,
-                    roll: broadcast.roll_data,
+                    roll: JSON.stringify(broadcast.roll_data),
                     sort: max_sort + 100
                 }
             }

@@ -16,13 +16,15 @@ export class RollerState {
         actor: null,
         alias: "UNDEFINED"
     });
-    actor = $derived(ChatMessage.getSpeakerActor(this.speaker));
+    actor = $derived(ChatMessage.getSpeakerActor(this.speaker)) as SystemActor | null;
     kid = $derived.by(() => {
         if (!this.actor) return null;
         if (this.actor.type == "kid") return this.actor;
         if (this.actor.type == "animon") return this.actor.system.kid ?? null;
         return null;
-    })
+    }) as KidActor | null;
+
+    opponents: Token[] = $state([]);
 
     // For basic tests, the manually set difficulty
     difficulty = $state(2);
@@ -31,14 +33,14 @@ export class RollerState {
 
     // Kid specific
     talent_id = $state(""); // An id
-    talent = $derived(this.actor?.system.talents?.[this.talent_id] ?? null);
+    talent = $derived((this.actor as KidActor)?.system.talents?.[this.talent_id] ?? null);
     talent_bonus = $derived(this.talent?.rank ?? 0);
     trait: "spirit" | "logic" | "reflex" = $state("spirit"); // logic, reflex, or spirit
     trait_bonus = $derived((this.actor as KidActor | null)?.isKid() ? this.actor!.system.trait![this.trait] : 0);
 
     // Mon specific
     stat: "heart" | "power" | "agility" | "brains" = $state("heart"); // heart / power / agility brains
-    stat_bonus = $derived((this.actor as SystemActor | null)?.isAnimon() ? this.actor!.system.form?.stats[this.stat] ?? 0 : 0);
+    stat_bonus = $derived(this.actor?.isAnimon() ? this.actor!.system.form?.stats[this.stat] ?? 0 : 0);
     quality_id = $state("");
     quality = $derived.by(() => {
         if (this.actor?.type != "animon") return null;
@@ -51,7 +53,26 @@ export class RollerState {
     });
     quality_bonus = $derived(this.quality?.rank ?? 0);
     signature_id = $state(""); // Technically the id of the form
-    signature = $derived(this.actor?.system.forms?.[this.signature_id]?.signature);
+
+    // Npc specific
+    strength_id = $state("");
+    strength = $derived.by(() => {
+        if (!this.actor?.isNpc()) return null;
+        return this.actor.system.strengths[this.strength_id];
+    });
+    strength_bonus = $derived(this.strength?.rank ?? 0);
+    npc_using_signature = $state(false);
+
+    // Signature can come from either npc or animon
+    signature = $derived.by(() => {
+        if(this.actor?.type == "animon") {
+            return  this.actor.system.forms?.[this.signature_id]?.signature;
+        }
+        if(this.actor?.type == "npc" && this.npc_using_signature) {
+            return this.actor.system.signature;
+        }
+        return null;
+    });
     signature_bonus = $derived(this.signature?.rank ?? 0);
 
     // Kid/mon but not npc

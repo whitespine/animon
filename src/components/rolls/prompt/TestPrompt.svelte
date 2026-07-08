@@ -7,11 +7,13 @@
     import { sortedObjectToArray } from "../../../models/base.svelte";
     import { RollerState } from "./roller_state.svelte";
     import RollingAs from "./RollingAs.svelte";
+    import type { AnimonActor, KidActor } from "../../../documents/actor.svelte";
+    import RollingAgainst from "./RollingAgainst.svelte";
 
 
-    let { state } = $props();
+    let { state }: {state: RollerState} = $props();
 
-    function roll(e) {
+    function roll(e: Event) {
         stop(e);
         state.roll();
     }
@@ -23,10 +25,10 @@
         })),
     );
     let talent_definite_options = $derived(
-        sortedObjectToArray(state.actor.system.talents).map((t) => ({
+        sortedObjectToArray((state.actor as KidActor)?.system.talents).map((t) => ({
             id: t._id,
             label: t.name,
-        })),
+        })) ?? []
     );
     let none = { id: "", label: "NONE" };
     let talent_options = $derived([none, ...talent_definite_options]);
@@ -37,7 +39,7 @@
         })),
     );
     let quality_definite_options = $derived(
-        state.actor.system.form?.all_qualities.map((q) => ({
+        (state.actor as AnimonActor)?.system.form?.all_qualities.map((q) => ({
             id: q._id,
             label: q.name,
         })),
@@ -60,6 +62,7 @@
 
 <div class="prompt col">
     <RollingAs {state}></RollingAs>
+    <RollingAgainst {state}></RollingAgainst>
     <div class="row center even">
         <label for="difficulty">Difficulty:</label>
         <Incrementer

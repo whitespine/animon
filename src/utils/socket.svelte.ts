@@ -1,5 +1,5 @@
 import { ANIMON } from "../consts";
-import { onReceiveContest, onReceiveContestResponse, type RespondContestBroadcast, type StartContestBroadcast } from "./roll";
+import { onReceiveContestStart, onReceiveContestResponse, type RespondContestBroadcast, type StartContestBroadcast } from "./roll";
 import { onReceiveSuspense, type SuspenseBroadcast } from "./suspense.svelte";
 
 interface ExampleBroadcast {

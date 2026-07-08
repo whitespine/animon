@@ -8,9 +8,7 @@ import { BasicTestModel } from "./messages/basic_test";
 import { ContestedTestModel } from "./messages/contested_test";
 
 export function setupModels() {
-    // @ts-ignore Why?
     CONFIG.Actor.dataModels["kid"] = KidModel;
-    // @ts-ignore Why?
     CONFIG.Actor.dataModels["npc"] = NpcModel;
     CONFIG.Actor.dataModels["animon"] = AnimonModel;
     CONFIG.Item.dataModels["gear"] = GearModel;

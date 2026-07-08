@@ -8,10 +8,11 @@ const defineContestedTestModel = () => ({
         params: new fields.SchemaField({
             ...baseRollParams(),
         }),
+        alias: new fields.StringField(),
         pushed: new fields.BooleanField({ initial: false }), // Any roll can be pushed
         sort: new SortField(),
         suspense: new fields.StringField({ nullable: true, initial: null }),
-        roll: new fields.ObjectField() // TODO: Better compat
+        roll: new fields.JSONField(),
     })),
 });
 
@@ -24,8 +25,8 @@ type BaseData = {
         sort: number,
         suspense: string | null,
         pushed: boolean,
-        params: ContestedTestParams
-        roll: Roll.Data
+        params: ContestedTestParams,
+        roll: string // jsonified data
     }>,
     suspense: string | null
 };

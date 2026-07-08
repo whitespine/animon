@@ -78,13 +78,15 @@ export function titleCaseString(text: string): string {
 /** Turns a typed object field into a conventional array.
  * Each element has "_id" added as a key representing their original key
  */
-export function typedObjectToArray<T>(tof: Record<string, T>): Array<T & {_id: string}> {
+export function typedObjectToArray<T>(tof: Record<string, T>): Array<WithID<T>> {
   let as_array = Object.entries(tof).map(([k, v]) => ({
     _id: k,
     ...v
   }));
   return as_array;
 }
+
+export type WithID<T> = T & {_id: string};
 
 type Ranker<T> = (_: T) => Array<string | number>;
 
@@ -94,7 +96,7 @@ type Ranker<T> = (_: T) => Array<string | number>;
 export function sortedObjectToArray<T extends {sort: number}>(tof: Record<string, T>, ranker?: Ranker<T>) {
   if(!tof) return [];
   let as_array = typedObjectToArray(tof);
-  ranker ??= (x) => [x.sort, (x as T & {_id: string})._id]; // Default ranker stably sorts by sort, then by id. This can be overridden!
+  ranker ??= (x) => [x.sort, (x as WithID<T>)._id]; // Default ranker stably sorts by sort, then by id. This can be overridden!
   return rankedSort(as_array, ranker);
 }
 

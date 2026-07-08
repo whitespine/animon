@@ -5,12 +5,12 @@
     /**
      * @type {{state: RollerState}}
      */
-    let { state = null } = $props();
+    let { state }: { state: RollerState } = $props();
 </script>
 
 <div class="row even center">
     <span class="pseudo-label">Rolling As:</span>
-    <span class="pseudo-label">{state.speaker.alias}</span> 
+    <span class="pseudo-label">{state.speaker.alias}</span>
 </div>
 
 <style lang="scss">

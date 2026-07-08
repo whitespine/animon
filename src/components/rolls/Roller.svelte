@@ -16,6 +16,9 @@
     $effect(() => {
         GlobalRollerState.speaker = ControlState.speaker;
     });
+    $effect(() => {
+        GlobalRollerState.opponents = ControlState.targeted_tokens;
+    });
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->

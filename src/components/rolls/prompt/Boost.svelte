@@ -2,15 +2,14 @@
 <script lang="ts">
     import { stop } from "../../../utils/handlers";
     import loc from "../../../utils/localize";
-    import { RollerState } from "./roller_state.svelte";
 
     let {
         value = $bindable() 
     } = $props();
 
-    function select(e) {
+    function select(e: MouseEvent) {
         stop(e);
-        value = Number.parseInt(e.target.dataset.val);
+        value = Number.parseInt((e.target as HTMLElement).dataset.val!);
     }
 </script>
 

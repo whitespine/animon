@@ -68,6 +68,12 @@ const defineAnimonSchema = () => ({
     }),
 });
 
+interface Quality {
+    sort: number,
+    name: string,
+    rank: number
+}
+
 interface BaseForm {
     sort: number;
     classification: string;
@@ -90,11 +96,7 @@ interface BaseForm {
             3: string;
         }
     },
-    qualities: Record<string, {
-        sort: number,
-        name: string,
-        rank: number
-    }>;
+    qualities: Record<string, Quality>;
 }
 
 interface BaseData {
@@ -115,6 +117,7 @@ interface BaseData {
 interface DerivedForm extends BaseForm {
     _id: string,
     prior_forms: DerivedForm[]
+    all_qualities: Array<Quality & {_id: string}>,
     stats: BaseForm["stats"] & {
         hp: number,
         dodge: number,
