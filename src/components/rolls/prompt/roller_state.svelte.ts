@@ -2,7 +2,7 @@ import { ANIMON } from "../../../consts";
 import type { AnimonActor, KidActor, SystemActor } from "../../../documents/actor.svelte";
 import { ControlState } from "../../../utils/control.svelte";
 import { onlineOwners } from "../../../utils/ownership";
-import { rollBasicTest } from "../../../utils/roll";
+import { rollBasicTest, startContestedTest } from "../../../utils/roll";
 
 export type Speaker = ReturnType<typeof ChatMessage.getSpeaker>;
 
@@ -55,6 +55,7 @@ export class RollerState {
     signature_id = $state(""); // Technically the id of the form
 
     // Npc specific
+    skill_bonus = $derived(this.actor?.isNpc() ? this.actor.system.skill_score : 0);
     strength_id = $state("");
     strength = $derived.by(() => {
         if (!this.actor?.isNpc()) return null;
@@ -65,10 +66,10 @@ export class RollerState {
 
     // Signature can come from either npc or animon
     signature = $derived.by(() => {
-        if(this.actor?.type == "animon") {
-            return  this.actor.system.forms?.[this.signature_id]?.signature;
+        if (this.actor?.type == "animon") {
+            return this.actor.system.forms?.[this.signature_id]?.signature;
         }
-        if(this.actor?.type == "npc" && this.npc_using_signature) {
+        if (this.actor?.type == "npc" && this.npc_using_signature) {
             return this.actor.system.signature;
         }
         return null;
@@ -83,7 +84,17 @@ export class RollerState {
     final_mod = $state(0);
 
     // We derive this. Don't try to override, use final_mod
-    dice_pool = $derived(this.trait_bonus + this.talent_bonus + this.stat_bonus + this.quality_bonus + this.bond_points_bonus_dice + this.signature_bonus + this.final_mod);
+    dice_pool = $derived(
+        this.trait_bonus +
+        this.talent_bonus +
+        this.stat_bonus +
+        this.quality_bonus +
+        this.skill_bonus +
+        this.strength_bonus +
+        this.bond_points_bonus_dice +
+        this.signature_bonus +
+        this.final_mod
+    );
 
     /**
      * Reset all attributes to default
@@ -100,7 +111,7 @@ export class RollerState {
         this.final_mod = 0;
     }
 
-    async roll() {
+    contributors = $derived.by(() => {
         let contributors = [];
         if (this.actor?.type === "kid") {
             contributors.push({
@@ -126,6 +137,26 @@ export class RollerState {
                     key: "quality",
                     label: this.quality.name,
                     value: this.quality_bonus
+                });
+            }
+            if (this.signature) {
+                contributors.push({
+                    key: "signature",
+                    label: this.signature.name,
+                    value: this.signature_bonus
+                });
+            }
+        } else if (this.actor?.type == "npc") {
+            contributors.push({
+                key: "skill",
+                label: "Skill Score",
+                value: this.skill_bonus
+            });
+            if (this.strength) {
+                contributors.push({
+                    key: "strength",
+                    label: this.strength.name,
+                    value: this.strength_bonus
                 });
             }
             if (this.signature) {
@@ -164,7 +195,10 @@ export class RollerState {
                 label,
             });
         }
+        return contributors;
+    });
 
+    async depleteResources() {
         // Deduct bond points
         if (this.kid && this.bond_points_spent) {
             this.kid.update({
@@ -186,14 +220,26 @@ export class RollerState {
                 }
             });
         }
+    }
 
-        await rollBasicTest({
-            dice_pool: this.dice_pool,
-            boost: this.boost,
-            difficulty: this.difficulty,
-            contributors,
-            bond_points_spent: this.bond_points_spent
-        }, ControlState.speaker);
+    async roll() {
+        await this.depleteResources();
+        if (this.opponents.length === 0) {
+            await rollBasicTest({
+                dice_pool: this.dice_pool,
+                boost: this.boost,
+                difficulty: this.difficulty,
+                contributors: this.contributors,
+                bond_points_spent: this.bond_points_spent
+            }, ControlState.speaker);
+        } else {
+            await startContestedTest({
+                dice_pool: this.dice_pool,
+                boost: this.boost,
+                contributors: this.contributors,
+                bond_points_spent: this.bond_points_spent
+            }, ControlState.speaker, this.opponents);
+        }
     }
 }
 

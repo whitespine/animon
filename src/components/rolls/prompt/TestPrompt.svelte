@@ -7,7 +7,7 @@
     import { sortedObjectToArray } from "../../../models/base.svelte";
     import { RollerState } from "./roller_state.svelte";
     import RollingAs from "./RollingAs.svelte";
-    import type { AnimonActor, KidActor } from "../../../documents/actor.svelte";
+    import type { AnimonActor, KidActor, NpcActor } from "../../../documents/actor.svelte";
     import RollingAgainst from "./RollingAgainst.svelte";
 
 
@@ -45,6 +45,15 @@
         })),
     );
     let quality_options = $derived([none, ...quality_definite_options]);
+
+    let strength_definite_options = $derived(
+        sortedObjectToArray((state.actor as NpcActor)?.system.strengths).map((s) => ({
+            id: s._id,
+            label: s.name,
+        })) ?? []
+    );
+    let strength_options = $derived([none, ...strength_definite_options]);
+
     let signature_definite_options = $derived.by(() => {
         if(!state.actor?.system.form) return [];
         let result = state.actor.system.form.prior_forms.map(f => ({
@@ -115,6 +124,22 @@
                 options={signature_options}
             ></Select>
         </div>
+    {:else if state.actor?.type == "npc"}
+        <div class="row even">
+            <span class="pseudo-label">Skill Score [{state.skill_bonus}]</span>
+        </div>
+        <div class="row center even">
+            <label for="strength">Strength [{state.strength_bonus}]:</label>
+            <Select
+                name="strength"
+                bind:selected={state.strength_id}
+                options={strength_options}
+            ></Select>
+        </div>
+        <div class="row center even">
+            <label for="use_signature">{(state.actor as NpcActor)?.system.signature.name} [{state.signature_bonus}]:</label>
+            <input name="use_signature" type="checkbox" bind:checked={state.npc_using_signature}>
+        </div>
     {/if}
 
     {#if state.kid}
@@ -145,8 +170,8 @@
         />
     </div>
     <Boost bind:value={state.boost}></Boost>
-    <button onclick={roll} class={{ disabled: state.dice_pool == 0 }}>
-        Roll
+    <button onclick={roll} class={{ disabled: state.dice_pool <= 0 }}>
+        Roll [{state.dice_pool}]
     </button>
 </div>
 
