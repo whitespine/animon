@@ -136,12 +136,14 @@ export function rankedSort<T>(array: T[], ranker: Ranker<T>): T[] {
  * 
  * @param {Array<{_id: string, sort: number}>} saf The sorted array to turn into a typed object field
 */
-export function sortedArrayToObject<T extends {_id: string, sort: number}>(saf: Array<T>): Record<string, T> {
-  let as_object: Record<string, T> = {};
+export function sortedArrayToObject<T extends {_id: string}>(saf: Array<T>): Record<string, T & {sort: number}> {
+  let as_object: Record<string, T & {sort: number}> = {};
   let index = 0;
   for(let val of saf) {
-    val.sort = 100*index;
-    as_object[val._id] = val;
+    as_object[val._id] = {
+      ...val,
+      sort: 100 * index
+    }
     index++;
   }
   return as_object;

@@ -1,6 +1,8 @@
 import { resolveDotpath } from "./paths";
 import { stop } from "./handlers";
 import { TextareaAutosize } from "runed";
+import type { SystemActor } from "../documents/actor.svelte";
+import type { SystemItem } from "../documents/item.svelte";
 
 interface ArbitraryListeners<T extends HTMLElement> {
     on?: (elt: T) => any,
@@ -76,7 +78,7 @@ export function rollScrambler(delay: number, max: number) {
     return scrambler(delay, gen);
 }
 
-export function reactive<T extends string | number = string>(doc: Actor | Item | ActiveEffect, path: string, preprocesser?: (v: T) => T) {
+export function reactive<T extends string | number = string>(doc: SystemActor | SystemItem | ActiveEffect, path: string, preprocesser?: (v: T) => T) {
     function commit(evt: Event, delay: number) {
         stop(evt);
         let elt = evt.target;
@@ -112,7 +114,7 @@ export function reactive<T extends string | number = string>(doc: Actor | Item |
         }
     }
 
-    return buildListenerAttacher<HTMLInputElement | HTMLSelectElement>({
+    return buildListenerAttacher<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>({
         on: (elt) => {
             $effect(() => {
                 elt.name = path;

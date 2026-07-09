@@ -57,7 +57,7 @@ export async function rollBasicTest(check_details: BasicTestParams, speaker?: Sp
     };
 }
 
-export async function startContestedTest(check_details: ContestedTestParams, speaker: Speaker, other_actors: Actor[]) {
+export async function startContestedTest(check_details: ContestedTestParams, speaker: Speaker, opponents: Token[]) {
     let formula = boostedFormula(check_details.dice_pool, check_details.boost);
     let roll = await new Roll(formula).roll();
 
@@ -88,7 +88,7 @@ export async function startContestedTest(check_details: ContestedTestParams, spe
     // Broadcast our need for others
     let broadcast: StartContestBroadcast = {
         message_id: message!.id,
-        contestant_uuids: other_actors.map(x => x.uuid).filter(x => x) as string[],
+        contestant_uuids: opponents.map(x => x.document.uuid).filter(x => x) as string[],
         prompt: `${actor.name} attacks!`
     };
     sendSocket(ANIMON.socket.contest_start, broadcast);
@@ -101,7 +101,7 @@ export async function startContestedTest(check_details: ContestedTestParams, spe
 
 export interface StartContestBroadcast {
     message_id: string, 
-    contestant_uuids: string[],
+    contestant_uuids: string[], // UUIDs of token documents
     prompt: string,
 }
 

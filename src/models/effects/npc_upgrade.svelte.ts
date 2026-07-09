@@ -15,7 +15,7 @@ const defineNpcUpgradeEffectSchema = () => ({
     ...baseEffectChanges(),
     // We strictly limit category
     category: new fields.StringField({ choices: NPC_UPGRADE_CATEGORIES, initital: NpcUpgradeCategory.Aggressive }),
-    rank: new fields.NumberField({integer: true, min: 1, max: 4, initial: 1})
+    rank: new fields.NumberField({integer: true, min: 1, max: 4, initial: 1, required: true})
 });
 
 interface BaseData {

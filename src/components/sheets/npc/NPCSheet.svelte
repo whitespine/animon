@@ -9,7 +9,22 @@
     import { NPC_UPGRADE_CATEGORIES } from "../../../models/effects/npc_upgrade.svelte";
     import { stop } from "../../../utils/handlers";
     import { slide } from "svelte/transition";
-    let { edit = true, document: actor } = $props();
+    import {
+        sortedObjectToArray,
+        typedObjectToArray,
+    } from "../../../models/base.svelte";
+    import type {
+        NpcActor,
+        SystemActor,
+    } from "../../../documents/actor.svelte";
+    import type { Category } from "../../../models/effects/upgrade.svelte";
+    let {
+        edit = true,
+        document: actor,
+    }: {
+        edit: boolean;
+        document: NpcActor;
+    } = $props();
 
     let type_options = ["human", "animon", "other"].map((id) => ({
         id,
@@ -27,15 +42,20 @@
     let upgrades = $derived(
         actor.system.sv_effects.filter((e) => e.type == "npc_upgrade"),
     );
+    let strengths = $derived(sortedObjectToArray(actor.system.strengths));
+
+    function makeStrength() {}
 
     // Make or increment an upgrade
-    function makeUpgrade(category) {
+    function makeUpgrade(category: Category) {
         let existing = actor.effects.find(
             (e) => e.type == "npc_upgrade" && e.system.category == category,
         );
         if (existing) {
             existing.update({
-                "system.rank": existing.system.rank + 1,
+                system: {
+                    rank: existing.system.rank! + 1,
+                },
             });
             return;
         }
@@ -45,6 +65,7 @@
                 name: "New Upgrade",
                 type: "npc_upgrade",
                 system: {
+                    // @ts-ignore
                     rank: 1,
                     category,
                 },
@@ -200,7 +221,14 @@
     {/if}
     <div class="row even">
         <div class="col grow-3 br">
-            <span class="bold">Strengths:</span>
+            <div class="row">
+                <span class="bold">Strengths:</span>
+                <div class="grow"></div>
+                <a onclick={(e) => [stop(e), addTalent()]}>
+                    <i class="fas fa-plus" data-tooltip="Add a strength"></i>
+                </a>
+            </div>
+            {#each strengths as strength}{/each}
         </div>
 
         <div class="col br">
