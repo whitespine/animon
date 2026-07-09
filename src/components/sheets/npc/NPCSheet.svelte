@@ -6,18 +6,17 @@
     import ProsemirrorField from "../../fields/ProsemirrorField.svelte";
     import ElementalSelect from "../../fields/ElementalSelect.svelte";
     import { TIERS } from "../../../models/actors/actor.svelte";
-    import { NPC_UPGRADE_CATEGORIES } from "../../../models/effects/npc_upgrade.svelte";
+    import {
+        NPC_UPGRADE_CATEGORIES,
+        NpcUpgradeCategory,
+    } from "../../../models/effects/npc_upgrade.svelte";
     import { stop } from "../../../utils/handlers";
     import { slide } from "svelte/transition";
-    import {
-        sortedObjectToArray,
-        typedObjectToArray,
-    } from "../../../models/base.svelte";
+    import { nextSort, sortedObjectToArray } from "../../../models/base.svelte";
     import type {
         NpcActor,
         SystemActor,
     } from "../../../documents/actor.svelte";
-    import type { Category } from "../../../models/effects/upgrade.svelte";
     let {
         edit = true,
         document: actor,
@@ -44,10 +43,33 @@
     );
     let strengths = $derived(sortedObjectToArray(actor.system.strengths));
 
-    function makeStrength() {}
+    async function makeStrength() {
+        await actor.update({
+            system: {
+                strengths: {
+                    [foundry.utils.randomID()]: {
+                        sort: nextSort(actor.system.strengths),
+                        name: "New Strength",
+                        rank: 1,
+                    },
+                },
+            },
+        });
+    }
+
+    async function deleteStrength(id: string) {
+        await actor.update({
+            system: {
+                strengths: {
+                    // @ts-expect-error
+                    [id]: _del,
+                },
+            },
+        });
+    }
 
     // Make or increment an upgrade
-    function makeUpgrade(category: Category) {
+    function makeUpgrade(category: NpcUpgradeCategory) {
         let existing = actor.effects.find(
             (e) => e.type == "npc_upgrade" && e.system.category == category,
         );
@@ -224,11 +246,34 @@
             <div class="row">
                 <span class="bold">Strengths:</span>
                 <div class="grow"></div>
-                <a onclick={(e) => [stop(e), addTalent()]}>
+                <a onclick={(e) => [stop(e), makeStrength()]}>
                     <i class="fas fa-plus" data-tooltip="Add a strength"></i>
                 </a>
             </div>
-            {#each strengths as strength}{/each}
+            {#each strengths as strength (strength._id)}
+                <div class="row prefix-input" transition:slide>
+                    <input
+                        class="grow"
+                        {@attach reactive(
+                            actor,
+                            `system.strengths.${strength._id}.name`,
+                        )}
+                    />
+                    <input
+                        class="no-grow"
+                        {@attach reactive(
+                            actor,
+                            `system.strengths.${strength._id}.rank`,
+                        )}
+                        size="1"
+                    />
+                    <button
+                        onclick={(e) => [stop(e), deleteStrength(strength._id)]}
+                        title="Delete {strength.name}"
+                        ><i class="fas fa-trash"></i></button
+                    >
+                </div>
+            {/each}
         </div>
 
         <div class="col br">

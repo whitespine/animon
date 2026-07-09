@@ -24,7 +24,8 @@
     }
 
     // Remove the talent with _id
-    function removeTalent(_id) {
+    function removeTalent(_id: string) {
+        //@ts-expect-error
         actor.update({ [`system.talents.${_id}`]: _del });
     }
 </script>

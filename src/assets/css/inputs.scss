@@ -48,6 +48,10 @@
                 min-width: 0px;
                 @include nude_input();
             }
+            input.no-grow {
+                flex: 0 1;
+                min-width: unset;
+            }
 
             span,
             label,

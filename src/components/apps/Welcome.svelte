@@ -2,9 +2,9 @@
 <script lang="ts">
     import {stop} from "../../utils/handlers";
 
-    function disableWelcome(e) {
+    function disableWelcome(e: MouseEvent) {
         stop(e);
-        game.settings.
+        // game.settings.
     }
 </script>
 

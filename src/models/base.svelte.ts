@@ -100,6 +100,14 @@ export function sortedObjectToArray<T extends {sort: number}>(tof: Record<string
   return rankedSort(as_array, ranker);
 }
 
+export function nextSort<T extends {sort: number}>(tof: Record<string, T>): number {
+  let max = 0;
+  for(let v of Object.values(tof)) {
+    max = Math.max(max, v.sort + 100);
+  }
+  return max;
+}
+
 
 /** Useful for sorting things with successive tiebreakers
  */
