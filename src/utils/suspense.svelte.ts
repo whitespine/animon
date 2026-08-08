@@ -77,3 +77,13 @@ const suspenseSet = new SvelteSet<string>();
 export function inSuspense(id: string) {
     return suspenseSet.has(id);
 }
+
+
+// disable automatic dice so nice messages for test and console rolls - we want to trigger them via suspense mechanism
+// @ts-expect-error
+Hooks.on("diceSoNiceMessagePreProcess", (message_id: string, obj: {willTrigger3DRoll: boolean}) => {
+    let message = game.messages.get(message_id);
+    if(message && ["basic_test", "contested_test"].includes(message.type)) {
+        obj.willTrigger3DRoll = false;
+    }
+});
