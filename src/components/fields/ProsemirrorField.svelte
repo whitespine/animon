@@ -6,8 +6,8 @@
     let { doc, path, ...restProps } = $props();
     let content = $derived(resolveDotpath(doc, path));
 
-    function save(e) {
-        doc.update({ [path]: e.target.value });
+    function save(e: Event) {
+        doc.update({ [path]: (e.target as HTMLTextAreaElement).value });
     }
 </script>
 

@@ -7,7 +7,7 @@
     } = $props();
     let value = $derived(resolveDotpath(doc, path, 0));
 
-    function click(selected) {
+    function click(selected: number) {
         if (value == selected) {
             selected--;
         }
