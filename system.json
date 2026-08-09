@@ -24,7 +24,7 @@
   ],
   "scripts": [],
   "styles": [
-    "system.css"
+    "styles/system.css"
   ],
   "languages": [
     {
@@ -55,7 +55,8 @@
       "npc_upgrade": {}
     },
     "ChatMessage": {
-      "basic_test": {}
+      "basic_test": {},
+      "contested_test": {}
     }
   },
   "url": "#{URL}#",

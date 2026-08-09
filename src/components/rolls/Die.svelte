@@ -1,6 +1,15 @@
 <script lang="ts">
     import { fixClasses } from "../../utils/classes";
-    let { value, discarded, class: className, ...restProps } = $props();
+    let {
+        value,
+        discarded,
+        class: className = "",
+        ...restProps
+    }: {
+        value: number;
+        discarded?: boolean;
+        class?: string | string[] | Record<string, any>;
+    } = $props();
     let fullClasses = $derived.by(() => {
         return {
             discarded: !!discarded,
@@ -9,7 +18,7 @@
     });
 </script>
 
-<div {...restProps} class={fullClasses} alt={value}> {value} </div>
+<div {...restProps} class={fullClasses}>{value}</div>
 
 <style lang="scss">
     div {

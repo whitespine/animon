@@ -1,5 +1,6 @@
 import { ANIMON } from "../../../consts";
 import type { AnimonActor, KidActor, SystemActor } from "../../../documents/actor.svelte";
+import type { ContestChatMessage } from "../../../documents/message.svelte";
 import { ControlState } from "../../../utils/control.svelte";
 import { onlineOwners } from "../../../utils/ownership";
 import { rollBasicTest, startContestedTest } from "../../../utils/roll";
@@ -24,7 +25,8 @@ export class RollerState {
         return null;
     }) as KidActor | null;
 
-    opponents: Token[] = $state([]);
+    // For contests, this is generally fixed
+    opponents: Actor[] = $state([]);
 
     // For basic tests, the manually set difficulty
     difficulty = $state(2);

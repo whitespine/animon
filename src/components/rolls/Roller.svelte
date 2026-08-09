@@ -17,7 +17,7 @@
         GlobalRollerState.speaker = ControlState.speaker;
     });
     $effect(() => {
-        GlobalRollerState.opponents = ControlState.targeted_tokens;
+        GlobalRollerState.opponents = ControlState.targeted_actors;
     });
 </script>
 

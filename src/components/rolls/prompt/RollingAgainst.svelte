@@ -12,9 +12,9 @@
 {#if state.opponents.length}
     <div transition:slide class="row even center">
         <span class="pseudo-label">Against:</span>
-        {#each state.opponents as opponent (opponent.document._id)}
-            {let doc = $derived(opponent.document)}
-            <Portrait {doc} path="texture.src" edit={false} height="32px" width="32px"></Portrait>
+        {#each state.opponents as opponent (opponent._id)}
+            {let doc = $derived(opponent)}
+            <Portrait {doc} path="img" edit={false} height="32px"></Portrait>
         {/each}
     </div>
 {/if}

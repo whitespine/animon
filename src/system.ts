@@ -1,4 +1,4 @@
-//@ts-ignore
+// @ts-expect-error
 import './system.scss';
 
 import { setupSettings } from './settings';

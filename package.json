@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "ANIMON implementation for FoundryVTT",
   "main": "scripts/system.js",
+  "sideEffects": [
+    "src/system.scss"
+  ],
   "scripts": {
     "build": "vite build",
     "dev": "vite --strictPort"

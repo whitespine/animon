@@ -15,7 +15,7 @@
         path?: string,
         callback?: (img: string) => any,
         fallback?: string,
-        height?: number,
+        height?: string,
         edit?: boolean,
         style?: string
     } = $props();
