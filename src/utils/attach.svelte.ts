@@ -73,7 +73,7 @@ export function scrambler(delay: number, generator: (index: number) => string) {
 }
 
 export function rollScrambler(delay: number, max: number) {
-    let min = 0;
+    let min = 1;
     let gen = () => (Math.floor(Math.random() * (max - min + 1)) + min).toString();
     return scrambler(delay, gen);
 }
