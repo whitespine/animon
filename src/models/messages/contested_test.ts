@@ -7,6 +7,7 @@ const defineContestedTestModel = () => ({
     title: new fields.StringField({ initial: "Contest" }),
     subtitle: new fields.StringField({ initial: "" }),
     contestants: new fields.TypedObjectField(new fields.SchemaField({
+        actor: new fields.StringField({ nullable: false }),
         params: new fields.SchemaField({
             ...baseRollParams(),
         }),
@@ -24,6 +25,7 @@ export type BaseData = {
     title: string,
     pushed: boolean,
     contestants: Record<string, {
+        actor: string,
         alias: string,
         sort: number,
         suspense: string | null,
@@ -37,6 +39,7 @@ type DerivedData = {
     title: string,
     pushed: boolean,
     contestants: Record<string, {
+        actor: Actor | null,
         alias: string,
         sort: number,
         suspense: string | null,
@@ -58,6 +61,8 @@ export class ContestedTestModel extends foundry.abstract.TypeDataModel<ReturnTyp
 
         // Create Roll instances for contained dice rolls
         for (let contestant of Object.values(this.contestants)) {
+            // @ts-ignore
+            contestant.actor = foundry.utils.fromUuidSync(contestant.actor);
             if (contestant.roll) {
                 try {
                     // @ts-ignore

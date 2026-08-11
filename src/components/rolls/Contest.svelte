@@ -5,27 +5,32 @@
     import TestPrompt from "./prompt/TestPrompt.svelte";
 
     let ctx: ContestContext = $props();
-
-    let actor = $derived(ctx.actor);
-    let prompt = $derived(ctx.prompt);
+    let message = $derived(ctx.message);
+    let contestant = $derived(message.system.contestants[ctx.contestant_uuid]);
+    let actor = $derived(fromUuidSync(ctx.contestant_uuid) as Actor);
 
     let state = $state(new RollerState());
     $effect(() => {
         state.speaker = ChatMessage.getSpeaker({actor: actor as Actor.Stored})
     });
+
+
+    function fulfill() {
+
+    }
 </script>
 
 
 <div class="col">
     <h2>{prompt}</h2>
-    <div class="inner-box row even">
+    <div class="inner-box row">
+        <h3>VERSUS!</h3>
         <Portrait
-            width="64px"
             height="64px"
             class="inner-portrait"
             doc={actor}
         />
-        <h3 class="grow">{actor.name}</h3>
+        <h3 class="grow">{actor?.name}</h3>
     </div>
 
     <TestPrompt {state}></TestPrompt>

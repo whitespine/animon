@@ -61,7 +61,8 @@ export async function startContestedTest(check_details: ContestedTestParams, spe
     let sort = 0;
     for (let participant of [actor, ...opponents]) {
         if (!participant.uuid) continue;
-        contestants[participant.uuid] = {
+        contestants[foundry.utils.randomID()] = {
+            actor: participant.uuid,
             params: check_details,
             alias: participant.name,
             suspense: participant == actor ? suspense(roll) : null,
