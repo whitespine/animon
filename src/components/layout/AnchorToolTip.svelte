@@ -15,12 +15,10 @@
     const id = foundry.utils.randomID();
     const anchorID = `--anchor-${id}`;
 
-    let tooltip;
+    let tooltip: HTMLElement;
 
-    /** @type {ReturnType<typeof setTimeout> | null} */
-    let hover_timeout = null;
-    /** @type {ReturnType<typeof setTimeout> | null} */
-    let unhover_timeout = null;
+    let hover_timeout: ReturnType<typeof setTimeout> | null = null;
+    let unhover_timeout: ReturnType<typeof setTimeout> | null = null;
 
     // Kept in constant sync with whether our mouse is in the popover control anchor
     let is_hovered = $state(false);
@@ -32,33 +30,35 @@
         on: (elt) => {
             elt.style.anchorName = anchorID;
         },
-        mouseenter: () => {
-            is_hovered = true;
-            if (unhover_timeout) {
-                clearTimeout(unhover_timeout);
-                unhover_timeout = null;
-            }
-            if (hover_timeout) {
-                return;
-            } else {
-                hover_timeout = setTimeout(() => {
-                    hover_timeout = null;
-                    if (is_hovered && !visible) {
-                        visible = true;
-                        tooltip.showPopover();
-                    }
-                }, showDelay);
-            }
-        },
-        mouseleave: () => {
-            is_hovered = false;
-            unhover_timeout = setTimeout(() => {
-                unhover_timeout = null;
-                if (visible) {
-                    visible = false;
-                    tooltip.hidePopover();
+        listeners: {
+            mouseenter: () => {
+                is_hovered = true;
+                if (unhover_timeout) {
+                    clearTimeout(unhover_timeout);
+                    unhover_timeout = null;
                 }
-            }, hideFadeTime);
+                if (hover_timeout) {
+                    return;
+                } else {
+                    hover_timeout = setTimeout(() => {
+                        hover_timeout = null;
+                        if (is_hovered && !visible) {
+                            visible = true;
+                            tooltip.showPopover();
+                        }
+                    }, showDelay);
+                }
+            },
+            mouseleave: () => {
+                is_hovered = false;
+                unhover_timeout = setTimeout(() => {
+                    unhover_timeout = null;
+                    if (visible) {
+                        visible = false;
+                        tooltip.hidePopover();
+                    }
+                }, hideFadeTime);
+            },
         },
     });
 </script>
