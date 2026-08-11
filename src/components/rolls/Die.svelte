@@ -9,7 +9,7 @@
         value: number;
         discarded?: boolean;
         class?: string | string[] | Record<string, any>;
-    } = $props();
+    } & Record<string, any> = $props();
     let fullClasses = $derived.by(() => {
         return {
             discarded: !!discarded,

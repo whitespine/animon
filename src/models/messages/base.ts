@@ -20,12 +20,14 @@ export function baseRollParams() {
     }
 }
 
+export interface Contributor {
+    key: string,
+    label: string,
+    value?: number
+}
+
 export interface BaseRollParams {
-    contributors: Array<{
-        key: string,
-        label: string,
-        value?: number
-    }>,
+    contributors: Array<Contributor>,
 
     dice_pool: number,
 
