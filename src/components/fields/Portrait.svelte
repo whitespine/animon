@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { fixClasses } from "../../utils/classes";
     import { stop } from "../../utils/handlers";
 
     let {
@@ -9,21 +10,27 @@
         edit = false,
         ...restArgs
     }: {
-        doc: Actor | Item | ActiveEffect | TokenDocument,
-        path?: string,
-        callback?: (img: string) => any,
-        fallback?: string,
-        edit?: boolean,
+        doc: Actor | Item | ActiveEffect | TokenDocument;
+        path?: string;
+        callback?: (img: string) => any;
+        fallback?: string;
+        edit?: boolean;
     } & Record<string, any> = $props();
 
-    let current = $derived(foundry.utils.getProperty(doc, path) as string | undefined);
+    let current = $derived(
+        foundry.utils.getProperty(doc, path) as string | undefined,
+    );
 
     // Stolen from foundry, modified
     async function editImage(e: Event) {
         stop(e);
-        // @ts-ignore 
-        const defaultArtwork = doc.constructor.getDefaultArtwork?.(doc._source) ?? {};
-        const defaultImage = foundry.utils.getProperty(defaultArtwork, path) as string;
+        const defaultArtwork =
+            // @ts-ignore
+            doc.constructor.getDefaultArtwork?.(doc._source) ?? {};
+        const defaultImage = foundry.utils.getProperty(
+            defaultArtwork,
+            path,
+        ) as string;
         const fp = new foundry.applications.apps.FilePicker.implementation({
             current,
             type: "image",
@@ -44,13 +51,15 @@
     src={current ?? fallback}
     alt="Icon of {doc.name}"
     onclick={edit ? editImage : null}
-    class={{ "img-fluid": true, edit }}
     {...restArgs}
+    class={fixClasses({ edit }, restArgs["class"])}
 />
 
 <style lang="scss">
     img {
         object-fit: contain;
+        min-height: var(--portrait-height, var(--portrait-size, 64px));
+        min-width: var(--portrait-width, var(--portrait-size, 64px));
         max-height: var(--portrait-height, var(--portrait-size, 64px));
         max-width: var(--portrait-width, var(--portrait-size, 64px));
 
