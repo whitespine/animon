@@ -1,28 +1,17 @@
 <script lang="ts">
-    import Die from "../Die.svelte";
-    import RollingDie from "../RollingDie.svelte";
-    import ToolTip from "../../layout/ToolTip.svelte";
-    import { suspense, inSuspense } from "../../../utils/suspense.svelte";
-    import { fixClasses } from "../../../utils/classes";
-    import { rollScrambler } from "../../../utils/attach.svelte";
+    import { suspense } from "../../../utils/suspense.svelte";
+    import RollDisplay from "./RollDisplay.svelte";
+    import type { BasicTestChatMessage } from "../../../documents/message.svelte";
 
-    let { message } = $props();
+    let { message }: { message: BasicTestChatMessage } = $props();
 
-    /** Reconstructed roll from the message
-     * @type {Roll}
-     */
     let roll = $derived(message.rolls[0]);
-
-    /** The values on our d6's
-     * @type {number[]}
-     */
-    let die_results = $derived(roll.dice[0].results);
 
     // Modify this roll to have a flipped doomcoin. DSN integrated
     async function pushRoll() {
         // Just reroll it
         let new_roll = await new Roll(roll.formula).roll();
-        await game.messages.get(message.id).update({
+        await game.messages.get(message.id!)?.update({
             rolls: [new_roll],
             system: {
                 suspense: suspense(new_roll),
@@ -34,53 +23,15 @@
 
 <div class="animon">
     <div class="col">
-        <div class="row results center">
-            <ToolTip side="left">
-                {#snippet on(attacher)}
-                    <div
-                        class={fixClasses(
-                            { animon: true, pushed: message.system.pushed },
-                            "dice row wrap grow",
-                        )}
-                        {@attach attacher}
-                    >
-                        {#each die_results as die}
-                            {#if inSuspense(message.system.suspense)}
-                                <RollingDie />
-                            {:else}
-                                <Die
-                                    value={die.result}
-                                    discarded={!die.success}
-                                />
-                            {/if}
-                        {/each}
-                    </div>
-                {/snippet}
-                {#snippet tip()}
-                    <div class="inner-box col">
-                        {#each message.system.params.contributors as contrib}
-                            <div class="prefix-input even">
-                                {#if !contrib.value}
-                                    <span class="pseudo-label" style:text-align="center">{contrib.label}</span>
-                                {:else}
-                                    <span class="pseudo-label">{contrib.label}: </span>
-                                    <span style:text-align="right">{contrib.value}</span>
-                                {/if}
-                            </div>
-                        {/each}
-                    </div>
-                {/snippet}
-            </ToolTip>
-            <p class="result nowrap">
-                <span
-                    {@attach inSuspense(message.system.suspense)
-                        ? rollScrambler(50, 6)
-                        : null}>{roll.total}</span
-                >
-                vs
+        <RollDisplay
+            {roll}
+            suspense_id={message.system.suspense}
+            contributors={message.system.params.contributors}
+        >
+            {#snippet vs()}
                 <span>{message.system.params.difficulty}</span>
-            </p>
-        </div>
+            {/snippet}
+        </RollDisplay>
 
         {#if !message.system.pushed}
             <button
