@@ -69,12 +69,11 @@ export function onReceiveSuspense(payload: SuspenseBroadcast) {
 // Our current things in suspense. If this .has something, its rolling! Hide results as appropriate
 const suspenseSet = new SvelteSet<string>();
 
-/**
- * 
- * @param {string} id The suspense id
- * @returns {boolean} True iff in suspense
+/** 
+ * Is this roll currently in suspense?
  */
-export function inSuspense(id: string) {
+export function inSuspense(id?: string | null): boolean {
+    if(!id) return false;
     return suspenseSet.has(id);
 }
 
