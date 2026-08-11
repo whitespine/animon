@@ -22,14 +22,16 @@
 </script>
 
 <div class="animon">
+    <h2>Test - {message.speakerActor?.name ?? "???"}</h2>
     <div class="col">
         <RollDisplay
             {roll}
             suspense_id={message.system.suspense}
             contributors={message.system.params.contributors}
+            pushed={message.system.pushed}
         >
-            {#snippet vs()}
-                <span>{message.system.params.difficulty}</span>
+            {#snippet result(val)}
+                <span class="result">{val} vs. {message.system.params.difficulty}</span>
             {/snippet}
         </RollDisplay>
 
@@ -45,16 +47,9 @@
 </div>
 
 <style lang="scss">
-    .results {
-        .dice.pushed {
-            background-color: var(--color-warm-1);
-            color: var(--color-cool-5);
-        }
-
-        p {
-            font-size: x-large;
-            font-weight: bold;
-            padding-inline: 5px;
-        }
+    .result {
+        font-size: x-large;
+        font-weight: bold;
+        padding-inline: 5px;
     }
 </style>

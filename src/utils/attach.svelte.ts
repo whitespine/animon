@@ -4,6 +4,9 @@ import { TextareaAutosize } from "runed";
 import type { SystemActor } from "../documents/actor.svelte";
 import type { SystemItem } from "../documents/item.svelte";
 
+import type { Attachment } from "svelte/attachments";
+import { randomNumber } from "./random";
+
 interface ArbitraryListeners<T extends HTMLElement> {
     on?: (elt: T) => any,
     off?: (elt: T) => any
@@ -20,13 +23,13 @@ interface ArbitraryListeners<T extends HTMLElement> {
  * - "on" on mount called with the element as the arg
  * - "off" on unmount called with the element as the arg
  * 
- * @param  listeners 
+ * @param listeners 
  * @returns 
  */
 export function buildListenerAttacher<T extends HTMLElement>(listeners: ArbitraryListeners<T>) {
     return (elt: T) => {
         const buildUp = () => {
-            if(listeners.on) {
+            if (listeners.on) {
                 listeners.on(elt);
             }
             for (let [k, v] of Object.entries(listeners.listeners ?? {})) {
@@ -35,7 +38,7 @@ export function buildListenerAttacher<T extends HTMLElement>(listeners: Arbitrar
         };
 
         const tearDown = () => {
-            if(listeners.off) {
+            if (listeners.off) {
                 listeners.off(elt);
             }
             for (let [k, v] of Object.entries(listeners.listeners ?? {})) {
@@ -48,34 +51,20 @@ export function buildListenerAttacher<T extends HTMLElement>(listeners: Arbitrar
     }
 }
 
-export function portalTo(to: HTMLElement) {
-    return (elt: HTMLElement) => {
+/**
+ * Portal attachment. Teleports the attached element to this attachments argument. 
+ * Should be safe under reactivity of `to`
+ * 
+ * @param to Where to put the element. Always appended last
+ * @returns 
+ */
+export function portalTo<T extends HTMLElement>(to: HTMLElement): Attachment<T> {
+    return (elt: T) => {
         to.appendChild(elt);
         return () => {
             elt.remove();
         }
     }
-}
-
-export function scrambler(delay: number, generator: (index: number) => string) {
-    return (elt: HTMLElement) => {
-        let i = 0;
-        let base = elt.innerHTML;
-        let interval = setInterval(() => {
-            elt.innerHTML = generator(i);
-        }, delay);
-
-        return () => {
-            clearInterval(interval);
-            elt.innerHTML = base;
-        }
-    }
-}
-
-export function rollScrambler(delay: number, max: number) {
-    let min = 1;
-    let gen = () => (Math.floor(Math.random() * (max - min + 1)) + min).toString();
-    return scrambler(delay, gen);
 }
 
 export function reactive<T extends string | number = string>(doc: SystemActor | SystemItem | ActiveEffect, path: string, preprocesser?: (v: T) => T) {

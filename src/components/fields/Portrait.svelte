@@ -17,8 +17,8 @@
         fallback?: string,
         height?: string,
         edit?: boolean,
-        style?: string
-    } = $props();
+        style?: string,
+    } & Record<string, any> = $props();
 
     let current = $derived(foundry.utils.getProperty(doc, path) as string | undefined);
 

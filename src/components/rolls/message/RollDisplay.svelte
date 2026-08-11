@@ -4,21 +4,22 @@
     import ToolTip from "../../layout/ToolTip.svelte";
     import { inSuspense } from "../../../utils/suspense.svelte";
     import { fixClasses } from "../../../utils/classes";
-    import { rollScrambler } from "../../../utils/attach.svelte";
     import type {Snippet} from "svelte";
     import type { Contributor } from "../../../models/messages/base";
+    import Scrambler from "../../layout/Scrambler.svelte";
+    import { randomNumber } from "../../../utils/random";
 
     let {
         roll,
         contributors = [],
         suspense_id,
-        vs,
+        result,
         pushed = false,
     }: {
         roll: Roll;
         contributors?: Contributor[]
         suspense_id?: string | null;
-        vs?: Snippet
+        result?: Snippet<[number]>,
         pushed?: boolean;
     } = $props();
 
@@ -63,12 +64,19 @@
             </div>
         {/snippet}
     </ToolTip>
-    <p class="result nowrap">
-        <span {@attach inSuspense(suspense_id) ? rollScrambler(50, 6) : null}
-            >{roll.total}</span
-        >
-        {@render vs?.()}
-    </p>
+    {#if result}
+        <div>
+            {#if inSuspense(suspense_id)}
+                <Scrambler interval={50} generator={(prev) => randomNumber(0, 9, prev ?? 0)}>
+                    {#snippet content(value: number)}
+                        {@render result(value)} 
+                    {/snippet}
+                </Scrambler>
+            {:else}
+                {@render result(roll.total ?? 0)} 
+            {/if}
+        </div>
+    {/if}
 </div>
 
 <style lang="scss">
@@ -78,10 +86,5 @@
             color: var(--color-cool-5);
         }
 
-        p {
-            font-size: x-large;
-            font-weight: bold;
-            padding-inline: 5px;
-        }
     }
 </style>
