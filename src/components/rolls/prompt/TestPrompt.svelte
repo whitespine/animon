@@ -47,7 +47,7 @@
         (state.actor as AnimonActor)?.system.form?.all_qualities.map((q) => ({
             id: q._id,
             label: q.name,
-        })),
+        })) ?? [], 
     );
     let quality_options = $derived([none, ...quality_definite_options]);
 

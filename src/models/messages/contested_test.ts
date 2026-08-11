@@ -10,7 +10,7 @@ const defineContestedTestModel = () => ({
         actor: new fields.StringField({ nullable: false }),
         params: new fields.SchemaField({
             ...baseRollParams(),
-        }),
+        }, { nullable: true, initial: null }),
         alias: new fields.StringField(),
         pushed: new fields.BooleanField({ initial: false }), // Any roll can be pushed
         sort: new SortField(),
@@ -30,7 +30,7 @@ export type BaseData = {
         sort: number,
         suspense: string | null,
         pushed: boolean,
-        params: ContestedTestParams,
+        params: ContestedTestParams | null,
         roll: string | null // jsonified data
     }>,
     suspense: string | null
@@ -44,7 +44,7 @@ type DerivedData = {
         sort: number,
         suspense: string | null,
         pushed: boolean,
-        params: ContestedTestParams,
+        params: ContestedTestParams | null,
         roll: Roll | null // de-jsonified data
     }>,
     suspense: string | null

@@ -23,7 +23,7 @@ export function fixStyle(...styles: Array<string | object>): string {
 }
 
 // Converts any format of classes into a svelte style hash
-type fixClassesArg = string | Record<string, any> | Array<fixClassesArg>;
+type fixClassesArg = string | Record<string, any> | Array<fixClassesArg> | null | undefined;
 export function fixClasses(...classes: fixClassesArg[]): Record<string, boolean> {
     let all_classes: Record<string, boolean> = {};
     for (let c of classes) {

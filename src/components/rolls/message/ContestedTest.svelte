@@ -9,8 +9,6 @@
     import RollDisplay from "./RollDisplay.svelte";
 
     let { message }: { message: ContestChatMessage } = $props();
-
-    $inspect(message.system.contestants);
 </script>
 
 <div class="animon">
@@ -24,6 +22,8 @@
                 <Portrait
                     class="inner-portrait"
                     doc={contestant.actor}
+                    --portrait-width="64px"
+                    --portrait-height="100%"
                 />
             {:else}
                 <p class="italic void">???</p>
@@ -33,7 +33,7 @@
                 <h4>{contestant.actor?.name ?? "Unknown"}</h4>
 
             {#if contestant.roll}
-                <RollDisplay roll={contestant.roll} --die-size="24px">
+                <RollDisplay roll={contestant.roll} --die-size="24px" contributors={contestant.params!.contributors || []}>
                     {#snippet result(val)}
                         <span class="nowrap result"> → {val}</span>
                     {/snippet}

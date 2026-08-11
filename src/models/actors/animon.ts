@@ -128,7 +128,7 @@ interface DerivedForm extends BaseForm {
 }
 
 interface DerivedData {
-    form: DerivedForm,
+    form: DerivedForm | null,
     sorted_forms: DerivedForm[],
     forms: Record<string, DerivedForm>,
     bonuses: {
@@ -246,8 +246,8 @@ export class AnimonModel extends ActorModel<AnimonSchema, AnimonActor, BaseData,
         }
 
         // Bring our bar stuff to the top level
-        this.hp.max ||= this.form?.stats.hp;
-        this.signature_uses.max ||= this.form?.stats.signature_uses;
+        this.hp.max ||= this.form?.stats.hp ?? 0;
+        this.signature_uses.max ||= this.form?.stats.signature_uses ?? 0;
     }
 
     // Forces us to fledgling stage if we aren't in a valid form
