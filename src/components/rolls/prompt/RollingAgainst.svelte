@@ -14,7 +14,7 @@
         <span class="pseudo-label">Against:</span>
         {#each state.opponents as opponent (opponent._id)}
             {let doc = $derived(opponent)}
-            <Portrait {doc} path="img" edit={false} height="32px"></Portrait>
+            <Portrait {doc} path="img" edit={false} --portrait-size="32px"></Portrait>
         {/each}
     </div>
 {/if}

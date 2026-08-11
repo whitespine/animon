@@ -9,7 +9,7 @@
 <div class="row center">
     <div>
         <Portrait
-            height="128px"
+            --portrait-size="128px"
             style="margin-left: auto; margin-right: auto"
             doc={gear}
             {edit}

@@ -22,7 +22,7 @@
 
 <style lang="scss">
     div {
-        --true-size: var(--size, 32px);
+        --true-size: var(--die-size, 32px);
         border: 0px;
         width: var(--true-size);
         height: var(--true-size);
@@ -30,7 +30,7 @@
         border-radius: calc(var(--true-size) / 6);
         background-color: gray;
         text-align: center;
-        font-size: x-large;
+        font-size: calc(var(--true-size) * 0.8);
     }
     .discarded {
         opacity: 33%;

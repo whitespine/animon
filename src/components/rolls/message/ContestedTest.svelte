@@ -22,24 +22,26 @@
         <div class="inner-box row center contain contestant">
             {#if contestant.actor}
                 <Portrait
-                    height="var(--portrait-size)"
                     class="inner-portrait"
                     doc={contestant.actor}
                 />
-                <span>{contestant.actor.name}</span>
             {:else}
                 <p class="italic void">???</p>
             {/if}
 
+            <div class="col">
+                <h4>{contestant.actor?.name ?? "Unknown"}</h4>
+
             {#if contestant.roll}
-                <RollDisplay roll={contestant.roll}>
+                <RollDisplay roll={contestant.roll} --die-size="24px">
                     {#snippet result(val)}
-                        <span class="result"> → {val}</span>
+                        <span class="nowrap result"> → {val}</span>
                     {/snippet}
                 </RollDisplay>
             {:else}
-                <span>Pending...</span>
+                <span class="italic">Pending...</span>
             {/if}
+            </div>
         </div>
     {/each}
 </div>

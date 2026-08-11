@@ -13,8 +13,7 @@
         doc={actor}
         {edit}
         class="inner-portrait"
-        width="128px"
-        height="128px"
+        --portrait-size="128px"
     ></Portrait>
     <div class="bio">
         <div class="prefix-input">

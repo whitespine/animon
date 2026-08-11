@@ -6,18 +6,14 @@
         path = "img",
         callback,
         fallback = "",
-        height,
         edit = false,
-        style = "",
         ...restArgs
     }: {
         doc: Actor | Item | ActiveEffect | TokenDocument,
         path?: string,
         callback?: (img: string) => any,
         fallback?: string,
-        height?: string,
         edit?: boolean,
-        style?: string,
     } & Record<string, any> = $props();
 
     let current = $derived(foundry.utils.getProperty(doc, path) as string | undefined);
@@ -40,8 +36,6 @@
         });
         await fp.browse();
     }
-
-    let full_style = $derived(height ? `max-height: ${height}; ${style}` : style);
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -51,13 +45,14 @@
     alt="Icon of {doc.name}"
     onclick={edit ? editImage : null}
     class={{ "img-fluid": true, edit }}
-    style={full_style}
     {...restArgs}
 />
 
 <style lang="scss">
     img {
         object-fit: contain;
+        max-height: var(--portrait-height, var(--portrait-size, 64px));
+        max-width: var(--portrait-width, var(--portrait-size, 64px));
 
         &.edit {
             cursor: pointer;

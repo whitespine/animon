@@ -26,7 +26,7 @@
     <div class="inner-box row">
         <h3>VERSUS!</h3>
         <Portrait
-            height="64px"
+            --portrait-size="64px"
             class="inner-portrait"
             doc={actor}
         />

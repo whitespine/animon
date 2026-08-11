@@ -102,8 +102,7 @@
             doc={actor}
             {edit}
             class="top-inner-portrait"
-            width="128px"
-            height="128px"
+            --portrait-size="128px"
         ></Portrait>
         <div class="col grow">
             <div class="row even">

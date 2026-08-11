@@ -7,7 +7,7 @@
 </script>
 
 <div class="gear center row">
-    <Portrait doc={item} {edit} height="48px" />
+    <Portrait doc={item} {edit} --portrait-size="48px" />
     <div class="body">
         <span>{item.name}</span>
     </div>

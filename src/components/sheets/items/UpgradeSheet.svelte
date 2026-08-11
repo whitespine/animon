@@ -24,8 +24,7 @@
 <div class="outer-box">
     <div class="inner-box row center contain">
         <Portrait
-            width="156px"
-            height="156px"
+            --portrait-size="156px"
             class="inner-portrait"
             doc={upgrade}
             {edit}
