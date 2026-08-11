@@ -7,11 +7,14 @@
     import { sortedObjectToArray } from "../../../models/base.svelte";
     import { RollerState } from "./roller_state.svelte";
     import RollingAs from "./RollingAs.svelte";
-    import type { AnimonActor, KidActor, NpcActor } from "../../../documents/actor.svelte";
+    import type {
+        AnimonActor,
+        KidActor,
+        NpcActor,
+    } from "../../../documents/actor.svelte";
     import RollingAgainst from "./RollingAgainst.svelte";
 
-
-    let { state }: {state: RollerState} = $props();
+    let { state }: { state: RollerState } = $props();
 
     function roll(e: Event) {
         stop(e);
@@ -25,10 +28,12 @@
         })),
     );
     let talent_definite_options = $derived(
-        sortedObjectToArray((state.actor as KidActor)?.system.talents).map((t) => ({
-            id: t._id,
-            label: t.name,
-        })) ?? []
+        sortedObjectToArray((state.actor as KidActor)?.system.talents).map(
+            (t) => ({
+                id: t._id,
+                label: t.name,
+            }),
+        ) ?? [],
     );
     let none = { id: "", label: "NONE" };
     let talent_options = $derived([none, ...talent_definite_options]);
@@ -47,23 +52,25 @@
     let quality_options = $derived([none, ...quality_definite_options]);
 
     let strength_definite_options = $derived(
-        sortedObjectToArray((state.actor as NpcActor)?.system.strengths).map((s) => ({
-            id: s._id,
-            label: s.name,
-        })) ?? []
+        sortedObjectToArray((state.actor as NpcActor)?.system.strengths).map(
+            (s) => ({
+                id: s._id,
+                label: s.name,
+            }),
+        ) ?? [],
     );
     let strength_options = $derived([none, ...strength_definite_options]);
 
     let signature_definite_options = $derived.by(() => {
-        if(!state.actor?.system.form) return [];
-        let result = state.actor.system.form.prior_forms.map(f => ({
+        if (!state.actor?.system.form) return [];
+        let result = state.actor.system.form.prior_forms.map((f) => ({
             id: f._id,
-            label: f.signature.name
+            label: f.signature.name,
         }));
         result.push({
             id: state.actor.system.active_form_id,
-            label: state.actor.system.form.signature.name
-        })
+            label: state.actor.system.form.signature.name,
+        });
         return result;
     });
     let signature_options = $derived([none, ...signature_definite_options]);
@@ -137,8 +144,14 @@
             ></Select>
         </div>
         <div class="row center even">
-            <label for="use_signature">{(state.actor as NpcActor)?.system.signature.name} [{state.signature_bonus}]:</label>
-            <input name="use_signature" type="checkbox" bind:checked={state.npc_using_signature}>
+            <label for="use_signature">
+                {(state.actor as NpcActor)?.system.signature.name || "Signature"} [{state.signature_bonus}]:
+            </label>
+            <input
+                name="use_signature"
+                type="checkbox"
+                bind:checked={state.npc_using_signature}
+            />
         </div>
     {/if}
 
