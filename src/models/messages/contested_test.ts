@@ -4,6 +4,8 @@ import { baseRollParams, type BaseRollParams } from "./base";
 const fields = foundry.data.fields;
 
 const defineContestedTestModel = () => ({
+    title: new fields.StringField({ initial: "Contest" }),
+    subtitle: new fields.StringField({ initial: "" }),
     contestants: new fields.TypedObjectField(new fields.SchemaField({
         params: new fields.SchemaField({
             ...baseRollParams(),
@@ -12,13 +14,14 @@ const defineContestedTestModel = () => ({
         pushed: new fields.BooleanField({ initial: false }), // Any roll can be pushed
         sort: new SortField(),
         suspense: new fields.StringField({ nullable: true, initial: null }),
-        roll: new fields.JSONField(),
+        roll: new fields.JSONField({ nullable: true, initial: null }),
     })),
 });
 
-export interface ContestedTestParams extends BaseRollParams {}
+export interface ContestedTestParams extends BaseRollParams { }
 
-type BaseData = {
+export type BaseData = {
+    title: string,
     pushed: boolean,
     contestants: Record<string, {
         alias: string,
@@ -26,15 +29,43 @@ type BaseData = {
         suspense: string | null,
         pushed: boolean,
         params: ContestedTestParams,
-        roll: string // jsonified data
+        roll: string | null // jsonified data
     }>,
     suspense: string | null
 };
-type DerivedData = BaseData & {};
+type DerivedData = {
+    title: string,
+    pushed: boolean,
+    contestants: Record<string, {
+        alias: string,
+        sort: number,
+        suspense: string | null,
+        pushed: boolean,
+        params: ContestedTestParams,
+        roll: Roll | null // de-jsonified data
+    }>,
+    suspense: string | null
+};
 
 export class ContestedTestModel extends foundry.abstract.TypeDataModel<ReturnType<typeof defineContestedTestModel>, SystemChatMessage, BaseData, DerivedData> {
     // Some schema elements are consistent across all actor types. Define them here
     static defineSchema() {
         return defineContestedTestModel();
+    }
+
+    prepareDerivedData() {
+        super.prepareDerivedData();
+
+        // Create Roll instances for contained dice rolls
+        for (let contestant of Object.values(this.contestants)) {
+            if (contestant.roll) {
+                try {
+                    // @ts-ignore
+                    contestant.roll = Roll.fromData(contestant.roll);
+                } catch (err) {
+                    contestant.roll = null;
+                }
+            }
+        }
     }
 }

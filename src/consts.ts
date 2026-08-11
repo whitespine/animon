@@ -12,9 +12,8 @@ export const ANIMON = {
 
     // Keys for socket actions
     socket: {
-        contest_start: "ROLL_CONTEST",
-        contest_response: "CONTEST_RESPONSE",
-        suspense: "DICE_SUSPENSE_SYNC"
+        suspense: "DICE_SUSPENSE_SYNC",
+        gm_edit_message: "GM_EDIT_MESSAGE"
     },
 
     // Add whatever other constants you need
