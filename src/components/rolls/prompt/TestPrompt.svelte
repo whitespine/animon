@@ -14,11 +14,11 @@
     } from "../../../documents/actor.svelte";
     import RollingAgainst from "./RollingAgainst.svelte";
 
-    let { state }: { state: RollerState } = $props();
+    let { state, callback }: { state: RollerState, callback?: () => any } = $props();
 
     function roll(e: Event) {
         stop(e);
-        state.roll();
+        callback ? callback() : state.roll();
     }
 
     let trait_options = $derived(

@@ -38,7 +38,7 @@
                     }
                 }
             }
-        })
+        });
     }
 </script>
 
@@ -50,7 +50,7 @@
         <h3 class="grow">{actor?.name}</h3>
     </div>
 
-    <TestPrompt {state}></TestPrompt>
+    <TestPrompt {state} callback={fulfill}></TestPrompt>
 </div>
 
 <style lang="scss">
