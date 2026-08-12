@@ -1,4 +1,5 @@
 import type { Speaker } from "../components/rolls/prompt/roller_state.svelte";
+import type { ContestChatMessage } from "../documents/message.svelte";
 import type { BasicTestParams } from "../models/messages/basic_test";
 import type { BaseData, ContestedTestModel, ContestedTestParams } from "../models/messages/contested_test";
 import { suspense } from "./suspense.svelte";
@@ -58,17 +59,26 @@ export async function startContestedTest(check_details: ContestedTestParams, spe
         return;
     }
     let contestants: BaseData["contestants"] = {};
-    let sort = 0;
-    for (let participant of [actor, ...opponents]) {
+    contestants[foundry.utils.randomID()] = {
+        actor: actor.uuid,
+        params: check_details,
+        prompt: "", // doesn't matter
+        suspense: null,
+        sort: 0,
+        pushed: false,
+        roll: JSON.stringify(roll.toJSON())
+    }
+    let sort = 1;
+    for (let participant of opponents) {
         if (!participant.uuid) continue;
         contestants[foundry.utils.randomID()] = {
             actor: participant.uuid,
-            params: participant == actor ? check_details : null,
-            alias: participant.name,
-            suspense: participant == actor ? suspense(roll) : null,
             sort: sort++,
+            prompt: `${actor.name} attacks!`,
             pushed: false,
-            roll: participant == actor ? JSON.stringify(roll.toJSON()) : null
+            params: null,
+            suspense: null,
+            roll: null,
         }
     }
 
@@ -81,4 +91,9 @@ export async function startContestedTest(check_details: ContestedTestParams, spe
             contestants
         }
     });
+}
+
+// Perform simultaneous suspense for all rolls
+export async function finishContestedTest(message: ContestChatMessage) {
+
 }

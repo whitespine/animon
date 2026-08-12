@@ -5,14 +5,14 @@ import type { ContestChatMessage, SystemChatMessage } from "../documents/message
 
 export interface ContestContext {
     message: ContestChatMessage,
-    contestant_uuid: string
+    contestant_id: string
 }
 
 export class ContestedApp
     extends SvelteApplicationMixin<ContestContext, typeof foundry.applications.api.ApplicationV2<ContestContext>>
         (foundry.applications.api.ApplicationV2) {
-    static DEFAULT_OPTIONS = foundry.utils.mergeObject({
-        classes: ["contest"],
+    static DEFAULT_OPTIONS = {
+        classes: ["animon", "contest"],
         svelte: {
             component: ContestComponent,
         },
@@ -23,14 +23,14 @@ export class ContestedApp
             width: 400,
             height: "auto" as const
         },
-    }, super.DEFAULT_OPTIONS)
+    };
 
     fixed_context: ContestContext;
 
     static active = new Map<string, ContestedApp>();
 
     static keyFor(ctx: ContestContext) {
-        return `${ctx.message.id}:${ctx.contestant_uuid}`;
+        return `${ctx.message.id}:${ctx.contestant_id}`;
         }
 
     static register(app: ContestedApp) {
@@ -44,8 +44,8 @@ export class ContestedApp
         return result ?? null;
     }
 
-    static close(message: ContestChatMessage, contestant_uuid: string) {
-        this.unregister({ contestant_uuid, message })?.close({ animate: false });
+    static close(message: ContestChatMessage, contestant_id: string) {
+        this.unregister({ contestant_id, message })?.close({ animate: false });
     }
 
     static closeAll(msg: ContestChatMessage) {
@@ -53,7 +53,6 @@ export class ContestedApp
             this.close(msg, uuid);
         }
     }
-
 
     constructor(context: ContestContext, options: DeepPartial<foundry.applications.api.ApplicationV2.RenderOptions> = {}) {
         let ui_rects = document.querySelector("#ui-middle")!.getClientRects()[0];
@@ -83,12 +82,11 @@ export function initContestOpenHooks() {
         if (acm.type === "contested_test") {
             let message = acm as SystemChatMessage<"contested_test">;
             let contestants = message.system.contestants;
-            for (let uuid of Object.keys(contestants)) {
-                let actor = foundry.utils.fromUuidSync(uuid) as Actor | undefined;
-                if (actor && actor.isOwner) {
+            for (let [id, data] of Object.entries(contestants)) {
+                if (data.actor?.isOwner && !data.roll) {
                     let app = new ContestedApp({
                         message,
-                        contestant_uuid: uuid
+                        contestant_id: id
                     });
                     app.render({ force: true })
                 }

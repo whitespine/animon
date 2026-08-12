@@ -210,6 +210,7 @@ export class RollerState {
                     }
                 }
             });
+            this.bond_points_spent = 0;
         }
 
         // Deduct signature_uses
@@ -221,6 +222,7 @@ export class RollerState {
                     }
                 }
             });
+            this.signature_id = "";
         }
     }
 

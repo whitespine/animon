@@ -11,7 +11,7 @@ const defineContestedTestModel = () => ({
         params: new fields.SchemaField({
             ...baseRollParams(),
         }, { nullable: true, initial: null }),
-        alias: new fields.StringField(),
+        prompt: new fields.StringField(),
         pushed: new fields.BooleanField({ initial: false }), // Any roll can be pushed
         sort: new SortField(),
         suspense: new fields.StringField({ nullable: true, initial: null }),
@@ -26,7 +26,7 @@ export type BaseData = {
     pushed: boolean,
     contestants: Record<string, {
         actor: string,
-        alias: string,
+        prompt: string,
         sort: number,
         suspense: string | null,
         pushed: boolean,
@@ -40,7 +40,7 @@ type DerivedData = {
     pushed: boolean,
     contestants: Record<string, {
         actor: Actor | null,
-        alias: string,
+        prompt: string,
         sort: number,
         suspense: string | null,
         pushed: boolean,

@@ -12,6 +12,7 @@ import { injectAllCoreDocumentsReactivity, injectEmbeddedCollectionsReactivity }
 import { initSockets } from './utils/socket.svelte';
 import { ControlState } from './utils/control.svelte';
 import { GlobalRollerState } from './components/rolls/prompt/roller_state.svelte';
+import { initContestOpenHooks } from './apps/contest_app';
 
 Hooks.once('init', async function () {
   console.log("Initializing ANIMON RPG")
@@ -21,6 +22,7 @@ Hooks.once('init', async function () {
   setupModels();
   setupSettings();
   setupSheets();
+  initContestOpenHooks();
   // CONFIG.ui.combat = CustomCombatTracker;
   // CONFIG.debug.hooks = true;
 

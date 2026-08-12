@@ -23,8 +23,8 @@ export function suspense(roll: Roll<any>): string {
 
     // Handle locally
     wait(roll, game.user).then(() => suspenseSet.delete(id));
-    // Tell everyone else to handle it
 
+    // Tell everyone else to handle it
     let payload = {
         id,
         user_id: game.user._id,
@@ -38,9 +38,21 @@ export function suspense(roll: Roll<any>): string {
 export interface SuspenseBroadcast {
     id: string,
     user_id: string,
-    roll_json: any
+    roll_json: any,
+    // If true, will DSN roll as ghost (faces invisible), and won't automatically clear suspense
+    // ghost?: boolean
+    // TODO
 }
-
+/*game.dice3d.showForRoll(
+    await new Roll("1d6").evaluate(),
+    game.user,
+    false,
+    false,
+    false,
+    undefined,
+    ChatMessage.getSpeaker(),
+    { ghost: true, secret: false }
+);*/
 
 /**
  * Wait for a roll to resolve via suspense settings

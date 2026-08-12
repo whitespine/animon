@@ -5,8 +5,9 @@
 
         // Make sure that styling persists even for our dragged element
         // Sheet styling
-        &.application.sheet {
+        &.application {
             background-color: white;
+            color: black;
             //border: 3px solid #505050;
             border: none;
             // border-radius: var(--border-radius);

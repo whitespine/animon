@@ -1,6 +1,6 @@
 <script lang="ts">
-    import BasicTest from "./message/BasicTest.svelte";
-    import ContestedTest from "./message/ContestedTest.svelte";
+    import BasicTest from "./message/BasicTestMessage.svelte";
+    import ContestedTest from "./message/ContestedTestMessage.svelte";
     let { message } = $props();
 </script>
 
